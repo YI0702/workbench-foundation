@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>问题排查 · 工作台基座 Demo</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-left">
+    <span class="logo">🎯 联盟样式一站式工作台</span>
+    <span class="env-tag">基座 Demo · v0.1</span>
+  </div>
+</header>
+
+<div class="module-page">
+  <div class="breadcrumb"><a href="index.html">← 返回工作台首页</a> / 问题排查</div>
+
+  <div class="module-header">
+    <h1>🛠️ 问题排查模块</h1>
+    <p>渲染失败、发奖异常、数据缺失等 case 的快速诊断 · 千寻规则查询 + 端侧曝光点击数据</p>
+  </div>
+
+  <div class="module-section">
+    <h2>本模块在基座中的定位</h2>
+    <p style="color:#4a5568; font-size:13px;">
+      面向"接到一个 case，要快速定位是哪一层出了问题"的诊断流。<br>
+      数据来源：千寻规则（后台）+ 渲染失败（SDK）+ 组件曝光点击（SDK）。
+    </p>
+  </div>
+
+  <div class="module-section">
+    <h2>主要工作流（占位）</h2>
+    <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:10px;">
+      <div style="padding:14px; background:#fffaf0; border-radius:8px; text-align:center; font-size:13px;">① Case 录入</div>
+      <div style="padding:14px; background:#fffaf0; border-radius:8px; text-align:center; font-size:13px;">② 多源数据拉取</div>
+      <div style="padding:14px; background:#fffaf0; border-radius:8px; text-align:center; font-size:13px;">③ AI 辅助归因</div>
+      <div style="padding:14px; background:#fffaf0; border-radius:8px; text-align:center; font-size:13px;">④ 处置&闭环</div>
+    </div>
+  </div>
+
+  <div class="module-section">
+    <h2>Owner 共建区</h2>
+    <div class="placeholder-tip">
+      <strong>👤 模块 Owner：小姜</strong><br>
+      问题排查的关键在"信息聚合 + 智能归因"——避免人工切换 N 个系统查数据。<br>
+      历史千寻规则迁移、SDK 渲染失败上报口径是必交付项。
+    </div>
+  </div>
+
+  <div class="module-section">
+    <h2>与基座的连接点</h2>
+    <ul style="font-size:13px; color:#4a5568; padding-left:20px; list-style:disc;">
+      <li>首页 AI 对话路由：识别"排查/异常/报错/失败/case"等关键词分发</li>
+      <li>反向触发：诊断结果可触发规则配置变更 / 模板修复</li>
+      <li>历史问题档案显性化由资深同学输入</li>
+    </ul>
+  </div>
+</div>
+</body>
+</html>
