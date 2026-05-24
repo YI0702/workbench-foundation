@@ -15,9 +15,31 @@
     <span class="env-tag">基座 Demo · v0.1</span>
   </div>
   <div class="topbar-right">
+    <a href="产品定义.html" class="top-link">📄 产品定义</a>
     <span class="user">你好，产品同学</span>
   </div>
 </header>
+
+<!-- 4 种使用方式引导条 -->
+<div class="usage-banner">
+  <div class="banner-inner">
+    <div class="banner-title">🎯 4 种使用方式 · 试一试</div>
+    <div class="banner-paths">
+      <a class="path-chip" onclick="document.getElementById('aiInput').focus()">
+        <span class="chip-num">01</span><span class="chip-text">知道要做什么 → 用 AI 对话</span>
+      </a>
+      <a class="path-chip" href="#scene-area">
+        <span class="chip-num">02</span><span class="chip-text">不确定怎么开始 → 选场景卡片</span>
+      </a>
+      <a class="path-chip" href="#board-area">
+        <span class="chip-num">03</span><span class="chip-text">业务 owner 看大盘 → 切视角</span>
+      </a>
+      <a class="path-chip" href="#skills-area">
+        <span class="chip-num">04</span><span class="chip-text">复用团队资产 → 用 Skills</span>
+      </a>
+    </div>
+  </div>
+</div>
 
 <!-- 主体 -->
 <main class="main">
@@ -50,7 +72,7 @@
   </section>
 
   <!-- 第二层：场景化 Prompt 卡片 -->
-  <section class="layer layer-scenes">
+  <section class="layer layer-scenes" id="scene-area">
     <div class="layer-inner">
       <div class="layer-header">
         <h2>常用场景 · 一键启动</h2>
@@ -105,7 +127,7 @@
   </section>
 
   <!-- 第三层：自定义视角 · 核心指标看板 -->
-  <section class="layer layer-board">
+  <section class="layer layer-board" id="board-area">
     <div class="layer-inner">
       <div class="layer-header">
         <h2>我的工作视图</h2>
@@ -238,7 +260,7 @@
   </section>
 
   <!-- 第四层：Skills 共创区（封闭定义 + 开放共创） -->
-  <section class="layer layer-skills">
+  <section class="layer layer-skills" id="skills-area">
     <div class="layer-inner">
       <div class="layer-header">
         <h2>Skills · 资产晾晒 + 开放协作</h2>

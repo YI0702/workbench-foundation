@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>联盟样式工作台 · 基座产品定义</title>
+<link rel="stylesheet" href="onepager.css">
+</head>
+<body>
+
+<header class="op-top">
+  <div class="op-top-inner">
+    <a href="index.html" class="back-link">← 返回基座 Demo</a>
+    <span class="op-version">v0.6 · 2026-05-24</span>
+  </div>
+</header>
+
+<main class="op-main">
+
+  <!-- Hero -->
+  <section class="op-hero">
+    <div class="op-tag">📄 产品定义 · 一页纸</div>
+    <h1>基座 = 把五个模块串成"一个产品"的形态骨架</h1>
+    <p class="op-sub">不是又一个独立模块。配套<a href="index.html">可交互 Demo</a>使用。</p>
+    <div class="op-meta">底稿不是终稿 · 所有定义欢迎讨论共识后迭代 · 维护人：一一</div>
+  </section>
+
+  <!-- 一、定位与边界 -->
+  <section class="op-section">
+    <h2>① 定位 · 基座做什么 / 不做什么</h2>
+    <div class="vs-grid">
+      <div class="vs-card vs-yes">
+        <div class="vs-title">✅ 基座做</div>
+        <ul>
+          <li>导航与聚合（首页是入口）</li>
+          <li>共用能力的载体（5 个模块复用）</li>
+          <li>用户体验上的统一性</li>
+          <li>跨模块流转的协议</li>
+        </ul>
+      </div>
+      <div class="vs-card vs-no">
+        <div class="vs-title">❌ 基座不做</div>
+        <ul>
+          <li>不是"第六个模块"——不和模块争业务定义</li>
+          <li>不做模块内的工作流和具体视觉</li>
+          <li>不是 PM 一个人的看板</li>
+          <li>不是完成态——会跟模块同步迭代</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 二、PM 边界 -->
+  <section class="op-section">
+    <h2>② PM 的统筹原则 · 最小化干预</h2>
+    <div class="pm-rule">
+      <div class="rule-key">PM 只在 1 件事上守底线：<strong>入口路径与跳转契约</strong></div>
+      <div class="rule-explain">
+        其余（视觉一致 / 数据口径 / Skills 提报 / 看板卡片 / 关键词路由）都是讨论共识可迭代。<br>
+        <span class="dim">底盘稳，模块才能跑得快。我提的不是约束，是底盘。</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 三、双视图 -->
+  <section class="op-section">
+    <h2>③ 基座的双视图 · 形态层 × 能力层</h2>
+
+    <div class="dual-view">
+      <div class="dv-card">
+        <div class="dv-tag">A · 用户视角</div>
+        <div class="dv-title">基座四层（用户看到的"形态"）</div>
+        <ol class="dv-list">
+          <li><strong>AI 对话入口</strong>·语义路由 → 知道要做什么的人</li>
+          <li><strong>场景化 Prompt 卡片</strong>·6 张高频任务 → 不知道怎么开始的人</li>
+          <li><strong>自定义视角看板</strong>·赛道/场景/预算/SDK → 业务 owner</li>
+          <li><strong>Skills 资产晾晒区</strong>·核心强定义+分支个人贡献 → 所有人</li>
+        </ol>
+      </div>
+      <div class="dv-arrow">↓ 调用</div>
+      <div class="dv-card">
+        <div class="dv-tag">B · 技术视角</div>
+        <div class="dv-title">共用基础设施（5 个模块共享的"能力"）</div>
+        <ul class="dv-list">
+          <li>AI 对话路由 · 通用组件库</li>
+          <li>统一鉴权 · 数据口径共识</li>
+          <li>操作日志 · Skills 嵌入框架</li>
+        </ul>
+      </div>
+    </div>
+    <div class="op-tip">两者是同一件事的两面——基座是表层，共用基础设施是底层。</div>
+  </section>
+
+  <!-- 四、协同接口 -->
+  <section class="op-section">
+    <h2>④ PM × 模块的协同接口</h2>
+    <p class="op-tip">三种执行模式：🟢模块自定义 / 🟡共建对齐 / 🔴PM兜底。模块内部（工作流、界面、技术）属于 🟢，全权 owner 拍板，本表不涉及。</p>
+
+    <table class="op-table">
+      <thead>
+        <tr><th>维度</th><th>性质</th><th>谁拍板</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>AI 路由关键词</td><td><span class="dot dot-y"></span>共建对齐</td><td>各 owner 提报 → PM 检查冲突 → 共识</td></tr>
+        <tr><td>首页看板卡片</td><td><span class="dot dot-y"></span>共建对齐</td><td>owner 设计 → PM 走查 → 上架</td></tr>
+        <tr><td>Skills 提报上架</td><td><span class="dot dot-y"></span>共建对齐</td><td>分层审核（见第⑤节）</td></tr>
+        <tr><td>数据口径</td><td><span class="dot dot-y"></span>共建对齐</td><td>业务理解共识 → 具体指标 owner 自定义</td></tr>
+        <tr><td>视觉一致性</td><td><span class="dot dot-y"></span>共建对齐</td><td>通用组件库 + 设计走查（路演后启动）</td></tr>
+        <tr><td>入口路径与跳转契约</td><td><span class="dot dot-r"></span>PM 兜底</td><td>跳转参数协议 PM 定，模块按协议接收</td></tr>
+      </tbody>
+    </table>
+
+    <details class="op-detail">
+      <summary>"入口路径与跳转契约"具体指什么</summary>
+      <p>用户从基座跳到模块时 URL 参数和上下文怎么传。例：用户在 AI 对话框输入"金融行业模板效果"→ 跳转洞察归因时 URL 是 <code>?industry=金融&module=洞察归因</code>，参数命名和协议必须统一，避免 5 个模块用 5 套参数。模块按协议接收实现自由，但协议本身 PM 拍板。</p>
+    </details>
+  </section>
+
+  <!-- 五、Skills 管理 -->
+  <section class="op-section">
+    <h2>⑤ Skills 管理 · 核心强定义 + 分支共创</h2>
+    <div class="skills-positioning">
+      <strong>导向</strong>：工作台对核心使用流程做强定义约束 · Skills 共创满足分支流程的个人贡献。<br>
+      <span class="dim">Skills 是主流程的<strong>补充和增强</strong>，不是<strong>主流程的替代</strong>。</span>
+    </div>
+
+    <div class="op-subtitle">分层审核（讨论稿）</div>
+    <table class="op-table">
+      <thead>
+        <tr><th>类型</th><th>判断</th><th>审核路径</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>A 类</strong></td><td>涉线上配置 / 跨模块 / 用户隐私</td><td>PM + 模块 owner + 安全合规</td></tr>
+        <tr><td><strong>B 类</strong></td><td>仅影响某模块查询/展示</td><td>对应模块 owner 审核</td></tr>
+        <tr><td><strong>C 类</strong></td><td>个人自用</td><td>不进资产库，自己空间</td></tr>
+      </tbody>
+    </table>
+
+    <div class="op-tip warn">
+      ⚠️ 关键讨论点：Skill 不只是上架可用——还要和当前模块工作流融合（触发位置、输入输出、失败兜底、版本管理）。<strong>本节先给导向，融合细节后续立项讨论</strong>。
+    </div>
+  </section>
+
+  <!-- 六、用户主路径 -->
+  <section class="op-section">
+    <h2>⑥ 用户主路径 · 4 种使用方式</h2>
+    <p class="op-tip">这 4 条主路径在 <a href="index.html">Demo</a> 里都能实际点击体验。</p>
+
+    <div class="path-grid">
+      <div class="path-card">
+        <div class="path-num">01</div>
+        <div class="path-title">知道要做什么</div>
+        <div class="path-flow">AI 对话框输入意图 → 关键词识别 → 路由到模块 → prompt 自动填充</div>
+        <div class="path-support">支撑：第 1 层 AI 对话</div>
+      </div>
+      <div class="path-card">
+        <div class="path-num">02</div>
+        <div class="path-title">不确定怎么开始</div>
+        <div class="path-flow">浏览场景卡片（6 张）→ 点击高频任务 → 自动带 prompt 进模块</div>
+        <div class="path-support">支撑：第 2 层 场景卡片</div>
+      </div>
+      <div class="path-card">
+        <div class="path-num">03</div>
+        <div class="path-title">业务 owner 看大盘</div>
+        <div class="path-flow">视角切换（赛道/场景/预算/SDK）→ 跨模块聚合数据 → 深入对应模块</div>
+        <div class="path-support">支撑：第 3 层 视角看板</div>
+      </div>
+      <div class="path-card">
+        <div class="path-num">04</div>
+        <div class="path-title">复用团队资产</div>
+        <div class="path-flow">浏览 Skills 资产 → 点击触发 → 经关键词路由进模块 → 模块内承载执行</div>
+        <div class="path-support">支撑：第 4 层 Skills 共创</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 七、风险与兜底 -->
+  <section class="op-section">
+    <h2>⑦ 风险识别 · 语义理解兜底</h2>
+    <p class="op-tip">参考 Anthropic / Cursor / Microsoft Copilot Studio 等业界实践（confidence 70% / fallback rate 阈值 20%）。</p>
+
+    <table class="op-table">
+      <thead>
+        <tr><th>失败模式</th><th>兜底路径</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>意图无法识别</td><td><strong>场景卡片兜底</strong>·引导用 6 张高频任务卡片</td></tr>
+        <tr><td>置信度不足（多意图）</td><td><strong>意图澄清</strong>·反问"是 A 还是 B"</td></tr>
+        <tr><td>重复误解</td><td><strong>Prompt 模板</strong>·"我要 XX → 推荐 YY"</td></tr>
+        <tr><td>超出范围</td><td><strong>边界声明</strong>·"工作台不处理 XX，建议 YY"</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 八、跨职能协同 -->
+  <section class="op-section">
+    <h2>⑧ 跨职能协同（建议稿 · 待与对应角色 1on1 确认）</h2>
+
+    <div class="cross-grid">
+      <div class="cross-card cross-design">
+        <div class="cross-tag">设计</div>
+        <div class="cross-title">精简合作 · 只做高价值环节</div>
+        <table class="op-table op-table-small">
+          <thead><tr><th>做什么 ✅</th><th>不做什么 ❌</th></tr></thead>
+          <tbody>
+            <tr><td>通用组件库最小约束集</td><td>跟着模块定义阶段做细节稿</td></tr>
+            <tr><td>基座视觉规范</td><td>替模块出 Demo 视觉</td></tr>
+            <tr><td>路演当天先参与，<strong>路演后</strong>启动视觉走查 + 反馈</td><td>路演前 block 节奏</td></tr>
+            <tr><td>上线前关键模块 polish</td><td>全程跟单个模块</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="cross-card cross-rd">
+        <div class="cross-tag">研发</div>
+        <div class="cross-title">三件套交付契约</div>
+        <ul class="dv-list">
+          <li>✅ 可交互 Demo（HTML/前端代码）</li>
+          <li>✅ 一页纸业务逻辑</li>
+          <li>✅ 决策档案（沉淀在 Nexus）</li>
+        </ul>
+        <div class="op-tip">研发不需要等 PRD；可视基座前端代码作参考骨架；6/01 KO 时正式交付。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 九、权限分层 -->
+  <section class="op-section">
+    <h2>⑨ 权限分层（讨论稿）</h2>
+    <div class="perm-key"><strong>导向</strong>：信息全公开透明 · 可写权限分层</div>
+
+    <div class="perm-pyramid">
+      <div class="perm-tier perm-1">
+        <div class="perm-rank">L1 · 核心</div>
+        <div class="perm-role">流量商业产品同学</div>
+        <div class="perm-scope">全部功能可写可配</div>
+      </div>
+      <div class="perm-tier perm-2">
+        <div class="perm-rank">L2 · 次核心</div>
+        <div class="perm-role">预算商业产品同学</div>
+        <div class="perm-scope">预算视角的局部改造 ⚠️ 影响流量大盘的配置受限（讨论点）</div>
+      </div>
+      <div class="perm-tier perm-3">
+        <div class="perm-rank">L3 · 外围</div>
+        <div class="perm-role">其他产运</div>
+        <div class="perm-scope">看数据 + 查进度，写权限较低</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 十、未尽事项 -->
+  <section class="op-section">
+    <h2>⑩ 未尽事项（待团队对齐）</h2>
+    <ul class="todo-list">
+      <li>AI 对话路由的实现深度（LLM 直接做 vs 关键词规则 + LLM 兜底）—— 待研发 KO</li>
+      <li>Skills 与现有流程的融合机制（触发位置 / 输入输出 / 失败兜底 / 版本管理）—— PM + 资深 + 各模块 owner 后续立项</li>
+      <li>数据口径的共识颗粒度 —— 待 5/29 路演反馈</li>
+      <li>预算商业产品的写权限边界 —— 待路演反馈细化</li>
+      <li>设计协同的具体节奏 —— 待与设计 1on1</li>
+    </ul>
+  </section>
+
+  <!-- 十一、模块 owner 路演当天对接清单 -->
+  <section class="op-section op-highlight">
+    <h2>⑪ 5/29 路演当天 · 模块 owner 协同视角清单</h2>
+    <p class="op-tip"><strong>除了模块独立内容外，从协同视角你需要在路演方案中给出回应：</strong></p>
+
+    <table class="op-table op-table-list">
+      <thead>
+        <tr><th width="60">#</th><th>对接项</th><th>重要性</th><th>给到的形式</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td><strong>AI 路由关键词清单</strong></td><td>必要</td><td>5-15 个关键词 + 触发示例</td></tr>
+        <tr><td>2</td><td><strong>首页看板卡片设计</strong></td><td>必要</td><td>1-2 张：字段 / 数据来源 / 跳转目标</td></tr>
+        <tr><td>3</td><td><strong>Skills 提报清单</strong></td><td>必要</td><td>至少 1 个：名称 / 用途 / 关键词 / A/B/C 类</td></tr>
+        <tr><td>4</td><td>数据口径需求</td><td>建议</td><td>业务理解层的需求点</td></tr>
+        <tr><td>5</td><td>入口路径需求</td><td>建议</td><td>希望从基座带什么参数进来</td></tr>
+        <tr><td>6</td><td>历史能力承接说明</td><td>建议</td><td>原平台对应能力 + 新模块如何承接</td></tr>
+      </tbody>
+    </table>
+    <div class="op-tip success">✅ 这 6 项 5/29 路演当天给到回应即可，不要求路演前完成。</div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="op-foot">
+    <div>📺 <a href="index.html">基座 Demo</a> · 可交互的产品形态</div>
+    <div>📌 <a href="https://yi0702.github.io/workspace-nexus/" target="_blank">项目 Nexus</a> · 项目"工作记忆"和决策档案</div>
+    <div class="dim">本一页纸本身就是「Demo + 一页纸 + 决策档案」三件套的示范</div>
+  </footer>
+
+</main>
+
+</body>
+</html>
