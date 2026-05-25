@@ -45,45 +45,114 @@
         <p class="ai-sub">用自然语言描述你的目标，我会带你到对应的工作环节。</p>
       </div>
 
-      <!-- 已挂载 Skills 区（用户可见 UI） -->
-      <div class="ai-skill-mount">
-        <div class="mount-label">📦 已挂载 Skill：</div>
-        <div class="mount-chips" id="mountedSkills">
-          <span class="mount-chip mount-default">
-            <span class="chip-icon">🏛️</span>
-            <span class="chip-name">官方 · 模板规则审查</span>
-            <span class="chip-locked">默认</span>
-          </span>
-          <span class="mount-chip mount-default">
-            <span class="chip-icon">🏛️</span>
-            <span class="chip-name">官方 · 模板问题排查</span>
-            <span class="chip-locked">默认</span>
-          </span>
-          <span class="mount-chip mount-user" id="userMounted" style="display:none">
-            <span class="chip-icon">🌱</span>
-            <span class="chip-name" id="userMountedName">—</span>
-            <span class="chip-remove" onclick="unmountUserSkill()">✕</span>
-          </span>
-          <button class="mount-add" onclick="openMountPicker()">+ 挂载个人 Skill</button>
+      <!-- 标准对话框：输入区在上，工具栏在下 -->
+      <div class="chat-box">
+        <!-- 顶部小工具：附件 / @提及（占位） -->
+        <div class="chat-top-tools">
+          <button class="chat-tool-btn" title="@提及">@</button>
+          <button class="chat-tool-btn" title="附件">📎</button>
         </div>
-      </div>
 
-      <!-- 模型切换 + 输入框 -->
-      <div class="ai-input-wrap">
-        <div class="model-switcher">
-          <button class="model-tab active" data-model="混元" onclick="switchModel('混元')">🧠 混元</button>
-          <button class="model-tab" data-model="DeepSeek" onclick="switchModel('DeepSeek')">🌊 DeepSeek</button>
-          <button class="model-tab" data-model="Claude" onclick="switchModel('Claude')">✨ Claude</button>
-          <button class="model-tab" data-model="GPT" onclick="switchModel('GPT')">⚡ GPT-5</button>
-        </div>
-        <input
-          type="text"
-          class="ai-input"
+        <!-- 输入区 -->
+        <textarea
+          class="chat-input"
           id="aiInput"
           placeholder="例如：模板 1001200 改成只在流量范围 A 下出，帮我评估风险 / 媒体 ID 10107877965230 在开屏出不了 1003230，帮我排查"
-          autocomplete="off"
-        >
-        <button class="ai-submit" onclick="handleAISubmit()">→ 发送</button>
+          rows="3"
+        ></textarea>
+
+        <!-- 底部工具栏：模型切换 + 技能挂载 + 发送 -->
+        <div class="chat-bottom-bar">
+          <div class="chat-bottom-left">
+            <!-- 模型选择器 -->
+            <div class="model-selector" onclick="toggleModelDropdown(event)">
+              <span class="ms-icon">✨</span>
+              <span class="ms-name" id="currentModelName">混元 Turbo</span>
+              <span class="ms-arrow">⌄</span>
+              <div class="model-dropdown" id="modelDropdown">
+                <div class="md-item active" onclick="switchModel('混元 Turbo', '✨')">
+                  <span class="md-icon">✨</span><span class="md-name">混元 Turbo</span><span class="md-tag">默认</span>
+                </div>
+                <div class="md-item" onclick="switchModel('DeepSeek-V3', '🌊')">
+                  <span class="md-icon">🌊</span><span class="md-name">DeepSeek-V3</span>
+                </div>
+                <div class="md-item" onclick="switchModel('Claude-Opus-4.7', '🪐')">
+                  <span class="md-icon">🪐</span><span class="md-name">Claude-Opus-4.7</span>
+                </div>
+                <div class="md-item" onclick="switchModel('GPT-5', '⚡')">
+                  <span class="md-icon">⚡</span><span class="md-name">GPT-5</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- 技能挂载 -->
+            <div class="skill-mount-btn" onclick="toggleSkillPanel(event)">
+              <span class="sm-icon">🛠️</span>
+              <span class="sm-text">技能</span>
+              <span class="sm-count" id="skillCount">2</span>
+            </div>
+
+            <!-- 已挂载技能预览（hover 展示） -->
+            <div class="mounted-preview" id="mountedPreview">
+              <span class="mp-tag mp-default" title="官方默认挂载，不可卸">🏛️ 模板规则审查</span>
+              <span class="mp-tag mp-default" title="官方默认挂载，不可卸">🏛️ 模板问题排查</span>
+              <span class="mp-tag mp-user" id="userMountedTag" style="display:none">
+                <span id="userMountedName">—</span>
+                <span class="mp-remove" onclick="event.stopPropagation();unmountUserSkill()">✕</span>
+              </span>
+            </div>
+          </div>
+
+          <div class="chat-bottom-right">
+            <button class="chat-tool-btn" title="语音输入">🎤</button>
+            <button class="chat-send-btn" onclick="handleAISubmit()" title="发送">➤</button>
+          </div>
+        </div>
+
+        <!-- 技能挂载面板（默认隐藏） -->
+        <div class="skill-panel" id="skillPanel" style="display:none">
+          <div class="sp-section">
+            <div class="sp-section-title">
+              <span>🏛️ 官方技能 · 默认挂载（不可卸）</span>
+              <span class="sp-section-help">每次对话都自动调用</span>
+            </div>
+            <div class="sp-list">
+              <div class="sp-item sp-locked">
+                <span class="sp-name">模板规则审查</span>
+                <span class="sp-meta">沉淀模块：规则配置</span>
+                <span class="sp-status">✓ 已挂载</span>
+              </div>
+              <div class="sp-item sp-locked">
+                <span class="sp-name">模板问题排查</span>
+                <span class="sp-meta">沉淀模块：问题排查</span>
+                <span class="sp-status">✓ 已挂载</span>
+              </div>
+            </div>
+          </div>
+          <div class="sp-section">
+            <div class="sp-section-title">
+              <span>🌱 个人 / 社区技能 · 按需挂载</span>
+              <span class="sp-section-help">最多 1 个</span>
+            </div>
+            <div class="sp-list">
+              <div class="sp-item" onclick="mountUserSkill('动效预览生成器', 'gin')">
+                <span class="sp-name">动效预览生成器</span>
+                <span class="sp-meta">作者：gin · 4.8 分</span>
+                <span class="sp-action">挂载</span>
+              </div>
+              <div class="sp-item" onclick="mountUserSkill('多分辨率适配检查', '坤婧')">
+                <span class="sp-name">多分辨率适配检查</span>
+                <span class="sp-meta">作者：坤婧 · 4.5 分</span>
+                <span class="sp-action">挂载</span>
+              </div>
+              <div class="sp-item" onclick="mountUserSkill('归因报告自动生成', '丹宁')">
+                <span class="sp-name">归因报告自动生成</span>
+                <span class="sp-meta">作者：丹宁 · 4.6 分</span>
+                <span class="sp-action">挂载</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- 最近高频提问（基于真实样式工作场景） -->
@@ -94,29 +163,6 @@
         <span class="hint-tag" onclick="fillHint('想屏蔽开屏的系统弹窗模板，有现成的流量标签吗')">流量标签查询</span>
         <span class="hint-tag" onclick="fillHint('帮我新建一个金融行业的开屏样式模板')">新建样式模板</span>
         <span class="hint-tag" onclick="fillHint('看一下金融赛道近 7 天的 CTR 趋势和迭代建议')">看效果与建议</span>
-      </div>
-
-      <!-- Skills 挂载选择器（默认隐藏） -->
-      <div class="mount-picker" id="mountPicker" style="display:none">
-        <div class="mp-head">
-          <span class="mp-title">挂载个人 / 社区 Skill</span>
-          <span class="mp-close" onclick="closeMountPicker()">✕</span>
-        </div>
-        <div class="mp-tip">官方 Skill 已默认挂载（无法卸载）；个人 / 社区 Skill 可临时挂载到当前会话，最多 1 个。</div>
-        <div class="mp-list">
-          <div class="mp-item" onclick="mountUserSkill('🌱 社区 · 动效预览生成器（gin）')">
-            <span class="mp-name">🌱 动效预览生成器</span>
-            <span class="mp-author">社区 · gin · 4.8 分</span>
-          </div>
-          <div class="mp-item" onclick="mountUserSkill('🌱 社区 · 多分辨率适配检查（坤婧）')">
-            <span class="mp-name">🌱 多分辨率适配检查</span>
-            <span class="mp-author">社区 · 坤婧 · 4.5 分</span>
-          </div>
-          <div class="mp-item" onclick="mountUserSkill('🌱 社区 · 归因报告自动生成（丹宁）')">
-            <span class="mp-name">🌱 归因报告自动生成</span>
-            <span class="mp-author">社区 · 丹宁 · 4.6 分</span>
-          </div>
-        </div>
       </div>
     </div>
 

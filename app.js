@@ -1,32 +1,58 @@
-// ===== 基座 Demo 交互逻辑 v0.2 =====
+// ===== 基座 Demo 交互逻辑 v0.3 =====
 
-// ===== 模型切换 =====
-let currentModel = '混元';
-function switchModel(name) {
+// ===== 模型切换（下拉菜单）=====
+let currentModel = '混元 Turbo';
+function toggleModelDropdown(e) {
+  e.stopPropagation();
+  const dd = document.getElementById('modelDropdown');
+  const isOpen = dd.classList.contains('open');
+  closeAllDropdowns();
+  if (!isOpen) dd.classList.add('open');
+}
+function switchModel(name, icon) {
   currentModel = name;
-  document.querySelectorAll('.model-tab').forEach(t => t.classList.remove('active'));
-  document.querySelector(`.model-tab[data-model="${name}"]`).classList.add('active');
+  document.getElementById('currentModelName').textContent = name;
+  document.querySelector('.ms-icon').textContent = icon;
+  document.querySelectorAll('.md-item').forEach(i => i.classList.remove('active'));
+  event.target.closest('.md-item').classList.add('active');
+  document.getElementById('modelDropdown').classList.remove('open');
 }
 
-// ===== Skills 挂载（个人）=====
-function openMountPicker() {
-  document.getElementById('mountPicker').style.display = 'block';
+// ===== 技能面板 =====
+function toggleSkillPanel(e) {
+  e.stopPropagation();
+  const panel = document.getElementById('skillPanel');
+  const isOpen = panel.style.display === 'block';
+  closeAllDropdowns();
+  panel.style.display = isOpen ? 'none' : 'block';
 }
-function closeMountPicker() {
-  document.getElementById('mountPicker').style.display = 'none';
+
+function closeAllDropdowns() {
+  document.getElementById('modelDropdown').classList.remove('open');
+  document.getElementById('skillPanel').style.display = 'none';
 }
-function mountUserSkill(name) {
-  const wrap = document.getElementById('userMounted');
-  const nameEl = document.getElementById('userMountedName');
-  nameEl.textContent = name;
-  wrap.style.display = 'inline-flex';
-  closeMountPicker();
+
+// 点击页面其他位置关闭下拉
+document.addEventListener('click', e => {
+  if (!e.target.closest('.model-selector') && !e.target.closest('.skill-mount-btn') && !e.target.closest('.skill-panel')) {
+    closeAllDropdowns();
+  }
+});
+
+// 挂载个人技能
+function mountUserSkill(name, author) {
+  const tag = document.getElementById('userMountedTag');
+  document.getElementById('userMountedName').textContent = `🌱 ${name}（${author}）`;
+  tag.style.display = 'inline-flex';
+  document.getElementById('skillCount').textContent = '3';
+  closeAllDropdowns();
 }
 function unmountUserSkill() {
-  document.getElementById('userMounted').style.display = 'none';
+  document.getElementById('userMountedTag').style.display = 'none';
+  document.getElementById('skillCount').textContent = '2';
 }
 
-// ===== AI 对话提交（语义路由 · 含 Skill 调用提示）=====
+// ===== AI 对话提交 =====
 function handleAISubmit() {
   const input = document.getElementById('aiInput');
   const text = input.value.trim();
@@ -72,7 +98,7 @@ function showRoutingHint(module, text, skill) {
     text-align: left; min-width: 360px; max-width: 480px;
   `;
   const skillLine = skill
-    ? `<div style="font-size:12px; color:#22543d; background:#f0fff4; padding:6px 10px; border-radius:4px; margin-bottom:10px;">🎯 调用了 Skill：<strong>${skill}</strong></div>`
+    ? `<div style="font-size:12px; color:#22543d; background:#f0fff4; padding:6px 10px; border-radius:4px; margin-bottom:10px;">🛠️ 调用了技能：<strong>${skill}</strong></div>`
     : '';
   hint.innerHTML = `
     <div style="font-size:13px; color:#718096; margin-bottom:6px;">模型：${currentModel} · 已识别意图</div>
@@ -130,12 +156,15 @@ function switchSkillTab(tab) {
   document.getElementById('skill-grid-community').classList.toggle('hidden', tab !== 'community');
 }
 
-// 回车提交
+// 回车提交（Shift+Enter 换行）
 document.addEventListener('DOMContentLoaded', () => {
   const input = document.getElementById('aiInput');
   if (input) {
     input.addEventListener('keydown', e => {
-      if (e.key === 'Enter') handleAISubmit();
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        handleAISubmit();
+      }
     });
   }
 });
