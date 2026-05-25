@@ -315,6 +315,27 @@ input { font-family: inherit; outline: none; }
   padding-bottom: 6px;
   border-bottom: 1px solid var(--border);
 }
+.sp-section-toggle {
+  cursor: pointer; user-select: none;
+}
+.sp-section-toggle:hover { color: var(--primary); }
+.sp-section-toggle strong { color: var(--primary); font-weight: 600; }
+.sp-toggle-arrow {
+  font-size: 11px; color: var(--text-light);
+  font-weight: 400;
+  transition: transform 0.15s;
+}
+.sp-list-collapsed { display: none; }
+.sp-readonly-tip {
+  margin-top: 4px;
+  padding: 6px 10px;
+  background: #fffbeb;
+  border-radius: 4px;
+  font-size: 11px;
+  color: var(--text-light);
+  font-style: italic;
+}
+
 .sp-section-help { font-size: 11px; color: var(--text-light); font-weight: 400; }
 .sp-list { display: flex; flex-direction: column; gap: 4px; }
 .sp-item {

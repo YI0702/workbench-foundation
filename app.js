@@ -32,6 +32,15 @@ function closeAllDropdowns() {
   document.getElementById('skillPanel').style.display = 'none';
 }
 
+// 官方技能列表展开/收起
+function toggleOfficialList(e) {
+  e.stopPropagation();
+  const list = document.getElementById('officialList');
+  const arrow = document.getElementById('officialArrow');
+  const collapsed = list.classList.toggle('sp-list-collapsed');
+  arrow.textContent = collapsed ? '▸' : '▾';
+}
+
 // 点击页面其他位置关闭下拉
 document.addEventListener('click', e => {
   if (!e.target.closest('.model-selector') && !e.target.closest('.skill-mount-btn') && !e.target.closest('.skill-panel')) {

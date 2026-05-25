@@ -85,17 +85,15 @@
               </div>
             </div>
 
-            <!-- 技能挂载 -->
+            <!-- 技能：官方（只读折叠）+ 个人挂载（可选）-->
             <div class="skill-mount-btn" onclick="toggleSkillPanel(event)">
               <span class="sm-icon">🛠️</span>
               <span class="sm-text">技能</span>
               <span class="sm-count" id="skillCount">2</span>
             </div>
 
-            <!-- 已挂载技能预览（hover 展示） -->
+            <!-- 已挂载个人技能预览（仅个人，官方不在工具栏展示） -->
             <div class="mounted-preview" id="mountedPreview">
-              <span class="mp-tag mp-default" title="官方默认挂载，不可卸">🏛️ 模板规则审查</span>
-              <span class="mp-tag mp-default" title="官方默认挂载，不可卸">🏛️ 模板问题排查</span>
               <span class="mp-tag mp-user" id="userMountedTag" style="display:none">
                 <span id="userMountedName">—</span>
                 <span class="mp-remove" onclick="event.stopPropagation();unmountUserSkill()">✕</span>
@@ -104,31 +102,35 @@
           </div>
 
           <div class="chat-bottom-right">
-            <button class="chat-tool-btn" title="语音输入">🎤</button>
             <button class="chat-send-btn" onclick="handleAISubmit()" title="发送">➤</button>
           </div>
         </div>
 
         <!-- 技能挂载面板（默认隐藏） -->
         <div class="skill-panel" id="skillPanel" style="display:none">
+          <!-- 官方技能：折叠列表，只读 -->
           <div class="sp-section">
-            <div class="sp-section-title">
-              <span>🏛️ 官方技能 · 默认挂载（不可卸）</span>
-              <span class="sp-section-help">每次对话都自动调用</span>
+            <div class="sp-section-title sp-section-toggle" onclick="toggleOfficialList(event)">
+              <span>🏛️ 官方技能 · <strong id="officialCount">2</strong> 个 · 默认全部挂载</span>
+              <span class="sp-toggle-arrow" id="officialArrow">▸</span>
             </div>
-            <div class="sp-list">
+            <div class="sp-section-help">每次对话自动调用 · 仅展示，不可手动开关</div>
+            <div class="sp-list sp-list-collapsed" id="officialList">
               <div class="sp-item sp-locked">
                 <span class="sp-name">模板规则审查</span>
                 <span class="sp-meta">沉淀模块：规则配置</span>
-                <span class="sp-status">✓ 已挂载</span>
+                <span class="sp-status">✓ 默认挂载</span>
               </div>
               <div class="sp-item sp-locked">
                 <span class="sp-name">模板问题排查</span>
                 <span class="sp-meta">沉淀模块：问题排查</span>
-                <span class="sp-status">✓ 已挂载</span>
+                <span class="sp-status">✓ 默认挂载</span>
               </div>
+              <div class="sp-readonly-tip">📖 列表仅供查看 · 由各模块持续沉淀</div>
             </div>
           </div>
+
+          <!-- 个人/社区技能：可选 -->
           <div class="sp-section">
             <div class="sp-section-title">
               <span>🌱 个人 / 社区技能 · 按需挂载</span>
