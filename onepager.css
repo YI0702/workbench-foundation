@@ -34,6 +34,14 @@ ul, ol { list-style: none; }
   display: flex; justify-content: space-between; align-items: center;
 }
 .back-link { font-size: 13px; color: var(--op-primary); }
+.op-top-right { display: flex; align-items: center; gap: 12px; }
+.op-md-link {
+  font-size: 12px; color: var(--op-primary);
+  padding: 4px 10px; border: 1px solid var(--op-primary);
+  border-radius: 4px; background: #fff;
+  transition: background 0.15s;
+}
+.op-md-link:hover { background: #ebf8ff; }
 .op-version {
   font-size: 12px; color: var(--op-text-light);
   padding: 2px 8px; background: #f7fafc; border-radius: 4px;
