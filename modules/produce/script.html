@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>10min 路演讲稿 · 样式生产管理</title>
+<link rel="stylesheet" href="./styles/tokens.css" />
+<style>
+  body { background: var(--color-bg-2); color: var(--color-text-1); font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif; line-height: 1.85; padding: 0 0 80px; margin: 0; }
+
+  /* 顶部条 */
+  .topbar { display:flex; justify-content:space-between; align-items:center; padding: 12px 28px; background:#fff; border-bottom:1px solid var(--color-border-2); position:sticky; top:0; z-index:10;}
+  .topbar-left { display:flex; align-items:center; gap:12px; }
+  .topbar-left a { color: var(--color-text-3); text-decoration:none; font-size:13px; }
+  .topbar-left a:hover { color: var(--color-primary); }
+  .topbar-left .sep { color: var(--color-border-3); }
+  .topbar-left .cur { color: var(--color-text-1); font-weight:600; }
+  .ver-badge { display:inline-block; padding:2px 8px; border-radius:10px; background:#fff7e6; color:#d4380d; font-size:11px; font-weight:600; margin-left:8px;}
+  .topbar-right { display:flex; gap:8px; }
+  .topbar-right a { color: var(--color-primary); text-decoration:none; font-size:13px;}
+
+  .wrap { max-width: 880px; margin: 28px auto 0; padding: 0 24px; }
+  .doc-title { font-size: 28px; font-weight: 700; margin: 0 0 6px; }
+  .doc-meta { color: var(--color-text-3); font-size: 13px; margin-bottom: 20px; }
+
+  /* 总览 */
+  .toc { background:#fff; border:1px solid var(--color-border-2); border-radius:10px; padding:16px 20px; margin-bottom:24px; }
+  .toc-title { font-weight:600; margin-bottom:10px; font-size:14px; color: var(--color-text-2); }
+  .toc table { width:100%; border-collapse: collapse; font-size:13px; }
+  .toc th, .toc td { text-align:left; padding:6px 8px; border-bottom:1px dashed var(--color-border-2); }
+  .toc th { color: var(--color-text-3); font-weight:500; }
+  .toc tr:last-child td { border-bottom: none; }
+  .toc td.t { color: var(--color-primary); font-weight:600; white-space:nowrap; }
+  .toc td.s { color: var(--color-text-3); white-space:nowrap; }
+
+  /* 段落卡 */
+  .seg { background:#fff; border:1px solid var(--color-border-2); border-radius:10px; padding: 22px 26px; margin-bottom: 18px; }
+  .seg-head { display:flex; align-items:center; gap:12px; margin-bottom: 12px; padding-bottom:10px; border-bottom: 1px dashed var(--color-border-2);}
+  .seg-no { display:inline-flex; width:32px; height:32px; align-items:center; justify-content:center; border-radius:50%; background: var(--color-primary); color:#fff; font-weight:700; font-size:14px; }
+  .seg-title { font-size: 18px; font-weight: 700; margin:0; }
+  .seg-time { margin-left:auto; color: var(--color-text-3); font-size: 12px; background: var(--color-bg-2); padding: 2px 10px; border-radius: 10px; }
+
+  .switch { background:#e6f4ff; border:1px solid #91d5ff; padding: 10px 14px; border-radius:8px; font-size:13px; color:#0958d9; margin: 8px 0 14px; }
+  .switch b { color: #003a8c; }
+
+  .speech { font-size: 15.5px; color: var(--color-text-1); }
+  .speech p { margin: 0 0 10px; }
+  .speech .high { background: #fff8c5; padding: 1px 4px; border-radius: 3px; font-weight: 600; }
+  .speech .pause { color: var(--color-text-3); font-style: italic; font-size: 13px; }
+
+  .tip { margin-top: 12px; padding: 8px 12px; background: #fffbe6; border-left: 3px solid #faad14; font-size: 12.5px; color: #874d00; border-radius: 0 4px 4px 0; }
+  .tip b { color: #613400; }
+
+  .demo-list { background: var(--color-bg-2); padding: 12px 16px; border-radius: 6px; margin: 10px 0; font-size: 13.5px; }
+  .demo-list b { color: var(--color-primary); }
+  .demo-list .step { margin: 4px 0; padding-left: 16px; position: relative; }
+  .demo-list .step::before { content: "▸"; position: absolute; left: 0; color: var(--color-primary); }
+
+  /* Q&A */
+  .qa { background:#fff; border:1px solid var(--color-border-2); border-radius:10px; padding: 22px 26px; margin-bottom: 18px;}
+  .qa-title { font-size:16px; font-weight:700; margin: 0 0 14px; }
+  .qa-item { padding: 10px 0; border-bottom: 1px dashed var(--color-border-2); }
+  .qa-item:last-child { border-bottom: none; }
+  .qa-q { color: var(--color-text-1); font-weight: 600; margin-bottom: 4px; font-size: 14px; }
+  .qa-q::before { content: "Q · "; color: #faad14; }
+  .qa-a { color: var(--color-text-2); font-size: 14px; line-height: 1.75; }
+  .qa-a::before { content: "A · "; color: var(--color-primary); font-weight: 600; }
+
+  /* 备份卡 */
+  .backup { background: linear-gradient(135deg, #f3e7ff, #e6f4ff); border-radius:10px; padding: 18px 22px; margin: 20px 0;}
+  .backup-title { font-weight:700; margin-bottom: 6px; color: #531dab; }
+  .backup-line { font-size: 15px; line-height: 1.9; color: var(--color-text-1); }
+
+  .footer { text-align:center; color: var(--color-text-3); font-size:12px; margin-top:30px; }
+  .footer a { color: var(--color-primary); text-decoration:none; }
+
+  @media print {
+    .topbar, .footer { display: none; }
+    .seg, .qa, .toc, .backup { box-shadow: none; page-break-inside: avoid; }
+    body { background: #fff; padding: 0; }
+  }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-left">
+    <a href="https://yi0702.github.io/workbench-foundation/index.html" target="_blank">🏛️ 联盟样式工作台</a>
+    <span class="sep">/</span>
+    <a href="./index.html">样式生产管理</a>
+    <span class="sep">/</span>
+    <span class="cur">10min 路演讲稿</span>
+    <span class="ver-badge">v0.2 · 路演态</span>
+  </div>
+  <div class="topbar-right">
+    <a href="./index.html">Demo →</a>
+    <span class="sep">·</span>
+    <a href="./onepager.html">一页纸 →</a>
+    <span class="sep">·</span>
+    <a href="./decisions.html">决策档案 →</a>
+  </div>
+</header>
+
+<div class="wrap">
+  <h1 class="doc-title">🎤 10min 路演讲稿 · 样式生产管理</h1>
+  <div class="doc-meta">
+    路演时间：2026-05-29 · 演讲人：产品·小樊 · 配套：Demo（静态）+ 一页纸 + 决策档案<br/>
+    <b style="color:#d4380d;">⚠ 重要前提：Demo 是一份静态 HTML 演示稿，不是可跑的真实系统。讲稿采用「翻页带看」节奏——每段我说"请看这里"，听众跟着看相应区块即可，无需点击演示真实流转。</b>
+  </div>
+
+  <!-- 总览 -->
+  <div class="toc">
+    <div class="toc-title">📋 10 分钟节奏总览</div>
+    <table>
+      <thead><tr><th>段</th><th>时长</th><th>主题</th><th>看哪一屏</th></tr></thead>
+      <tbody>
+        <tr><td class="t">①</td><td class="s">0:30</td><td>开场 · 我是谁 / 讲什么</td><td>Demo 首页（默认开屏）</td></tr>
+        <tr><td class="t">②</td><td class="s">1:30</td><td>痛点 · 老生产链路四问题</td><td>切到一页纸 Q3 对比图</td></tr>
+        <tr><td class="t">③</td><td class="s">3:30</td><td>方案 · 工作台 4 大模块带看</td><td>Demo 首页 → 我的工作台 → 创意广场 → 流水线抽屉</td></tr>
+        <tr><td class="t">④</td><td class="s">2:00</td><td>三大决策 · D1/D3/D5</td><td>切到决策档案</td></tr>
+        <tr><td class="t">⑤</td><td class="s">1:30</td><td>收尾 · MVP / 协同接口 / 邀约</td><td>切到一页纸第五节</td></tr>
+        <tr><td class="t">⑥</td><td class="s">1:00</td><td>缓冲 + 金句尾声</td><td>回 Demo 首页</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 段 ① 开场 -->
+  <div class="seg">
+    <div class="seg-head">
+      <div class="seg-no">1</div>
+      <h2 class="seg-title">开场 · 30 秒</h2>
+      <div class="seg-time">0:00 → 0:30</div>
+    </div>
+    <div class="switch">📺 <b>当前屏幕：</b>Demo 首页（<code>index.html</code>）· 默认进入「我的工作台 · 首页」Tab</div>
+    <div class="speech">
+      <p>大家好，我是<b class="high">小樊</b>，今天 10 分钟，我讲「样式生产管理」这一块。</p>
+      <p>我准备了三件套：<b class="high">一份 Demo、一份业务定义一页纸、一份决策档案</b>，再加这份讲稿，路演结束都会留档共享。</p>
+      <p>我想先说清楚——<b class="high">大家现在看到的 Demo 是一份静态演示稿，不是真在跑的系统</b>。所以我接下来的方式是带大家"翻页"，一边讲一边告诉大家"请看屏幕这一块"，我们一起看到的是同一处——这样最高效，也最诚实。</p>
+      <p class="pause">[⏸ 停顿 1 秒，让大家把视线落到屏幕]</p>
+    </div>
+    <div class="tip">⏱️ <b>节奏提醒：</b>30 秒别拖。这段唯一的目的就是让大家知道"今天我讲什么 + 看的是什么"。</div>
+  </div>
+
+  <!-- 段 ② 痛点 -->
+  <div class="seg">
+    <div class="seg-head">
+      <div class="seg-no">2</div>
+      <h2 class="seg-title">痛点 · 老链路的四个真问题</h2>
+      <div class="seg-time">0:30 → 2:00</div>
+    </div>
+    <div class="switch">📺 <b>切屏：</b>打开<b>一页纸</b>（顶部有跳转入口），定位到 <b>Q3「老 vs 新对比图」</b>那一节。</div>
+    <div class="speech">
+      <p>先讲为什么要重构这件事。我们今天做样式生产，遇到的真问题不是"工具不好用"，是<b class="high">基础设施已经不适配 AI 协作的工作方式</b>了。具体讲四个：</p>
+      <p><b>第一，入口堆叠。</b>iDOMO Plus 上有需求接入、配置、审批、数据等十几个模块叠在一个左侧栏，新人进来要找半天，老人也只用其中三四个。</p>
+      <p><b>第二，角色失衡。</b>设计师、产品、运营、研发，这四种人都要做样式，但只有"懂 iDOMO 的产品"能起单——其他人想表达一个想法，要么走需求文档绕一圈，要么放弃。<b class="high">AI 时代里，"想法被表达的成本"应该趋近于零。</b></p>
+      <p><b>第三，流转线性。</b>需求 → 设计 → 开发 → 上线，一条直线，错一步退一步，没人知道"卡在哪、卡在谁"。</p>
+      <p><b>第四，也是我们最在意的——<span class="high">反馈断裂</span>。</b>模板一旦上线，几乎没人会回过头来看它跑得怎么样。优秀模板没人复用，差模板没人下线，<b class="high">生产和效果，是两个互不通气的世界</b>。</p>
+      <p>这四个问题，本质上一个原因：<b class="high">老平台是"为流程"设计的，不是为"人 + AI 协作"设计的</b>。所以我们要重构。</p>
+    </div>
+    <div class="tip">⏱️ <b>节奏提醒：</b>这是钩子段，<b>第四点（反馈断裂）要重读、要慢</b>，因为它是我们后面"成绩单 + 红榜"两个设计的根。</div>
+  </div>
+
+  <!-- 段 ③ 方案带看 -->
+  <div class="seg">
+    <div class="seg-head">
+      <div class="seg-no">3</div>
+      <h2 class="seg-title">方案 · 「样式生产管理」长什么样（4 屏带看）</h2>
+      <div class="seg-time">2:00 → 5:30</div>
+    </div>
+    <div class="switch">📺 <b>切屏：</b>回到 <b>Demo 首页</b>（<code>index.html</code>），按下面 4 个区块依次看。</div>
+    <div class="speech">
+      <p>解决方案不是一个新平台，是<b class="high">在 iDOMO 引擎之上，建一层"为人和 AI 协作而生"的在线工作台</b>。我用 Demo 上的 4 个真实区块来讲。</p>
+    </div>
+
+    <div class="demo-list">
+      <div class="step"><b>第 1 屏 · 首页大盘（约 50s）</b></div>
+    </div>
+    <div class="speech">
+      <p>请大家看 Demo 上半部分——<b class="high">大盘 5 件套 KPI</b>：模板消耗 6678 万、CTR 8.05%、CVR 24.64%、新模板 148 个、新模板驱动占比 19%。这些数据是<b>整个联盟样式所有模板的健康度</b>。</p>
+      <p>下面紧接着是<b class="high">形态指标表 + 红榜</b>。原生、激励、开屏、插屏、Banner，每个形态都有自己的消耗、CTR、CVR、模板数量，右边是 TOP 模板红榜——<b class="high">这就是我前面说的"反馈断裂"的解药：让"哪些模板真在赚钱"成为首页第一眼能看到的事</b>。</p>
+    </div>
+
+    <div class="demo-list">
+      <div class="step"><b>第 2 屏 · 切到「我的工作台」Tab（约 50s）</b></div>
+    </div>
+    <div class="switch">📺 <b>操作：</b>点击首页顶部的 <b>「我的工作台」</b> Tab。</div>
+    <div class="speech">
+      <p>这一屏是<b class="high">从大盘视角切到个人视角</b>：我当前有 3 个在跑实验、5 个已全量、平均 GMV 提升 +18.2%、通过率 62.5%。下面是我参与的所有模板列表，标着「编辑中 / 测试中 / 草稿上线 / 实验中 / 已上线」5 个阶段。</p>
+      <p>设计意图很简单：<b class="high">让每个人在 5 秒内知道"我手上有什么 + 谁卡住了 + 我下一步该干嘛"</b>，而不是像以前一样，要在 12 个入口里找自己。</p>
+    </div>
+
+    <div class="demo-list">
+      <div class="step"><b>第 3 屏 · 切到「创意广场」（约 50s）</b></div>
+    </div>
+    <div class="switch">📺 <b>操作：</b>页面往下滚，找到 <b>💡 创意广场</b> 区块。</div>
+    <div class="speech">
+      <p>这是这次重构里我个人最兴奋的一块——<b class="high">创意广场，对应 D1 决策</b>。</p>
+      <p>请看上面的输入框——<b class="high">"任何角色都可以提案 · 一句话 / 截图 / Figma 链接"</b>。这意味着：以前只有"懂 iDOMO 的产品"能起单，现在<b class="high">设计师拖个 Figma 进来、运营丢个竞品截图、研发写一句话构想，都能起单</b>。</p>
+      <p>下面是瀑布流卡片——大家可以看到提案者是运营·阿伦、设计·小桃、研发·楠楠，不全是产品。<b class="high">这就是我们对"AI in ALL"的具体回答：先把"提案权"释放掉。</b></p>
+      <p class="pause">[补充一句 5s 兜底：]</p>
+      <p>当然，提案不等于直接进生产，所有零稿入口生成的草稿都进<b>「待入库审批」</b>队列——后面讲到第二道审批时再展开。</p>
+    </div>
+
+    <div class="demo-list">
+      <div class="step"><b>第 4 屏 · 打开「流水线」抽屉（约 60s · 重点）</b></div>
+    </div>
+    <div class="switch">📺 <b>操作：</b>滚回上面的<b>模板池</b>表格，任选一行，点 <b>「流水线 →」</b>。右侧抽出来一个大抽屉。</div>
+    <div class="speech">
+      <p>这个抽屉是整个产品的"骨架"——<b class="high">从需求到成绩单的 8 个阶段，串成一条线</b>。请看顶部 Stepper：① 需求&创建 → ② 设计对齐 → ③ 编辑 → ④ 测试 → ⑤ 草稿上线 → ⑥ 实验 → ⑦ 正式上线 → ⑧ 成绩单。</p>
+      <p>我重点讲两个新加的环节：</p>
+      <p><b>第一，第②步「设计对齐器」</b>——请看抽屉中部，左边是 Figma 视觉源、右边是 DSL 渲染、下面列着具体的 diff（圆角 16 vs 8、副标题色 #666 vs #999）。<b class="high">我们没有强制"以谁为准"，而是把差异并排摆出来，让人来决定"采纳 Figma 还是保留 DSL"</b>——这是 D3 决策的具体落地。</p>
+      <p><b>第二，⑤「草稿上线 · 入库审批」</b>——这是<b class="high">本次新增的一道审批</b>，原来 iDOMO 只有上线审批一道。新增这一道是为了<b class="high">既鼓励全员提案，又保证不污染公共草稿池</b>——审批权限给产品角色。这就是 D2「双审批」决策。</p>
+      <p>最后是⑧成绩单，里面有六宫格 KPI、关联实验、异常归因、调优建议，还有一张<b>企微战报卡</b>——上线满 7 天，机器人自动推到群里。这是回答"反馈断裂"的最后一环。</p>
+    </div>
+    <div class="tip">⏱️ <b>节奏提醒：</b>第 4 屏是重头戏。如果时间紧，前 3 屏每屏可砍 10 秒，第 4 屏不要砍。如果时间充裕，可以多停一会儿在「对齐器」这一块——这是肉眼能看到 AI 协作姿势的地方。</div>
+  </div>
+
+  <!-- 段 ④ 三大决策 -->
+  <div class="seg">
+    <div class="seg-head">
+      <div class="seg-no">4</div>
+      <h2 class="seg-title">三大关键决策（高强信号）</h2>
+      <div class="seg-time">5:30 → 7:30</div>
+    </div>
+    <div class="switch">📺 <b>切屏：</b>打开<b>决策档案</b>页面（<code>decisions.html</code>），快速翻 D1 / D3 / D5 三张卡。</div>
+    <div class="speech">
+      <p>整个过程做了 8 条决策，今天只挑 3 条最反直觉的讲。</p>
+      <p><b>D1 · 创意广场默认全员可见，不是产品专属。</b>这条争议最大——风险是"草稿池被淹"。我们的解法是<b class="high">"鼓励但不直接入库"</b>：所有零稿提案先进审批队列，由产品角色把关后才入正式草稿池。<b class="high">用一道轻量审批，换一个全员能用 AI 表达的氛围</b>，我们认为值。</p>
+      <p><b>D3 · 设计对齐器不做强一致约束。</b>很多人会问"那要 DSL 干嘛"——我们的回答是：<b class="high">设计稿和工程实现本来就不是一一对应的</b>。强一致只会让两边互相绑架。<b class="high">我们让两边并排可见、把决策权留给设计师 + 产品</b>，这才是 AI 协作时代该有的姿势。</p>
+      <p><b>D5 · 不重做 iDOMO 画布。</b>有人会担心"是不是又要重写一遍"。<b class="high">不是。我们承接 iDOMO 引擎，只在它上面建一层在线工作台</b>——双入口 Agent、Skills、对齐器、双审批、成绩单全是新加的，画布、DSL、运行时一动不动。<b class="high">这意味着今天上线零迁移成本，老资产全部继续可用。</b></p>
+    </div>
+    <div class="tip">⏱️ <b>节奏提醒：</b>这段是"防御型"的，目的是预先消化质疑。如果听众已经点头，可以快速带过；如果有人皱眉，把对应那条多讲 15 秒。</div>
+  </div>
+
+  <!-- 段 ⑤ 收尾 -->
+  <div class="seg">
+    <div class="seg-head">
+      <div class="seg-no">5</div>
+      <h2 class="seg-title">收尾 · 我们要的协同与邀约</h2>
+      <div class="seg-time">7:30 → 9:00</div>
+    </div>
+    <div class="switch">📺 <b>切屏：</b>打开<b>一页纸</b>，定位到第五节「与基座的协同接口」。</div>
+    <div class="speech">
+      <p>讲三件事：</p>
+      <p><b>一、北极星 + MVP。</b>我们的北极星是「<b class="high">让样式从想法到上线再到复盘的全链路时间，缩到 1/3</b>」。MVP 6/30 跑通：开屏场景，一个真实需求从"创意广场提案 → 入库审批 → 流水线编辑 → 上线审批 → 成绩单"全流程闭环。</p>
+      <p><b>二、与基座的 6 个协同接口。</b>请看一页纸第五节——AI 路由关键词、首页看板卡片、Skills 提报、数据口径、入口参数、历史承接，<b class="high">这 6 个口子都在 5/29 这次路演就交付，确保跟基座骨架对齐</b>。</p>
+      <p><b>三、给大家三个邀约：</b></p>
+      <p>1. <b class="high">我需要 1 位设计同学</b>，帮我把"设计对齐器"的 Figma 端协议跑通；</p>
+      <p>2. <b class="high">我需要业务侧给 1-2 个真实开屏需求</b>，作为 6/30 MVP 的演练素材；</p>
+      <p>3. <b class="high">我需要基座组确认协同接口</b>，特别是 AI 路由关键词和入口参数。</p>
+    </div>
+  </div>
+
+  <!-- 段 ⑥ 尾声 -->
+  <div class="seg">
+    <div class="seg-head">
+      <div class="seg-no">6</div>
+      <h2 class="seg-title">尾声 · 一句话</h2>
+      <div class="seg-time">9:00 → 10:00</div>
+    </div>
+    <div class="switch">📺 <b>切屏：</b>回到 Demo 首页，让大家最后看一眼整体。</div>
+    <div class="speech">
+      <p>10 分钟很短，做不到把每个细节都讲透。所以我留一句话给大家带走——</p>
+      <p style="font-size:18px; padding:12px 16px; background:#f3e7ff; border-radius:8px; color:#531dab; font-weight:600;">"iDOMO 不动、画布不动，但生产方式被重构。"</p>
+      <p>这就是我们这一版「样式生产管理」想做的事。三件套（Demo + 一页纸 + 决策档案）已经全部留档，欢迎大家会后细看，谢谢。</p>
+      <p class="pause">[⏸ 停顿 1 秒，鞠躬，准备进入 Q&A]</p>
+    </div>
+  </div>
+
+  <!-- 备份：被打断时的快速收尾 -->
+  <div class="backup">
+    <div class="backup-title">🆘 万一被打断、需要 30 秒强制收尾——照念这三行</div>
+    <div class="backup-line">
+      1. 我们解决的是<b>"反馈断裂 + 提案权独占"</b>这两个老问题。<br/>
+      2. 解法是在 iDOMO 之上建一个"为人 + AI 协作而生"的在线工作台，<b>不重做画布</b>。<br/>
+      3. MVP 6/30 跑通开屏场景，今天交付的是 <b>Demo + 一页纸 + 决策档案 + 6 个协同接口</b>，欢迎细看。谢谢。
+    </div>
+  </div>
+
+  <!-- Q&A 备 -->
+  <div class="qa">
+    <h3 class="qa-title">🎯 Q&A 预备 6 题（按"最可能被怼"排序）</h3>
+
+    <div class="qa-item">
+      <div class="qa-q">这套东西和 iDOMO Plus 是替代关系还是叠加？</div>
+      <div class="qa-a">叠加。我们不动 iDOMO 引擎，只是在它上面建一层在线工作台。今天上线零迁移成本，老资产继续可用。详见 D5 决策。</div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-q">创意广场全员可提案，会不会让草稿池被淹掉？</div>
+      <div class="qa-a">所以才有 D2「双审批」第一道——草稿入库审批。零稿入口生成的不直接进库，先进审批队列，由产品角色把关。鼓励但不放任。</div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-q">设计对齐器不做强一致，那 DSL 还有什么意义？</div>
+      <div class="qa-a">DSL 是工程的承诺、Figma 是设计的表达，两者本来就不该一一对应。我们让 diff 并排可见、人来定夺，这才是 AI 协作姿势——决策权留给人，把"找差异"交给 Skill。</div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-q">Skills 是什么？谁来定级？</div>
+      <div class="qa-a">Skills 是可复用的 AI 能力单元，分 A/B/C 三级：A 自动跑（如自动化测试），B 一键唤起（如 D2C/对齐器），C 候选（如配色）。定级标准看一页纸第四节，由本模块产出标准、报基座统一管理。</div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-q">6/30 MVP 真能跑通吗？万一延期？</div>
+      <div class="qa-a">MVP 范围已收敛到"开屏一个场景、一个真实需求"，不追求多场景。延期风险点主要在 Figma 协议对接和企微战报推送，这两条任何一条延期就裸交"无推送版"——核心闭环不让步。</div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-q">为什么默认首页是大盘看板，不是"我的工作台"？</div>
+      <div class="qa-a">这是 D8 决策。让任何人打开第一眼都能看到"整个联盟样式现在跑得怎么样"，再下钻到自己——这是从"反馈断裂"反推出来的设计：先让所有人都看到全局，再各做各事。</div>
+    </div>
+  </div>
+
+  <div class="footer">
+    样式生产管理 · 10min 路演讲稿 v0.2 · 2026-05-29 · 配套：
+    <a href="./index.html">Demo</a> /
+    <a href="./onepager.html">一页纸</a> /
+    <a href="./decisions.html">决策档案</a>
+  </div>
+</div>
+
+</body>
+</html>

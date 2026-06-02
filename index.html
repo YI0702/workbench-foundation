@@ -12,24 +12,21 @@
 <header class="topbar">
   <div class="topbar-left">
     <span class="logo">🎯 联盟样式一站式工作台</span>
-    <span class="env-tag">基座 Demo · v0.2</span>
+    <span class="env-tag">基座 Demo · v0.3</span>
   </div>
   <div class="topbar-right">
-    <a href="产品定义.html" class="top-link">📄 产品定义</a>
-    <span class="user">你好，产品同学</span>
+    <span class="avatar" title="herminaliu">H</span>
   </div>
 </header>
 
-<!-- 元注释条（非用户 UI · 仅 Demo 走查用） -->
-<div class="meta-banner">
-  <div class="meta-banner-inner">
-    <span class="meta-tag">📐 Demo 走查说明</span>
-    <span class="meta-text">本页含两类视觉语言：<strong>实色块</strong> = 用户可见 UI；<strong>虚线/灰底</strong> = Demo 注释（不会出现在线上产品里）</span>
-    <span class="meta-paths">
-      <a class="path-chip" onclick="document.getElementById('aiInput').focus()">①AI 对话</a>
-      <a class="path-chip" href="#scene-area">②场景卡片</a>
-      <a class="path-chip" href="#board-area">③工作视图</a>
-      <a class="path-chip" href="#skills-area">④Skills</a>
+<!-- 层级快捷导航 -->
+<div class="nav-banner">
+  <div class="nav-banner-inner">
+    <span class="nav-paths">
+      <a class="path-chip" onclick="document.getElementById('aiInput').focus()">① AI 对话</a>
+      <a class="path-chip" href="#scene-area">② 场景卡片</a>
+      <a class="path-chip" href="#board-area">③ 工作视图</a>
+      <a class="path-chip" href="#skills-area">④ Skills</a>
     </span>
   </div>
 </div>
@@ -47,10 +44,31 @@
 
       <!-- 标准对话框：输入区在上，工具栏在下 -->
       <div class="chat-box">
-        <!-- 顶部小工具：附件 / @提及（占位） -->
+        <!-- 顶部小工具：@提及 / 附件（非 630 范围，置灰，点击展开格式说明） -->
         <div class="chat-top-tools">
-          <button class="chat-tool-btn" title="@提及">@</button>
-          <button class="chat-tool-btn" title="附件">📎</button>
+          <button class="chat-tool-btn is-out630" title="@提及模板/规则/媒体" onclick="toggleToolPop(event,'atPop')">
+            @
+            <span class="scope-badge out630">非630</span>
+          </button>
+          <button class="chat-tool-btn is-out630" title="上传附件" onclick="toggleToolPop(event,'filePop')">
+            📎
+            <span class="scope-badge out630">非630</span>
+          </button>
+          <!-- @ 弹层 -->
+          <div class="tool-pop" id="atPop" style="display:none">
+            <div class="tool-pop-title">@ 提及对象</div>
+            <div class="tool-pop-body">引用具体实体，让对话带上下文：<br>@模板ID · @规则 · @媒体ID · @广告位ID</div>
+            <div class="tool-pop-foot">二期能力 · 非 630 交付范围</div>
+          </div>
+          <!-- 附件弹层 -->
+          <div class="tool-pop" id="filePop" style="display:none">
+            <div class="tool-pop-title">支持上传格式</div>
+            <div class="tool-pop-body">
+              <span class="fmt-chip">doc</span><span class="fmt-chip">xlsx</span><span class="fmt-chip">md</span><span class="fmt-chip">png</span><span class="fmt-chip">jpg</span><span class="fmt-chip">json</span>
+              <div class="tool-pop-hint">如：上传 TAPD 导出 doc、竞品截图 png、回包 json</div>
+            </div>
+            <div class="tool-pop-foot">二期能力 · 非 630 交付范围</div>
+          </div>
         </div>
 
         <!-- 输入区 -->
@@ -67,20 +85,17 @@
             <!-- 模型选择器 -->
             <div class="model-selector" onclick="toggleModelDropdown(event)">
               <span class="ms-icon">✨</span>
-              <span class="ms-name" id="currentModelName">混元 Turbo</span>
+              <span class="ms-name" id="currentModelName">混元 HY3</span>
               <span class="ms-arrow">⌄</span>
               <div class="model-dropdown" id="modelDropdown">
-                <div class="md-item active" onclick="switchModel('混元 Turbo', '✨')">
-                  <span class="md-icon">✨</span><span class="md-name">混元 Turbo</span><span class="md-tag">默认</span>
+                <div class="md-item active" onclick="switchModel('混元 HY3', '✨')">
+                  <span class="md-icon">✨</span><span class="md-name">混元 HY3</span><span class="md-tag">默认</span>
                 </div>
-                <div class="md-item" onclick="switchModel('DeepSeek-V3', '🌊')">
-                  <span class="md-icon">🌊</span><span class="md-name">DeepSeek-V3</span>
+                <div class="md-item" onclick="switchModel('DeepSeek-V3.2', '🌊')">
+                  <span class="md-icon">🌊</span><span class="md-name">DeepSeek-V3.2</span>
                 </div>
-                <div class="md-item" onclick="switchModel('Claude-Opus-4.7', '🪐')">
-                  <span class="md-icon">🪐</span><span class="md-name">Claude-Opus-4.7</span>
-                </div>
-                <div class="md-item" onclick="switchModel('GPT-5', '⚡')">
-                  <span class="md-icon">⚡</span><span class="md-name">GPT-5</span>
+                <div class="md-item" onclick="switchModel('Claude-Opus-4.8', '🪐')">
+                  <span class="md-icon">🪐</span><span class="md-name">Claude-Opus-4.8</span>
                 </div>
               </div>
             </div>
@@ -111,7 +126,7 @@
           <!-- 官方技能：折叠列表，只读 -->
           <div class="sp-section">
             <div class="sp-section-title sp-section-toggle" onclick="toggleOfficialList(event)">
-              <span>🏛️ 官方技能 · <strong id="officialCount">2</strong> 个 · 默认全部挂载</span>
+              <span>🏛️ 官方技能 · <strong id="officialCount">2</strong> 个 · 默认全部挂载 <span class="scope-badge in630">630范围</span></span>
               <span class="sp-toggle-arrow" id="officialArrow">▸</span>
             </div>
             <div class="sp-section-help">每次对话自动调用 · 仅展示，不可手动开关</div>
@@ -130,11 +145,11 @@
             </div>
           </div>
 
-          <!-- 个人/社区技能：可选 -->
-          <div class="sp-section">
+          <!-- 个人/社区技能：可选（非 630，置灰） -->
+          <div class="sp-section is-out630">
             <div class="sp-section-title">
-              <span>🌱 个人 / 社区技能 · 按需挂载</span>
-              <span class="sp-section-help">最多 1 个</span>
+              <span>🌱 个人 / 社区技能 · 按需挂载 <span class="scope-badge out630">非630</span></span>
+              <span class="sp-section-help">最多 1 个 · 二期交付</span>
             </div>
             <div class="sp-list">
               <div class="sp-item" onclick="mountUserSkill('动效预览生成器', 'gin')">
@@ -160,18 +175,26 @@
       <!-- 最近高频提问（基于真实样式工作场景） -->
       <div class="ai-hints">
         <span class="hint-label">最近高频：</span>
-        <span class="hint-tag" onclick="fillHint('模板 1001200 想改成只出在流量范围 A 下，帮我评估规则风险')">规则变更风险评估</span>
-        <span class="hint-tag" onclick="fillHint('为什么媒体 10107877965230 在开屏场景无法召回 1003230')">召回失败排查</span>
+        <span class="hint-tag" onclick="fillHint('模板 1001200 想改成只出在流量范围 A 下，帮我评估规则风险')">规则变更</span>
         <span class="hint-tag" onclick="fillHint('想屏蔽开屏的系统弹窗模板，有现成的流量标签吗')">流量标签查询</span>
-        <span class="hint-tag" onclick="fillHint('帮我新建一个金融行业的开屏样式模板')">新建样式模板</span>
-        <span class="hint-tag" onclick="fillHint('看一下金融赛道近 7 天的 CTR 趋势和迭代建议')">看效果与建议</span>
+        <span class="hint-tag" onclick="fillHint('帮我新建一个金融行业的开屏样式模板')">新建样式</span>
+        <span class="hint-tag" onclick="fillHint('看一下金融赛道近 7 天的 CTR 趋势和迭代建议')">效果建议</span>
       </div>
-    </div>
 
-    <!-- 元注释（Demo 走查用 · 非用户 UI） -->
-    <div class="meta-note">
-      <span class="meta-note-tag">设计注释</span>
-      官方 Skill 默认挂载（在每次对话中自动调用，所以模块产出能力沉淀的好坏直接体现在官方 Skill 的复用价值上）；个人 Skill 由用户主动挂载，使用频次/评分用于评估个人贡献。
+      <!-- 路由策略（630 范围 · 真实交互体验） -->
+      <div class="routing-explain">
+        <div class="re-head">
+          <span class="re-title">路由策略</span>
+          <span class="scope-badge in630">630范围</span>
+          <span class="re-sub">点下面的示例，体验"单意图直达"与"多意图选择"的真实交互</span>
+        </div>
+        <div class="re-try" onclick="tryRoute('single')">
+          ▶ 试打：「帮我新建一个金融行业的开屏样式模板」<em>　— 单意图</em>
+        </div>
+        <div class="re-try" onclick="tryRoute('multi')" style="margin-left:8px">
+          ▶ 试打：「这个开屏模板为什么效果差，是不是规则屏蔽了」<em>　— 多意图</em>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -180,79 +203,97 @@
     <div class="layer-inner">
       <div class="layer-header">
         <h2>常见场景 · 工作流入口</h2>
-        <span class="layer-sub">不知道从哪开始？选一个高频任务，进入对应模块工作流</span>
+        <span class="layer-sub">选一个高频任务，带着预设 prompt 直达对应模块工作流</span>
+        <span class="scope-badge in630">630范围</span>
       </div>
 
-      <div class="scene-grid scene-grid-4">
-
-        <!-- 模块1：样式生产管理 -->
-        <a class="scene-card scene-生产" href="demo-生产.html">
-          <div class="scene-icon">🎨</div>
-          <div class="scene-title">样式生产管理</div>
-          <div class="scene-scope">
-            <strong>工作流</strong>：灵感激发 → 创意生成 → 模板生产 → 测试灰度 → 模板成绩单<br>
-            <strong>平台管理</strong>：样式列表、基础属性维护、状态管理
-          </div>
-          <div class="scene-link">→ 与基座连接：AI 对话路由「新建/迭代模板」类意图 · 看板「模板全局视图」</div>
-          <div class="scene-foot">
-            <span class="scene-tag">→ 进入模块</span>
-            <span class="scene-engine">水面下：与 iDOMO 设计-研发协同引擎对接</span>
-          </div>
-        </a>
-
-        <!-- 模块2：规则配置 -->
-        <a class="scene-card scene-规则" href="demo-规则.html">
-          <div class="scene-icon">⚙️</div>
-          <div class="scene-title">规则配置</div>
-          <div class="scene-scope">
-            自然语言转结构化的规则配置 · 冲突检查 · 影响面预估 · 流程引导与审批可视化
-          </div>
-          <div class="scene-link">→ 与基座连接：AI 对话路由「规则/冲突/白名单」类意图 · 看板「线上规则冲突」</div>
-          <div class="scene-foot">
-            <span class="scene-tag">→ 进入模块</span>
-          </div>
-        </a>
-
-        <!-- 模块3：洞察样式效果 -->
-        <a class="scene-card scene-洞察" href="demo-洞察.html">
-          <div class="scene-icon">🔍</div>
-          <div class="scene-title">洞察样式效果</div>
-          <div class="scene-scope">
-            模板组件级别理解 · 上线后效率优化与跑量能力建议 · 反哺生产<br>
-            <em class="scope-note">不承担问题排查作用</em>
-          </div>
-          <div class="scene-link">→ 与基座连接：看板「关键数据表现」+「迭代建议」 · 与样式生产模块的反哺链接（一期可不实现）</div>
-          <div class="scene-foot">
-            <span class="scene-tag">→ 进入模块</span>
-          </div>
-        </a>
-
-        <!-- 模块4：样式问题排查 -->
-        <a class="scene-card scene-排查" href="demo-排查.html">
-          <div class="scene-icon">🛠️</div>
-          <div class="scene-title">样式问题排查</div>
-          <div class="scene-scope">
-            「流量 × 预算 × 模板 × 流量属性」case 排查 · 综合判断可能出问题的环节<br>
-            常见入口：召回失败排查、流量标签屏蔽查询、规则匹配诊断
-          </div>
-          <div class="scene-link">→ 与基座连接：AI 对话路由「为什么/排查/无法出」类意图 · 看板「建议关注」</div>
-          <div class="scene-foot">
-            <span class="scene-tag">→ 进入模块</span>
-          </div>
-        </a>
-
+      <!-- 关系说明：模块 → 多场景卡（一对多） -->
+      <div class="scene-rel-note">
+        <strong>卡片与模块的关系：一对多。</strong>每个核心模块下挂多张高频场景卡；每张卡 = 模块 + 一个预设 prompt + 一个落点。点卡片＝把 prompt 送进该模块工作流。
       </div>
 
-      <!-- 占位：更多模块敬请期待 -->
-      <div class="scene-soon">
-        <span class="soon-icon">＋</span>
-        <span class="soon-text">更多能力敬请期待 · 一期聚焦四大模块跑通</span>
+      <!-- 模块1：模板生产（多卡） -->
+      <div class="scene-group">
+        <div class="scene-group-head scene-生产">
+          <span class="sg-icon">🎨</span>
+          <span class="sg-name">模板生产</span>
+          <span class="sg-def">造：灵感激发 → 创意生成 → 模板生产 → 测试灰度 → 成绩单</span>
+        </div>
+        <div class="scene-grid scene-grid-2">
+          <div class="scene-card" onclick="goWithPrompt('produce','chat','帮我新建一个618大促模板，服务电商客户，客户主投下载预算','生产对话窗','prompt 直接进入模板生产的 AI 对话窗，开始创意生成')">
+            <div class="sc-name">新建样式模板</div>
+            <div class="sc-prompt">"帮我新建一个 618 大促模板，服务电商客户，客户主投下载预算"</div>
+            <div class="sc-go">带 prompt 进生产对话 →</div>
+          </div>
+          <div class="scene-card" onclick="goWithPrompt('produce','chat','我上传了一张参考截图，帮我生成一个适配游戏媒体的激励视频模板','生产对话窗','prompt + 截图进入生产对话窗，走 C2D 创意衍生')">
+            <div class="sc-name">AI 创意衍生</div>
+            <div class="sc-prompt">"我上传了一张参考截图，帮我生成一个适配游戏媒体的激励视频模板"</div>
+            <div class="sc-go">带 prompt 进生产对话 →</div>
+          </div>
+        </div>
       </div>
 
-      <!-- 元注释（Demo 走查用） -->
-      <div class="meta-note">
-        <span class="meta-note-tag">设计注释</span>
-        每个场景卡只描述「工作流范畴 + 与基座的连接点」，不展开模块内部细节——细节由模块 owner 在自己的 Demo 里定义。
+      <!-- 模块2：规则配置（多卡） -->
+      <div class="scene-group">
+        <div class="scene-group-head scene-规则">
+          <span class="sg-icon">⚙️</span>
+          <span class="sg-name">规则配置</span>
+          <span class="sg-def">分发：流量范围 × 预算范围 × 模板生效逻辑（高优/圈定/屏蔽/强中只出）· 冲突预检 · 审批</span>
+        </div>
+        <div class="scene-grid scene-grid-2">
+          <div class="scene-card" onclick="goWithPrompt('rule','form','把模板1001200改成只在标签1001流量下高优出','规则配置表单','prompt 解析为结构化诉求，预填到「流量范围/模板范围/生效逻辑」表单，你在表单里核对修改')">
+            <div class="sc-name">配置出量规则</div>
+            <div class="sc-prompt">"把模板 1001200 改成只在标签 1001 流量下高优出"</div>
+            <div class="sc-go">解析后预填规则表单 →</div>
+          </div>
+          <div class="scene-card" onclick="goWithPrompt('rule','form','给模板1003230在游戏预算下做屏蔽30%','规则配置表单','prompt 解析为结构化诉求，预填表单后点「一键新建规则」触发冲突+影响面预检弹窗')">
+            <div class="sc-name">配置屏蔽规则</div>
+            <div class="sc-prompt">"给模板 1003230 在游戏预算下做屏蔽 30%"</div>
+            <div class="sc-go">解析后预填规则表单 →</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 模块3：洞察归因（多卡） -->
+      <div class="scene-group">
+        <div class="scene-group-head scene-洞察">
+          <span class="sg-icon">🔍</span>
+          <span class="sg-name">洞察归因</span>
+          <span class="sg-def">判因：场景看板 + 组件分析 + 模板ID深钻 + 一键优化生成（不承担问题排查）</span>
+        </div>
+        <div class="scene-grid scene-grid-2">
+          <div class="scene-card" onclick="goWithPrompt('insight','board','深钻分析模板1003062的组件配置和归因','洞察看板','prompt 解析出 templateId，直接定位到看板的「模板深钻」并加载该模板数据')">
+            <div class="sc-name">单模板深钻</div>
+            <div class="sc-prompt">"深钻分析模板 1003062 的组件配置和归因"</div>
+            <div class="sc-go">解析后定位看板深钻 →</div>
+          </div>
+          <div class="scene-card" onclick="goWithPrompt('insight','board','看开屏赢家模板的组件共性和提效建议','洞察看板','prompt 解析出 scene=开屏，定位到「赢家共性/提效配方」看板视图')">
+            <div class="sc-name">赢家组件归因</div>
+            <div class="sc-prompt">"看开屏赢家模板的组件共性和提效建议"</div>
+            <div class="sc-go">解析后定位看板视图 →</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 模块4：问题排查（多卡） -->
+      <div class="scene-group">
+        <div class="scene-group-head scene-排查">
+          <span class="sg-icon">🛠️</span>
+          <span class="sg-name">问题排查</span>
+          <span class="sg-def">查异常：Case录入 → 多源数据拉通 → AI归因 → 处置闭环 + 知识库沉淀</span>
+        </div>
+        <div class="scene-grid scene-grid-2">
+          <div class="scene-card" onclick="goWithPrompt('trouble','form','媒体10107877965230开屏出不了模板1003230帮我排查','排查录入表单','prompt 解析出媒体ID/模板ID，预填到「Case录入」表单，自动触发多源数据拉取')">
+            <div class="sc-name">召回失败排查</div>
+            <div class="sc-prompt">"媒体 10107877965230 开屏出不了模板 1003230"</div>
+            <div class="sc-go">解析后预填录入表单 →</div>
+          </div>
+          <div class="scene-card" onclick="goWithPrompt('trouble','form','这个开屏模板没有倒计时帮我查原因','排查录入表单','prompt 解析问题类型，预填录入表单并匹配知识库相似 case')">
+            <div class="sc-name">渲染异常诊断</div>
+            <div class="sc-prompt">"这个开屏模板没有倒计时，帮我查原因"</div>
+            <div class="sc-go">解析后预填录入表单 →</div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -267,6 +308,19 @@
 
       <!-- 视角筛选器（用户可见 UI · 多选 + 大盘 all） -->
       <div class="view-filters">
+        <div class="filter-row">
+          <span class="filter-label">📅 时间周期</span>
+          <button class="time-mode active" onclick="switchTime(this,'昨天')">昨天</button>
+          <button class="time-mode" onclick="switchTime(this,'近3天')">近 3 天</button>
+          <button class="time-mode" onclick="switchTime(this,'近7天')">近 7 天</button>
+          <button class="time-mode" onclick="switchTime(this,'自定义')">自定义</button>
+          <span class="time-custom" id="timeCustom" style="display:none">
+            <input type="date" id="timeStart" class="time-date">
+            <span>至</span>
+            <input type="date" id="timeEnd" class="time-date">
+            <span class="time-hint">窗口不超过 1 个月</span>
+          </span>
+        </div>
         <div class="filter-row">
           <span class="filter-label">📊 视角范围</span>
           <button class="filter-mode active" data-mode="all" onclick="switchMode('all')">大盘全量</button>
@@ -335,17 +389,25 @@
         <div class="board-card card-w2">
           <div class="card-header">
             <span class="card-title">📋 模板全局视图</span>
-            <span class="card-owner">由 <strong>样式生产</strong> owner 共建</span>
+            <a class="card-link" href="modules/produce/index.html">去模板生产看全部 →</a>
           </div>
-          <div class="card-body card-body-pending">
-            <div class="pending-text">
-              <strong>待 模板生产 owner 在 5/29 路演中给到具体卡片设计</strong><br>
-              基座预留位：在投模板数 / 本周新增 / 暂停中 / 主力模板分布
-            </div>
+          <div class="card-body">
+            <table class="tpl-table">
+              <thead>
+                <tr><th>模板ID</th><th>消耗</th><th>CTR</th><th>CVR</th><th>状态</th><th>负责人</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>1003723</td><td>¥421w</td><td>62.5%</td><td>31.4%</td><td><span class="st st-on">已上线</span></td><td>小樊</td></tr>
+                <tr><td>1003062</td><td>¥103w</td><td>16.1%</td><td>20.4%</td><td><span class="st st-on">已上线</span></td><td>小樊</td></tr>
+                <tr><td>1001277</td><td>¥38w</td><td>8.4%</td><td>18.4%</td><td><span class="st st-exp">实验中</span></td><td>小樊</td></tr>
+                <tr><td>1003769</td><td>¥9w</td><td>2.7%</td><td>12.1%</td><td><span class="st st-draft">草稿待审</span></td><td>小樊</td></tr>
+              </tbody>
+            </table>
+            <div class="card-foot-meta">仅展示当前视角 Top 模板精华 · 完整列表/筛选进模块</div>
           </div>
         </div>
 
-        <!-- 卡片2：近期操作（保留示例数据） -->
+        <!-- 卡片2：近期操作（保持现状） -->
         <div class="board-card">
           <div class="card-header">
             <span class="card-title">🕐 近期操作</span>
@@ -363,17 +425,22 @@
           </div>
         </div>
 
-        <!-- 卡片3：关键数据表现 -->
+        <!-- 卡片3：洞察建议 -->
         <div class="board-card card-w2">
           <div class="card-header">
-            <span class="card-title">💰 关键数据表现</span>
-            <span class="card-owner">由 <strong>洞察归因</strong> owner 共建</span>
+            <span class="card-title">💡 洞察建议</span>
+            <a class="card-link" href="modules/insight/index.html">去洞察归因看详情 →</a>
           </div>
-          <div class="card-body card-body-pending">
-            <div class="pending-text">
-              <strong>待 洞察归因 owner 在 5/29 路演中给到具体卡片设计</strong><br>
-              基座预留位：消耗 / CTR / 深转率 / 主力模板消耗分布
+          <div class="card-body">
+            <div class="insight-block">
+              <div class="ib-tag ib-attr">高消耗 · 效果归因</div>
+              <div class="ib-text"><strong>1003062</strong>（¥103w/CTR 16.1%）赢在「大按钮@中下 + 系统弹窗诱饵」，可作为开屏标杆复用</div>
             </div>
+            <div class="insight-block">
+              <div class="ib-tag ib-opt">低消耗低CTR · AI迭代建议</div>
+              <div class="ib-text"><strong>1003769</strong>（¥9w/CTR 2.7%）建议：曝光时长 5s→6s + 加价格爆点，预估 CTR +2.3pp</div>
+            </div>
+            <div class="card-foot-meta">仅展示 Top 归因/建议 · 全部组件级分析进模块</div>
           </div>
         </div>
 
@@ -381,36 +448,18 @@
         <div class="board-card">
           <div class="card-header">
             <span class="card-title">⚠️ 建议关注</span>
-            <span class="card-owner">由 <strong>规则配置 + 洞察归因 + 问题排查</strong> 共建</span>
+            <a class="card-link" href="modules/trouble/index.html">去问题排查看进展 →</a>
           </div>
-          <div class="card-body card-body-pending">
-            <div class="pending-text">
-              <strong>待相关 owner 在 5/29 路演中给到具体卡片设计</strong><br>
-              基座预留位：规则冲突 / 模板不起量 / 模板效率异常 / 高优 case
-            </div>
-          </div>
-        </div>
-
-        <!-- 卡片5：洞察迭代建议 -->
-        <div class="board-card card-w2">
-          <div class="card-header">
-            <span class="card-title">💡 洞察迭代建议</span>
-            <span class="card-owner">由 <strong>洞察归因</strong> owner 共建</span>
-          </div>
-          <div class="card-body card-body-pending">
-            <div class="pending-text">
-              <strong>待 洞察归因 owner 在 5/29 路演中给到具体卡片设计</strong><br>
-              基座预留位：AI 生成的优化建议（适用赛道 / 适用模板 / 预期收益）
-            </div>
+          <div class="card-body">
+            <ul class="watch-list">
+              <li><span class="wt-st wt-p0">P0</span> 激励视频在某广告位不出，定位到 P1 规则冲突 · <span class="wt-prog">处理中</span></li>
+              <li><span class="wt-st wt-p1">P1</span> 开屏模板无倒计时 case · <span class="wt-prog">已派姜坤婧</span></li>
+              <li><span class="wt-st wt-done">已闭环</span> 摇一摇不触发(透明View遮挡) · <span class="wt-prog">已沉淀知识库</span></li>
+            </ul>
+            <div class="card-foot-meta">仅展示高优/在处理 case · 全部进问题排查</div>
           </div>
         </div>
 
-      </div>
-
-      <!-- 元注释 -->
-      <div class="meta-note">
-        <span class="meta-note-tag">设计注释</span>
-        基座只画"卡片框架 + 占位说明"，具体内容由对应模块 owner 定义后插入。本质是"模块对外的橱窗"——把模块里值得让别人看到的关键信息汇聚到一处。
       </div>
     </div>
   </section>
@@ -419,109 +468,113 @@
   <section class="layer layer-skills" id="skills-area">
     <div class="layer-inner">
       <div class="layer-header">
-        <h2>Skills · 资产广场</h2>
-        <span class="layer-sub">浏览团队已沉淀的能力资产 · 决定使用 → 去对话窗挂载 / 模块内调用</span>
+        <h2>Skills · 能力晾晒区</h2>
+        <span class="layer-sub">把模块能力封装成可被 Agent 调用、可跨模块复用的标准单位——这里是它们的目录</span>
       </div>
 
-      <!-- Skills 三位一体说明 -->
+      <!-- 设计思路：为什么 skill 化 -->
       <div class="skills-howto">
-        <div class="howto-title">Skills 在工作台的三个位置</div>
+        <div class="howto-title">为什么要 Skill 化？—— Skill 是"模块能力的封装单位"</div>
         <div class="howto-grid">
           <div class="howto-item">
             <div class="howto-num">1</div>
-            <div class="howto-name">资产广场（这里）</div>
-            <div class="howto-desc">浏览 / 发现 / 看详情 / 收藏</div>
+            <div class="howto-name">可被 Agent 调用</div>
+            <div class="howto-desc">封装成 Skill，第一层对话才能自动触发它</div>
           </div>
           <div class="howto-item">
             <div class="howto-num">2</div>
-            <div class="howto-name">对话窗挂载</div>
-            <div class="howto-desc">官方默认挂载 · 个人/社区按需挂载</div>
+            <div class="howto-name">可跨模块复用</div>
+            <div class="howto-desc">问题排查能直接调规则配置沉淀的能力</div>
           </div>
           <div class="howto-item">
             <div class="howto-num">3</div>
-            <div class="howto-name">模块内调用</div>
-            <div class="howto-desc">嵌入工作流的具体环节，自动触发</div>
+            <div class="howto-name">可演进可晋升</div>
+            <div class="howto-desc">个人 Skill 用得好，可晋升为官方能力</div>
           </div>
         </div>
       </div>
 
-      <div class="skills-tabs">
-        <button class="skill-tab active" onclick="switchSkillTab('official')">🏛️ 官方 Skills · 模块沉淀</button>
-        <button class="skill-tab" onclick="switchSkillTab('community')">🌱 个人 / 社区 Skills</button>
-        <button class="skill-tab-btn" onclick="alert('Skills 上传流程：编写 → 自测 → 提报审核 → 经审计后上架\\n（详细机制见产品定义 → Skills 管理流程）')">+ 提报 Skill</button>
-      </div>
-
-      <div class="skill-grid" id="skill-grid-official">
-        <div class="skill-card">
-          <div class="sk-head"><span class="sk-icon">⚖️</span><span class="sk-name">模板规则审查</span></div>
-          <div class="sk-desc">基于千寻接口 + 样式工厂 mcp，读取线上规则 + 知识库，评估规则变更风险</div>
-          <div class="sk-meta">
-            <span class="sk-tag tag-official">官方 · 默认挂载</span>
-            <span class="sk-stage">沉淀模块：规则配置</span>
-          </div>
+      <!-- 官方 Skills：能力目录形态（弱化卡片，强调可信+出处） -->
+      <div class="skills-section">
+        <div class="ss-head">
+          <span class="ss-title">🏛️ 官方能力目录</span>
+          <span class="ss-note">由各模块沉淀 · 默认挂载、对话中自动调用（无需手动开关）· 晾在此处是为了<strong>可信与可发现</strong></span>
         </div>
-        <div class="skill-card">
-          <div class="sk-head"><span class="sk-icon">🛠️</span><span class="sk-name">模板问题排查</span></div>
-          <div class="sk-desc">"流量 × 预算 × 模板 × 属性"case 综合判断 · 召回失败诊断 · 流量标签查询</div>
-          <div class="sk-meta">
-            <span class="sk-tag tag-official">官方 · 默认挂载</span>
-            <span class="sk-stage">沉淀模块：问题排查</span>
+        <div class="cap-list">
+          <div class="cap-row">
+            <span class="cap-icon">⚖️</span>
+            <div class="cap-main">
+              <div class="cap-name">模板规则审查 <span class="cap-from">← 规则配置</span></div>
+              <div class="cap-desc">基于千寻接口 + 样式工厂能力，读取线上规则 + 知识库，评估规则变更风险</div>
+            </div>
+            <span class="cap-status">自动调用中</span>
           </div>
-        </div>
-        <div class="skill-card sk-empty">
-          <div class="sk-empty-inner">
-            <div class="sk-empty-icon">＋</div>
-            <div class="sk-empty-text">待样式生产模块沉淀</div>
-            <div class="sk-empty-sub">如：模板组件覆盖度检查 / 竞媒样式采集</div>
+          <div class="cap-row">
+            <span class="cap-icon">🛠️</span>
+            <div class="cap-main">
+              <div class="cap-name">模板问题排查 <span class="cap-from">← 问题排查</span></div>
+              <div class="cap-desc">"流量 × 预算 × 模板 × 属性" case 综合判断 · 召回失败诊断 · 流量标签查询</div>
+            </div>
+            <span class="cap-status">自动调用中</span>
           </div>
-        </div>
-        <div class="skill-card sk-empty">
-          <div class="sk-empty-inner">
-            <div class="sk-empty-icon">＋</div>
-            <div class="sk-empty-text">待洞察归因模块沉淀</div>
-            <div class="sk-empty-sub">如：归因报告生成 / 效果对比 Diff</div>
+          <div class="cap-row cap-pending">
+            <span class="cap-icon">＋</span>
+            <div class="cap-main">
+              <div class="cap-name">待样式生产沉淀</div>
+              <div class="cap-desc">如：模板组件覆盖度检查 / 竞媒样式采集</div>
+            </div>
+            <span class="cap-status">未上架</span>
           </div>
-        </div>
-      </div>
-
-      <div class="skill-grid hidden" id="skill-grid-community">
-        <div class="skill-card">
-          <div class="sk-head"><span class="sk-icon">✨</span><span class="sk-name">动效预览生成器</span></div>
-          <div class="sk-desc">根据组件配置自动生成 Lottie 动效预览，无需等 SDK 出包</div>
-          <div class="sk-meta">
-            <span class="sk-tag tag-community">社区</span>
-            <span class="sk-stage">作者：gin · 4.8 分 · 使用 142 次</span>
-          </div>
-        </div>
-        <div class="skill-card">
-          <div class="sk-head"><span class="sk-icon">📱</span><span class="sk-name">多分辨率适配检查</span></div>
-          <div class="sk-desc">在不同屏幕尺寸下渲染模板，检查布局溢出和截断问题</div>
-          <div class="sk-meta">
-            <span class="sk-tag tag-community">社区</span>
-            <span class="sk-stage">作者：坤婧 · 4.5 分 · 使用 87 次</span>
-          </div>
-        </div>
-        <div class="skill-card">
-          <div class="sk-head"><span class="sk-icon">📝</span><span class="sk-name">归因报告自动生成</span></div>
-          <div class="sk-desc">基于洞察归因结果，一键生成结构化复盘报告</div>
-          <div class="sk-meta">
-            <span class="sk-tag tag-community">社区</span>
-            <span class="sk-stage">作者：丹宁 · 4.6 分 · 使用 56 次</span>
-          </div>
-        </div>
-        <div class="skill-card sk-empty">
-          <div class="sk-empty-inner">
-            <div class="sk-empty-icon">＋</div>
-            <div class="sk-empty-text">下一个 Skill 由你贡献</div>
-            <div class="sk-empty-sub">把"重复造轮子"沉淀为团队资产</div>
+          <div class="cap-row cap-pending">
+            <span class="cap-icon">＋</span>
+            <div class="cap-main">
+              <div class="cap-name">待洞察归因沉淀</div>
+              <div class="cap-desc">如：归因报告生成 / 效果对比 Diff</div>
+            </div>
+            <span class="cap-status">未上架</span>
           </div>
         </div>
       </div>
 
-      <!-- 元注释 -->
-      <div class="meta-note">
-        <span class="meta-note-tag">设计注释</span>
-        官方 Skills 由对应模块沉淀，默认挂载到对话窗——衡量该模块"通用能力产出"的指标；个人 / 社区 Skills 由团队成员提报，按需挂载——衡量个人对团队资产的贡献。具体管理流程见产品定义。
+      <!-- 个人 / 社区 Skills：保留卡片（强调选用+贡献） -->
+      <div class="skills-section">
+        <div class="ss-head">
+          <span class="ss-title">🌱 个人 / 社区 Skills</span>
+          <span class="ss-note">成员自发贡献 · 按需挂载（最多 1 个）· 强调<strong>选用与贡献</strong>，用得好可晋升官方 <span class="scope-badge out630">非630</span></span>
+        </div>
+        <div class="skill-grid">
+          <div class="skill-card">
+            <div class="sk-head"><span class="sk-icon">✨</span><span class="sk-name">动效预览生成器</span></div>
+            <div class="sk-desc">根据组件配置自动生成 Lottie 动效预览，无需等 SDK 出包</div>
+            <div class="sk-meta">
+              <span class="sk-tag tag-community">社区</span>
+              <span class="sk-stage">作者：gin · 4.8 分 · 使用 142 次</span>
+            </div>
+          </div>
+          <div class="skill-card">
+            <div class="sk-head"><span class="sk-icon">📱</span><span class="sk-name">多分辨率适配检查</span></div>
+            <div class="sk-desc">在不同屏幕尺寸下渲染模板，检查布局溢出和截断问题</div>
+            <div class="sk-meta">
+              <span class="sk-tag tag-community">社区</span>
+              <span class="sk-stage">作者：坤婧 · 4.5 分 · 使用 87 次</span>
+            </div>
+          </div>
+          <div class="skill-card">
+            <div class="sk-head"><span class="sk-icon">📝</span><span class="sk-name">归因报告自动生成</span></div>
+            <div class="sk-desc">基于洞察归因结果，一键生成结构化复盘报告</div>
+            <div class="sk-meta">
+              <span class="sk-tag tag-community">社区</span>
+              <span class="sk-stage">作者：丹宁 · 4.6 分 · 使用 56 次</span>
+            </div>
+          </div>
+          <div class="skill-card sk-empty">
+            <div class="sk-empty-inner">
+              <div class="sk-empty-icon">＋</div>
+              <div class="sk-empty-text">下一个 Skill 由你贡献</div>
+              <div class="sk-empty-sub">把"重复造轮子"沉淀为团队资产</div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>

@@ -1,7 +1,7 @@
 // ===== 基座 Demo 交互逻辑 v0.3 =====
 
 // ===== 模型切换（下拉菜单）=====
-let currentModel = '混元 Turbo';
+let currentModel = '混元 HY3';
 function toggleModelDropdown(e) {
   e.stopPropagation();
   const dd = document.getElementById('modelDropdown');
@@ -30,6 +30,66 @@ function toggleSkillPanel(e) {
 function closeAllDropdowns() {
   document.getElementById('modelDropdown').classList.remove('open');
   document.getElementById('skillPanel').style.display = 'none';
+  document.querySelectorAll('.tool-pop').forEach(p => p.style.display = 'none');
+}
+
+// ===== @ / 附件 工具弹层 =====
+function toggleToolPop(e, id) {
+  e.stopPropagation();
+  const pop = document.getElementById(id);
+  const isOpen = pop.style.display === 'block';
+  closeAllDropdowns();
+  pop.style.display = isOpen ? 'none' : 'block';
+}
+
+// ===== 路由策略：真实意图交互 =====
+function tryRoute(type) {
+  const mask = document.createElement('div');
+  mask.className = 'intent-modal-mask';
+  mask.onclick = (e) => { if (e.target === mask) mask.remove(); };
+
+  let inner = '';
+  if (type === 'single') {
+    inner = `
+      <div class="im-q">你输入了：<strong>「帮我新建一个金融行业的开屏样式模板」</strong></div>
+      <div class="im-sub">系统识别：命中唯一意图，置信度高 → 直接进入对应模块</div>
+      <div class="im-single-note">✓ 单意图命中「新建模板」→ 无需选择，直达模板生产</div>
+      <div class="im-choice" onclick="location.href='modules/produce/index.html'">
+        <span class="im-choice-icon">🎨</span>
+        <span class="im-choice-main">
+          <span class="im-choice-name">模板生产</span>
+          <span class="im-choice-why">带参进入：action=create · scene=开屏 · industry=金融</span>
+        </span>
+        <span class="im-choice-go">直达 →</span>
+      </div>
+      <div class="im-foot">点击进入 · 或点空白关闭</div>`;
+  } else {
+    inner = `
+      <div class="im-q">你输入了：<strong>「这个开屏模板为什么效果差，是不是规则屏蔽了」</strong></div>
+      <div class="im-sub">系统识别到 2 个可能意图，置信度接近 → 请你确认要去哪：</div>
+      <div class="im-choice" onclick="location.href='modules/insight/index.html'">
+        <span class="im-choice-icon">🔍</span>
+        <span class="im-choice-main">
+          <span class="im-choice-name">洞察归因 · 看为什么效果差</span>
+          <span class="im-choice-why">命中「效果差/为什么」→ 组件级归因分析</span>
+        </span>
+        <span class="im-choice-go">去这里 →</span>
+      </div>
+      <div class="im-choice" onclick="location.href='modules/rule/index.html'">
+        <span class="im-choice-icon">⚙️</span>
+        <span class="im-choice-main">
+          <span class="im-choice-name">规则配置 · 查是否被屏蔽</span>
+          <span class="im-choice-why">命中「规则/屏蔽」→ 查该模板分发规则</span>
+        </span>
+        <span class="im-choice-go">去这里 →</span>
+      </div>
+      <div class="im-foot">多意图时由用户决定 · 或点空白关闭</div>`;
+  }
+  const modal = document.createElement('div');
+  modal.className = 'intent-modal';
+  modal.innerHTML = inner;
+  mask.appendChild(modal);
+  document.body.appendChild(mask);
 }
 
 // 官方技能列表展开/收起
@@ -81,10 +141,10 @@ function handleAISubmit() {
 
 function routeByKeywords(text) {
   const rules = [
-    { kw: ['新建', '生产', '迭代', '设计模板', '上线模板'], module: '样式生产管理', url: 'demo-生产.html' },
-    { kw: ['规则', '冲突', '白名单', '黑名单', '配置', '上限', '审批'], module: '规则配置', url: 'demo-规则.html' },
-    { kw: ['洞察', '归因', '效果', 'CTR', '转化', '消耗', '建议', '趋势'], module: '洞察样式效果', url: 'demo-洞察.html' },
-    { kw: ['排查', '为什么', '无法', '失败', '不出', '诊断', '标签'], module: '样式问题排查', url: 'demo-排查.html' },
+    { kw: ['新建', '生产', '迭代', '设计模板', '上线模板'], module: '样式生产管理', url: 'modules/produce/index.html' },
+    { kw: ['规则', '冲突', '白名单', '黑名单', '配置', '上限', '审批'], module: '规则配置', url: 'modules/rule/index.html' },
+    { kw: ['洞察', '归因', '效果', 'CTR', '转化', '消耗', '建议', '趋势'], module: '洞察样式效果', url: 'modules/insight/index.html' },
+    { kw: ['排查', '为什么', '无法', '失败', '不出', '诊断', '标签'], module: '样式问题排查', url: 'modules/trouble/index.html' },
   ];
   for (const r of rules) {
     if (r.kw.some(k => text.toLowerCase().includes(k.toLowerCase()))) return r;
@@ -124,14 +184,78 @@ function fillHint(text) {
   input.focus();
 }
 
+// ===== 第二层：场景卡带 prompt 跳转（预制可编辑 + 按模块形态衔接）=====
+function goWithPrompt(module, landing, prompt, landingName, landingDesc) {
+  const urlMap = {
+    produce: 'modules/produce/index.html',
+    rule: 'modules/rule/index.html',
+    insight: 'modules/insight/index.html',
+    trouble: 'modules/trouble/index.html',
+  };
+  const nameMap = {
+    produce: '模板生产', rule: '规则配置', insight: '洞察归因', trouble: '问题排查',
+  };
+  const mask = document.createElement('div');
+  mask.className = 'intent-modal-mask';
+  mask.onclick = (e) => { if (e.target === mask) mask.remove(); };
+  const modal = document.createElement('div');
+  modal.className = 'intent-modal';
+  modal.innerHTML = `
+    <div class="im-q">进入 <strong>${nameMap[module]}</strong> 前，可先调整这句 prompt：</div>
+    <div class="im-sub">预制模板仅供起手，按你的真实需求改完再进入</div>
+    <textarea class="im-edit" id="promptEdit" rows="3">${prompt}</textarea>
+    <div class="im-landing">进入形态：<strong>${landingName}</strong><br><span>${landingDesc}</span></div>
+    <div class="im-choice" onclick="enterModule('${urlMap[module]}')">
+      <span class="im-choice-icon">➤</span>
+      <span class="im-choice-main">
+        <span class="im-choice-name">带这句进入 ${nameMap[module]}</span>
+      </span>
+      <span class="im-choice-go">进入 →</span>
+    </div>
+    <div class="im-foot">可编辑后进入 · 或点空白关闭</div>`;
+  mask.appendChild(modal);
+  document.body.appendChild(mask);
+  setTimeout(() => { const t = document.getElementById('promptEdit'); if (t) t.focus(); }, 50);
+}
+
+// 带编辑后的 prompt 进入模块（URL 参数传递，模块侧解析预填）
+function enterModule(url) {
+  const t = document.getElementById('promptEdit');
+  const prompt = t ? t.value.trim() : '';
+  const sep = url.includes('?') ? '&' : '?';
+  location.href = prompt ? `${url}${sep}prompt=${encodeURIComponent(prompt)}` : url;
+}
+
 // ===== 视角筛选 =====
 function switchMode(mode) {
   document.querySelectorAll('.filter-mode').forEach(t => t.classList.remove('active'));
-  document.querySelector(`.filter-mode[data-mode="${mode}"]`).classList.add('active');
+  const btn = document.querySelector(`.filter-mode[data-mode="${mode}"]`);
+  if (btn) btn.classList.add('active');
   document.getElementById('filterDetail').style.display = mode === 'custom' ? 'block' : 'none';
   if (mode === 'all') {
     document.getElementById('filterSummary').textContent = '大盘全量 · 不做视角筛选';
   }
+}
+
+// ===== 时间周期筛选 =====
+function switchTime(btn, mode) {
+  document.querySelectorAll('.time-mode').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  const custom = document.getElementById('timeCustom');
+  custom.style.display = mode === '自定义' ? 'inline-flex' : 'none';
+  if (mode === '自定义') {
+    const end = document.getElementById('timeEnd');
+    const start = document.getElementById('timeStart');
+    end.onchange = start.onchange = validateTimeWindow;
+  }
+}
+function validateTimeWindow() {
+  const s = document.getElementById('timeStart').value;
+  const e = document.getElementById('timeEnd').value;
+  if (!s || !e) return;
+  const days = (new Date(e) - new Date(s)) / 86400000;
+  if (days < 0) { alert('结束日期不能早于开始日期'); document.getElementById('timeEnd').value = ''; }
+  else if (days > 31) { alert('自定义时间窗口不能超过 1 个月'); document.getElementById('timeEnd').value = ''; }
 }
 
 function applyFilter() {

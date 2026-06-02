@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>样式生产管理 · 决策档案</title>
+<link rel="stylesheet" href="./styles/tokens.css" />
+<style>
+  body { font-family: var(--ff-base); color: var(--color-text-1); background: var(--color-bg); margin: 0; line-height: 1.6; }
+  .topbar {
+    height: 56px; display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 1px solid var(--color-border); padding: 0 40px;
+    background: rgba(255,255,255,0.92); backdrop-filter: blur(8px);
+    position: sticky; top: 0; z-index: 10;
+  }
+  .topbar a { color: var(--color-primary); text-decoration: none; font-size: 14px; }
+  .topbar .crumb { color: var(--color-text-2); font-size: 14px; }
+  .crumb b { color: var(--color-text-1); }
+  .page { max-width: 980px; margin: 0 auto; padding: 32px 40px 80px; }
+  h1 { font-size: 32px; font-weight: 700; margin: 24px 0 8px; }
+  .subtitle { color: var(--color-text-3); font-size: 14px; margin-bottom: 32px; }
+
+  .toc {
+    background: var(--color-card); border: 1px solid var(--color-border-2); border-radius: 12px;
+    padding: 16px 20px; margin-bottom: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+  .toc-title { font-size: 13px; color: var(--color-text-3); margin-bottom: 8px; }
+  .toc-list { display: flex; flex-wrap: wrap; gap: 8px; }
+  .toc-item {
+    padding: 4px 12px; background: var(--color-primary-soft); color: var(--color-primary);
+    border-radius: 12px; font-size: 12px; text-decoration: none; cursor: pointer;
+  }
+  .toc-item:hover { background: var(--color-primary); color: #fff; }
+  .toc-item.key { background: linear-gradient(135deg, var(--color-primary), var(--color-purple)); color: #fff; font-weight: 500; }
+
+  .decision {
+    background: var(--color-card); border: 1px solid var(--color-border-2); border-radius: 12px;
+    padding: 24px 28px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    scroll-margin-top: 80px;
+  }
+  .decision.key { border-left: 4px solid var(--color-primary); }
+  .dec-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; flex-wrap: wrap; gap: 8px; }
+  .dec-no {
+    background: var(--color-primary); color: #fff;
+    padding: 4px 12px; border-radius: 8px; font-size: 14px; font-weight: 600;
+  }
+  .decision.key .dec-no { background: linear-gradient(135deg, var(--color-primary), var(--color-purple)); }
+  .dec-title { font-size: 20px; font-weight: 600; flex: 1; min-width: 200px; }
+  .dec-meta { display: flex; gap: 12px; font-size: 12px; color: var(--color-text-3); }
+  .dec-meta span { display: inline-flex; align-items: center; gap: 4px; }
+  .dec-status {
+    padding: 2px 10px; border-radius: 4px; font-size: 12px; font-weight: 500;
+  }
+  .dec-status.locked { background: var(--color-success-soft); color: var(--color-success); }
+  .dec-status.draft { background: var(--color-warning-soft); color: var(--color-warning); }
+
+  .dec-section { margin: 14px 0; }
+  .dec-section-title { font-size: 13px; color: var(--color-text-3); margin-bottom: 6px; font-weight: 500; }
+  .dec-section-body { font-size: 14px; color: var(--color-text-2); }
+  .dec-section-body b { color: var(--color-text-1); }
+
+  ul.opts { list-style: none; padding: 0; margin: 0; }
+  ul.opts li {
+    padding: 8px 12px; margin-bottom: 4px; border-radius: 6px;
+    background: var(--color-bg); font-size: 13px;
+  }
+  ul.opts li.chosen { background: var(--color-primary-soft); color: var(--color-primary); border-left: 3px solid var(--color-primary); }
+  ul.opts li.rejected { color: var(--color-text-3); text-decoration: line-through; opacity: 0.7; }
+  ul.opts li b { font-weight: 600; }
+
+  .tag-list { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px; }
+  .tag {
+    font-size: 11px; padding: 2px 8px; background: var(--color-bg);
+    color: var(--color-text-2); border-radius: 4px;
+  }
+  .tag.review { background: var(--color-purple-soft); color: var(--color-purple); }
+
+  .footer { margin-top: 40px; padding: 20px; text-align: center; color: var(--color-text-3); font-size: 12px; border-top: 1px solid var(--color-border); }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="crumb">
+    <a href="./index.html">← 返回 Demo</a>
+    <span style="margin: 0 8px;">|</span>
+    <b>样式生产管理 · 决策档案</b>
+  </div>
+  <div>
+    <a href="./onepager.html">查看一页纸 →</a>
+    <span style="margin: 0 8px; color: var(--color-text-4);">·</span>
+    <a href="./script.html">10min 讲稿 →</a>
+  </div>
+</div>
+
+<div class="page">
+
+  <h1>样式生产管理 · 决策档案</h1>
+  <div class="subtitle">联盟样式工作台子模块 · 路演 v0.1 · 已锁定 ≥3 条核心决策（D1 / D3 / D5）+ 6 条辅助决策</div>
+
+  <div class="toc">
+    <div class="toc-title">目录 · 8 条决策（其中 3 条 ★ 为路演主答）</div>
+    <div class="toc-list">
+      <a href="#D1" class="toc-item key">★ D1 模板池信息架构演化</a>
+      <a href="#D3" class="toc-item key">★ D3 对齐器消解冲突</a>
+      <a href="#D5" class="toc-item key">★ D5 不重做 iDOMO</a>
+      <a href="#D2" class="toc-item">D2 双审批</a>
+      <a href="#D4" class="toc-item">D4 双入口并入 Agent</a>
+      <a href="#D7" class="toc-item">D7 Agent 形态</a>
+      <a href="#D8" class="toc-item">D8 默认首页</a>
+      <a href="#D9" class="toc-item">D9 成绩单双视图</a>
+    </div>
+  </div>
+
+  <!-- ============ D1 ============ -->
+  <div class="decision key" id="D1">
+    <div class="dec-head">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <span class="dec-no">D1 ★</span>
+        <span class="dec-title">模板池信息架构演化：两 Tab → 三 Tab → 创意广场独立 + 模板池保留双 Tab</span>
+      </div>
+      <span class="dec-status locked">已锁定</span>
+    </div>
+    <div class="dec-meta">
+      <span>📅 2026-05-29</span>
+      <span>👤 产品·小樊</span>
+      <span>🔗 影响：模板池主信息架构</span>
+    </div>
+
+    <div class="dec-section">
+      <div class="dec-section-title">背景</div>
+      <div class="dec-section-body">
+        现有模板管理平台是<b>「草稿」+「正式」两 Tab</b>。基座希望"AI in ALL · 鼓励全员体验生成制作模板"，但完全开放写入正式管理体系会破坏管理秩序——草稿一旦写入即占用资源、影响搜索、可被其他模板复用。
+      </div>
+    </div>
+    <div class="dec-section">
+      <div class="dec-section-title">候选选项</div>
+      <ul class="opts">
+        <li class="rejected">A · 不变 · 仍然两 Tab，全民生成的模板直接进草稿池（管理混乱风险高）</li>
+        <li class="rejected">B · 增设独立"全民生成"入口/页面，与平台割裂（割裂感强）</li>
+        <li class="chosen">C · ✓ <b>模板池演化为三 Tab：💡创意广场 + 📝草稿 + ✅正式</b>（创意广场前置，鼓励全民提案；草稿池保留产品负责制；正式池保持高标准）</li>
+      </ul>
+    </div>
+    <div class="dec-section">
+      <div class="dec-section-title">决策内容</div>
+      <div class="dec-section-body">
+        模板池主视图调整为三 Tab：
+        <ul style="margin: 6px 0 0 24px; font-size: 14px;">
+          <li><b>💡 创意广场</b>：所有角色都可以一句话/截图/Figma 提案，配场景/赛道筛选 + 点赞/评论；提案不直接入库。</li>
+          <li><b>📝 草稿</b>：分为"待入库审批"和"已入库未上线"两类；已入库的可被复用、被搜到。</li>
+          <li><b>✅ 正式</b>：已上线 / 已下线归档。</li>
+        </ul>
+        <br />
+        <b>📌 后续演化（v0.2 路演态）</b>：三 Tab 拆分为<b>两个独立板块</b>放在「首页」内——
+        <ul style="margin: 6px 0 0 24px; font-size: 14px;">
+          <li><b>💡 创意广场</b>独立成一个板块（鼓励全员提案的氛围更强）；</li>
+          <li><b>📦 模板池</b>独立成一个板块，内部仍保留<b>「📝 草稿 / ✅ 正式」双 Tab</b>（管理秩序更清）。</li>
+        </ul>
+        两个板块仅在<b>「🏠 首页」</b>Tab 可见；<b>「👤 我的工作台」</b>Tab 内不显示，避免认知噪音。
+      </div>
+    </div>
+    <div class="dec-section">
+      <div class="dec-section-title">影响 / 后续</div>
+      <div class="dec-section-body">
+        · 配套 <b>D2 双审批</b>：创意广场提交后必须经"草稿入库审批"才能进草稿池。<br />
+        · 创意广场设计采用<b>「中档」</b>方案：灵感卡片墙 + 场景/赛道筛选 + 点赞/评论（不做 AI 推荐相似已上线模板）。<br />
+        · 与基座侧栏"看板卡片"协同：创意广场的提案数会成为大盘看板的一项指标。
+      </div>
+    </div>
+    <div class="tag-list">
+      <span class="tag">信息架构</span><span class="tag">模板池</span><span class="tag">全民共创</span><span class="tag review">差异化</span><span class="tag review">用户层</span>
+    </div>
+  </div>
+
+  <!-- ============ D3 ============ -->
+  <div class="decision key" id="D3">
+    <div class="dec-head">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <span class="dec-no">D3 ★</span>
+        <span class="dec-title">设计-研发冲突解法 = 对齐器嵌入流水线 ②，不做"以谁为准"的强约束</span>
+      </div>
+      <span class="dec-status locked">已锁定</span>
+    </div>
+    <div class="dec-meta">
+      <span>📅 2026-05-29</span>
+      <span>👤 产品·小樊</span>
+      <span>🔗 影响：流水线步骤②</span>
+    </div>
+
+    <div class="dec-section">
+      <div class="dec-section-title">背景</div>
+      <div class="dec-section-body">
+        历史顽疾："设计稿和最终上线效果不一致"——设计师怪研发不还原、研发怪 DSL 能力有限、产品两头夹。常见解法是"以谁为准"的强约束（要么强制还原 Figma 牺牲性能，要么以 DSL 能力为上限牺牲设计），都不解决问题。
+      </div>
+    </div>
+    <div class="dec-section">
+      <div class="dec-section-title">候选选项</div>
+      <ul class="opts">
+        <li class="rejected">A · 强约束 · 以 Figma 为准，不达成上线不允许（研发反弹大）</li>
+        <li class="rejected">B · 强约束 · 以 DSL 为准，设计自适应（设计反弹大）</li>
+        <li class="rejected">C · "轻档"对齐器 · 仅文字描述差异（说服力不够）</li>
+        <li class="chosen">D · ✓ <b>"中档"对齐器 · 在轻的基础上加 diff 视图</b>（Figma 视觉 vs DSL 渲染并排，差异点高亮，逐项可选"采纳设计/保留 DSL"）</li>
+        <li class="rejected">E · "重档"对齐器 · 自动 AI 修复（成本高、Demo 难讲）</li>
+      </ul>
+    </div>
+    <div class="dec-section">
+      <div class="dec-section-title">决策内容</div>
+      <div class="dec-section-body">
+        <b>对齐器（Skill: 设计稿对齐器 · B 级）嵌入到流水线的第②步「设计对齐」</b>，不做独立模块入口。形态为：左 Figma 视觉源、右 DSL 实时渲染、下方 diff 列表（差异 #1 主图圆角 / #2 副标题色…），每项支持"采纳 Figma / 保留 DSL"二选一。<b>不强制对齐才能进下一步</b>，但所有未对齐项会被记录在"上线审批"的设计 Review 视图里。
+      </div>
+    </div>
+    <div class="dec-section">
+      <div class="dec-section-title">影响 / 后续</div>
+      <div class="dec-section-body">
+        · 后续可扩展到「截图对齐 / 视频对齐 / 竞品对齐」（迭代规划）。<br />
+        · 与上线审批联动：设计 Review 时直接看 diff 列表，省去"逐像素对比"的耗时。<br />
+        · 是本模块"AI 原生"差异化的最强卖点之一。
+      </div>
+    </div>
+    <div class="tag-list">
+      <span class="tag">流水线</span><span class="tag">对齐器</span><span class="tag">协作模式</span><span class="tag review">差异化</span><span class="tag review">合作层</span>
+    </div>
+  </div>
+
+  <!-- ============ D5 ============ -->
+  <div class="decision key" id="D5">
+    <div class="dec-head">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <span class="dec-no">D5 ★</span>
+        <span class="dec-title">不重做 iDOMO 画布，本模块定位为"上层壳"</span>
+      </div>
+      <span class="dec-status locked">已锁定</span>
+    </div>
+    <div class="dec-meta">
+      <span>📅 2026-05-29</span>
+      <span>👤 产品·小樊</span>
+      <span>🔗 影响：模块边界 / 兼容性</span>
+    </div>
+
+    <div class="dec-section">
+      <div class="dec-section-title">背景</div>
+      <div class="dec-section-body">
+        团队工作原则之一是"零基思维 + AI 重构基础设施"，但完全推翻 iDOMO 画布意味着：① 画布引擎能力（动效、分发、SDK 兼容）需重写至少 3-6 个月；② 历史模板迁移成本不可控；③ 抢占了引擎团队的领域。和 MVP 6/30 严重冲突。
+      </div>
+    </div>
+    <div class="dec-section">
+      <div class="dec-section-title">候选选项</div>
+      <ul class="opts">
+        <li class="rejected">A · 完全重做 · 抛弃 iDOMO 画布，从零写新引擎（不可行）</li>
+        <li class="rejected">B · 渐进替换 · 部分场景试点新画布（边界模糊、易扯皮）</li>
+        <li class="chosen">C · ✓ <b>iDOMO 引擎是底座，本平台是上层壳</b>（边界清晰、风险可控、释放精力做协同）</li>
+      </ul>
+    </div>
+    <div class="dec-section">
+      <div class="dec-section-title">决策内容</div>
+      <div class="dec-section-body">
+        本模块明确定位为<b>「样式生产工作壳」</b>——iDOMO 引擎做底层画布，本平台在其上叠加：
+        <ul style="margin: 6px 0 0 24px; font-size: 14px;">
+          <li><b>双入口 Agent</b>（标准流 / 零稿流）</li>
+          <li><b>Skills 拓展</b>（D2C / C2D / 体检 / 对齐 / 测试 / 成绩单）</li>
+          <li><b>对齐器</b>（Figma vs DSL diff）</li>
+          <li><b>双审批</b>（草稿入库 + 上线发布）</li>
+          <li><b>协同视图</b>（首页 + 我的工作台 + 创意广场）</li>
+          <li><b>自动成绩单</b>（卡片报告 + 模拟企微推送）</li>
+        </ul>
+        Demo 中所有"画布编辑"的场景都明确标注"由 iDOMO 引擎承载"。
+      </div>
+    </div>
+    <div class="dec-section">
+      <div class="dec-section-title">影响 / 后续</div>
+      <div class="dec-section-body">
+        · 兼容性最强：存量模板"读但不迁"，可一键跳回 iDOMO；新模板默认走新流。<br />
+        · 与引擎团队的协作清晰：本模块通过 iDOMO API 操作 DSL 模板，不染指引擎本身。<br />
+        · MVP 时间风险大幅降低。
+      </div>
+    </div>
+    <div class="tag-list">
+      <span class="tag">模块边界</span><span class="tag">兼容性</span><span class="tag">底座关系</span><span class="tag review">兼容性</span><span class="tag review">差异化</span>
+    </div>
+  </div>
+
+  <!-- ============ D2 ============ -->
+  <div class="decision" id="D2">
+    <div class="dec-head">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <span class="dec-no">D2</span>
+        <span class="dec-title">审批从"单道"升级为"双道"——草稿入库 + 上线发布</span>
+      </div>
+      <span class="dec-status locked">已锁定</span>
+    </div>
+    <div class="dec-meta">
+      <span>📅 2026-05-29</span>
+      <span>👤 产品·小樊</span>
+      <span>🔗 配套 D1</span>
+    </div>
+    <div class="dec-section">
+      <div class="dec-section-title">决策内容</div>
+      <div class="dec-section-body">
+        在 iDOMO 现有"上线审批"之上，<b>新增"草稿入库审批"</b>。任何角色（包括运营/设计/研发）通过 Agent 或创意广场生成的模板，会被打上「待入库」徽章，必须经产品角色审批通过才能进入正式草稿池。
+        <br /><br />
+        <b>未入库前能做什么</b>：
+        <ul style="margin: 6px 0 0 24px;">
+          <li>✅ 编辑 / 预览 / 自动化测试</li>
+          <li>❌ 不可进入公共模板库被搜到</li>
+          <li>❌ 不可被其他模板复用为基础</li>
+          <li>❌ 不可上线</li>
+        </ul>
+      </div>
+    </div>
+    <div class="tag-list"><span class="tag">审批流</span><span class="tag">权限</span><span class="tag review">合作层</span></div>
+  </div>
+
+  <!-- ============ D4 ============ -->
+  <div class="decision" id="D4">
+    <div class="dec-head">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <span class="dec-no">D4</span>
+        <span class="dec-title">双入口（标准流 / 零稿流）不做独立卡片，并入 Agent 输入条的两个 Tab</span>
+      </div>
+      <span class="dec-status locked">已锁定</span>
+    </div>
+    <div class="dec-meta">
+      <span>📅 2026-05-29</span>
+      <span>👤 产品·小樊</span>
+      <span>🔗 影响：首页入口</span>
+    </div>
+    <div class="dec-section">
+      <div class="dec-section-title">决策内容</div>
+      <div class="dec-section-body">
+        最初设想"新建模板"和"零稿生成"做两个独立入口卡片，最终决定<b>合并到 Agent 抽屉中的两个 Tab</b>：「📋 标准流（TAPD）」和「🌀 零稿流（构想/截图）」。两 Tab 在"进入编辑"步骤后合流到同一条流水线，避免分叉造成认知负担。
+      </div>
+    </div>
+    <div class="tag-list"><span class="tag">入口设计</span><span class="tag">Agent</span><span class="tag review">用户层</span></div>
+  </div>
+
+  <!-- ============ D7 ============ -->
+  <div class="decision" id="D7">
+    <div class="dec-head">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <span class="dec-no">D7</span>
+        <span class="dec-title">Agent 形态 = 输入条 + 抽屉，不做悬浮球</span>
+      </div>
+      <span class="dec-status locked">已锁定</span>
+    </div>
+    <div class="dec-meta">
+      <span>📅 2026-05-29</span>
+      <span>👤 产品·小樊</span>
+    </div>
+    <div class="dec-section">
+      <div class="dec-section-title">决策内容</div>
+      <div class="dec-section-body">
+        Agent 默认收起为底部输入条（常驻），点击展开为右侧抽屉，可见上下文 / 已挂载 Skills / 历史对话。<b>不采用悬浮球形态</b>（视觉太重、容易和模态冲突）。
+      </div>
+    </div>
+    <div class="tag-list"><span class="tag">Agent</span><span class="tag">交互</span></div>
+  </div>
+
+  <!-- ============ D8 ============ -->
+  <div class="decision" id="D8">
+    <div class="dec-head">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <span class="dec-no">D8</span>
+        <span class="dec-title">首页 / 我的工作台默认首页</span>
+      </div>
+      <span class="dec-status locked">已锁定</span>
+    </div>
+    <div class="dec-meta">
+      <span>📅 2026-05-29</span>
+      <span>👤 产品·小樊</span>
+    </div>
+    <div class="dec-section">
+      <div class="dec-section-title">决策内容</div>
+      <div class="dec-section-body">
+        采用<b>同页 Tab 切换</b>，<b>默认首页</b>。理由：① 路演首屏冲击力首页（全员视角）> 我的（个人视角）；② 新用户首次进入对"我"无概念，先看首页建立全局；③ 老用户切换成本低（一个 Tab 点击）。<br />
+        视角切换为运营时，默认改为聚焦创意广场。
+      </div>
+    </div>
+    <div class="tag-list"><span class="tag">默认行为</span><span class="tag">信息架构</span></div>
+  </div>
+
+  <!-- ============ D9 ============ -->
+  <div class="decision" id="D9">
+    <div class="dec-head">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <span class="dec-no">D9</span>
+        <span class="dec-title">成绩单同时支持"卡片报告"+"模拟企微推送"两种视图</span>
+      </div>
+      <span class="dec-status locked">已锁定</span>
+    </div>
+    <div class="dec-meta">
+      <span>📅 2026-05-29</span>
+      <span>👤 产品·小樊</span>
+    </div>
+    <div class="dec-section">
+      <div class="dec-section-title">决策内容</div>
+      <div class="dec-section-body">
+        流水线第⑧步「成绩单」并排展示两个视图：<br />
+        · <b>卡片报告</b>：在工作台内查看，含核心指标 + 异常归因 + 调优建议 + 回滚按钮 + 一键克隆 v2。<br />
+        · <b>模拟企微推送</b>：模拟自动定时推送到企微群的卡片视图，让运营/产品 Owner 直观感受"主动告知"。
+      </div>
+    </div>
+    <div class="tag-list"><span class="tag">成绩单</span><span class="tag">协同推送</span><span class="tag review">合作层</span></div>
+  </div>
+
+  <div class="footer">
+    样式生产管理 · 决策档案 v0.1 · 路演态 · 2026-05-29 · 配套：<a href="./index.html" style="color:var(--color-primary);">Demo</a> / <a href="./onepager.html" style="color:var(--color-primary);">一页纸</a> / <a href="./script.html" style="color:var(--color-primary);">10min 讲稿</a>
+  </div>
+
+</div>
+
+</body>
+</html>

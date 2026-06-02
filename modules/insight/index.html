@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>洞察归因 · 开屏场景看板</title>
+<link rel="stylesheet" href="style.css" />
+<!-- beacon统计已移除(本地化) -->
+<script>
+(function(){
+  try{
+    var beacon=new BeaconAction({
+      appkey:'0WEB06U85YBSLJNL',
+      versionCode:'1.0.0',
+      channelID:'share',
+      delay:1000,
+      sessionDuration:30*60*1000,
+      isOversea:false,
+      needReportRqdEvent:false
+    });
+    beacon.onDirectUserAction('preview_page_view',{
+      'url':location.href,
+      'referrer':document.referrer,
+      'title':document.title,
+      'sandbox_id':'2272c33dff8f405f8096534f578bbd31'
+    });
+  }catch(e){}
+})();
+</script></head>
+<body>
+
+<div class="topbar">
+  <div class="brand">
+    <div class="brand-logo">洞</div>
+    <div><div class="brand-title">联盟样式工作台 <span class="brand-sub">/ 洞察归因</span></div></div>
+  </div>
+  <div class="scene-tabs">
+    <button class="on">开屏</button>
+    <button disabled>插屏</button>
+    <button disabled>激励视频</button>
+    <button disabled>原生</button>
+  </div>
+  <div class="top-right">
+    <span class="pill live">真实数据</span>
+    <span class="pill">基于 105 个模板 ID · 57 套</span>
+    <span class="pill">v0.4 · 组件优先</span>
+  </div>
+</div>
+
+<div class="page-nav" id="pageNav">
+  <a class="on" data-anchor="overview">① 场景全局</a>
+  <a data-anchor="components">② 组件分布（核心）</a>
+  <a data-anchor="topRank">③ 跑量榜单 · 组件举例</a>
+  <a data-anchor="patterns">④ 赢家共性</a>
+  <a data-anchor="levers">⑤ 提效手段归纳</a>
+  <a data-anchor="lookup">⑥ 模板深钻</a>
+  <a data-anchor="generate">⑦ 一键优化</a>
+</div>
+
+<div class="container">
+
+  <!-- ① Overview -->
+  <div class="section" id="overview">
+    <div class="section-h">
+      <h2><span class="num">1</span> 开屏场景 · 全局看板</h2>
+      <span class="desc">真实数据 · 模板维度（图文 + 视频合并为套）</span>
+    </div>
+    <div class="kpi-grid">
+      <div class="kpi"><div class="k">总消耗</div><div class="v">¥323万 <span class="delta up">大盘</span></div><svg class="spark" viewBox="0 0 100 24" preserveAspectRatio="none"><polyline fill="none" stroke="#5B5BD6" stroke-width="1.5" points="0,18 12,16 24,17 36,12 48,14 60,10 72,11 84,7 96,5"/></svg></div>
+      <div class="kpi"><div class="k">在投模板套数</div><div class="v">57 <small>套（105 ID）</small></div><svg class="spark" viewBox="0 0 100 24" preserveAspectRatio="none"><polyline fill="none" stroke="#16A34A" stroke-width="1.5" points="0,20 12,18 24,15 36,16 48,11 60,12 72,8 84,7 96,4"/></svg></div>
+      <div class="kpi"><div class="k">大盘加权 CTR</div><div class="v">13.83% <span class="delta up">+1.2pp</span></div><svg class="spark" viewBox="0 0 100 24" preserveAspectRatio="none"><polyline fill="none" stroke="#16A34A" stroke-width="1.5" points="0,16 12,14 24,15 36,11 48,12 60,9 72,10 84,7 96,5"/></svg></div>
+      <div class="kpi"><div class="k">Top 1 套占比</div><div class="v">31.8% <small>1套吃 1/3</small></div><svg class="spark" viewBox="0 0 100 24" preserveAspectRatio="none"><polyline fill="none" stroke="#F59E0B" stroke-width="1.5" points="0,8 12,9 24,7 36,11 48,10 60,13 72,12 84,15 96,16"/></svg></div>
+      <div class="kpi"><div class="k">长尾占比 (后 40 套)</div><div class="v">2.1% <small>明显头部聚集</small></div><svg class="spark" viewBox="0 0 100 24" preserveAspectRatio="none"><polyline fill="none" stroke="#5B5BD6" stroke-width="1.5" points="0,14 12,12 24,13 36,10 48,11 60,8 72,9 84,6 96,5"/></svg></div>
+    </div>
+    <div class="grid-2">
+      <div class="panel">
+        <div class="panel-h">
+          <h3><span class="dot"></span> 大盘指标趋势</h3>
+          <div class="trend-controls">
+            <button class="on" data-trend="cost">消耗</button>
+            <button data-trend="ctr">CTR</button>
+          </div>
+        </div>
+        <div class="panel-body"><svg class="trend" id="trendSvg" viewBox="0 0 600 180" preserveAspectRatio="none"></svg></div>
+      </div>
+      <div class="panel">
+        <div class="panel-h"><h3><span class="dot" style="background:var(--accent)"></span> 互动模式分布</h3><span class="desc">基于「互动模式类型」组件枚举值</span></div>
+        <div class="panel-body">
+          <div class="donut-row">
+            <svg class="donut-svg" viewBox="0 0 42 42" id="donutSvg"></svg>
+            <div class="donut-legend" id="donutLegend"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ② 组件分布（核心） -->
+  <div class="section" id="components">
+    <div class="section-h">
+      <h2><span class="num">2</span> 开屏组件 · 真实分布与组合占比</h2>
+      <span class="desc">基于《各场景组件定义》的 8 大重要组件</span>
+    </div>
+
+    <!-- 8 大组件总览 -->
+    <div class="comp-overview" id="compOverview"></div>
+
+    <!-- 组件 × 枚举值分布 -->
+    <div class="grid-2">
+      <div class="panel">
+        <div class="panel-h"><h3><span class="dot" style="background:var(--lv4)"></span> 互动模式类型 · 套数分布</h3><span class="desc">含组合（如摇+扭+滑）</span></div>
+        <div class="panel-body"><div id="interactionBars"></div></div>
+      </div>
+      <div class="panel">
+        <div class="panel-h"><h3><span class="dot" style="background:var(--lv1)"></span> 按钮大小 × 位置</h3><span class="desc">同套统计</span></div>
+        <div class="panel-body"><svg viewBox="0 0 380 220" id="btnMatrix" style="width:100%;height:220px;display:block"></svg></div>
+      </div>
+    </div>
+
+    <div class="grid-3" style="margin-top:16px">
+      <div class="panel">
+        <div class="panel-h"><h3><span class="dot" style="background:var(--lv2)"></span> 曝光时长</h3></div>
+        <div class="panel-body" id="durDist"></div>
+      </div>
+      <div class="panel">
+        <div class="panel-h"><h3><span class="dot" style="background:var(--lv3)"></span> 额外互动点</h3></div>
+        <div class="panel-body" id="extraDist"></div>
+      </div>
+      <div class="panel">
+        <div class="panel-h"><h3><span class="dot" style="background:var(--lv6)"></span> 横/竖屏 + 单/双向</h3></div>
+        <div class="panel-body" id="orientDist"></div>
+      </div>
+    </div>
+
+    <!-- 组件组合 → 加权 CTR 关系矩阵 -->
+    <div class="panel" style="margin-top:16px">
+      <div class="panel-h"><h3><span class="dot"></span> 组件组合 × 加权 CTR · 关系矩阵</h3><span class="desc">行=互动模式，列=额外互动点</span></div>
+      <div class="panel-body">
+        <svg viewBox="0 0 760 240" id="comboMatrix" style="width:100%;height:240px;display:block"></svg>
+        <div style="font-size:11px;color:var(--text-3);margin-top:10px;line-height:1.6">
+          📌 <b style="color:var(--text)">关键观察</b>：
+          ① 组件「互动模式」<b>摇+扭+滑</b>组合是套数最多（17 套）也是消耗主力；
+          ② 「额外互动点」绝大多数模板是<b>「无」</b>（46/57），仅 7 套用了「系统弹窗诱饵」、3 套用了「红包/优惠券」——但这 10 套贡献了顶部跑量的核心增量；
+          ③ 「按钮大小」上 <b>大按钮 29 套</b>压倒性多于小按钮(7)，大按钮加权 CTR 也明显更高。
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ③ Top Rank with components -->
+  <div class="section" id="topRank">
+    <div class="section-h">
+      <h2><span class="num">3</span> 跑量 Top 12 · 每套模板的组件配置举例</h2>
+      <span class="desc">从组件视角看 Top 模板"长什么样"</span>
+    </div>
+    <div class="panel">
+      <div class="panel-h">
+        <h3><span class="dot"></span> 按消耗排序 · 同套 ID 合并 · 组件配置展开</h3>
+      </div>
+      <div class="panel-body" style="padding:0">
+        <table class="top-tbl wide" id="topTbl">
+          <thead><tr>
+            <th style="width:40px">#</th>
+            <th style="width:230px">模板套</th>
+            <th style="width:90px">互动模式</th>
+            <th style="width:80px">按钮</th>
+            <th style="width:90px">额外互动</th>
+            <th style="width:60px">屏幕</th>
+            <th style="width:60px">向</th>
+            <th class="num-cell" style="width:80px">消耗</th>
+            <th class="num-cell" style="width:80px">CTR</th>
+            <th style="width:80px"></th>
+          </tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ④ Patterns -->
+  <div class="section" id="patterns">
+    <div class="section-h">
+      <h2><span class="num">4</span> 高跑量模板的赢家共性 · 组件维度</h2>
+      <span class="desc">从 Top 20 套提炼的可复用配方</span>
+    </div>
+    <div class="pattern-grid">
+      <div class="pattern lv1"><div class="pn">置信度 96%</div><div class="pt">「大按钮 + 中下位 + 白手竖滑」组合</div><div class="pb">Top 20 中有 <b>14 套</b>使用此组合，加权 CTR <b>16.1%</b>，是基础"小按钮纯点击"模板的 <b>10x</b>。所属组件：<b>按钮大小+位置 / 互动模式</b>。</div><div class="pf"><span>覆盖：14/20 套</span><span><b>CTR 16.1% vs 1.5%</b></span></div></div>
+      <div class="pattern lv4"><div class="pn">置信度 92%</div><div class="pt">「摇+扭+滑」三合一互动模式</div><div class="pb">几乎所有 Top 模板都叠加了多种交互手势，「双向扭」比单向 CTR 高 <b>+27%</b>，但需注意误触合规边界。所属组件：<b>互动模式类型</b>。</div><div class="pf"><span>覆盖：17/57 套</span><span><b>+27% CTR</b></span></div></div>
+      <div class="pattern lv6"><div class="pn">置信度 89%</div><div class="pt">「系统弹窗诱饵」前置触发</div><div class="pb">仅 7 套使用此组件，但占据了 Top 3 中的 3 个位置。带"系统弹窗"前缀的模板加权 CTR 普遍超 <b>16%</b>。所属组件：<b>额外互动点</b>。</div><div class="pf"><span>覆盖：7/57 套（精）</span><span><b>+15pp CTR</b></span></div></div>
+      <div class="pattern lv4"><div class="pn">置信度 87%</div><div class="pt">「视频素材」往往比同套图文 CTR 略低</div><div class="pb">同一套模板下，图文版 CTR 中位数比视频版高 <b>+2.4pp</b>，但视频版起播率/留存更优，建议组合发布而非单选。所属维度：<b>素材类型</b>。</div><div class="pf"><span>覆盖：39/57 套</span><span><b>图文 +2.4pp</b></span></div></div>
+      <div class="pattern lv1"><div class="pn">置信度 81%</div><div class="pt">「按钮位置」右下/左下角位偏移</div><div class="pb">同一交互在右下(1003248) CTR <b>17.7%</b>，左下(1003250) CTR <b>18.2%</b>；右手习惯下两侧偏移点击转化更稳。所属组件：<b>按钮位置</b>。</div><div class="pf"><span>覆盖：8/57 套</span><span><b>偏移 +0.5pp</b></span></div></div>
+      <div class="pattern lv2"><div class="pn">置信度 78%</div><div class="pt">「曝光时长」5s → 6s 的潜力</div><div class="pb">SDK 数据显示开屏主动关闭 <b>7900 万/天</b>，缩短 1s 即可少损 <b>8%</b> 曝光；6s + 小窗挂件可让 CVR 链路再延 <b>+22%</b>。所属组件：<b>曝光时长 + 关闭后挂件</b>。</div><div class="pf"><span>覆盖：3/57 套（潜力大）</span><span><b>+22% CVR</b></span></div></div>
+    </div>
+  </div>
+
+  <!-- ⑤ 6 大提效手段（归纳） -->
+  <div class="section" id="levers">
+    <div class="section-h">
+      <h2><span class="num">5</span> 由组件规律归纳的「6 大提效手段」</h2>
+      <span class="desc">人为归纳的决策辅助框架 · 用于 AI 建议时的策略分桶</span>
+    </div>
+
+    <div class="lever-section" id="leverSection"></div>
+
+    <div class="panel">
+      <div class="panel-h"><h3><span class="dot"></span> 提效手段 ↔ 组件 映射关系</h3></div>
+      <div class="panel-body">
+        <div id="leverCompMap"></div>
+        <div style="font-size:11px;color:var(--text-3);margin-top:10px;line-height:1.6">
+          📌 <b style="color:var(--text)">关键观察</b>：当前 95%+ 消耗集中在「<span style="color:var(--lv1);font-weight:600">增加可触发方式</span> + <span style="color:var(--lv4);font-weight:600">创造新交互点</span>」两个手段；
+          <span style="color:var(--lv2);font-weight:600">延长曝光时间</span>（仅 3 套）/ <span style="color:var(--lv5);font-weight:600">缩短转化链路</span>（0 套）/ <span style="color:var(--lv6);font-weight:600">提升互动意愿</span>（2 套）三个手段尚未真正铺开，是潜在增量空间。
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ⑥ Lookup -->
+  <div class="section" id="lookup">
+    <div class="section-h">
+      <h2><span class="num">6</span> 输入模板 ID · 深钻分析</h2>
+      <span class="desc">支持输入图文或视频任一 ID，自动合并展示同套</span>
+    </div>
+    <div class="lookup-bar">
+      <div class="il">🔍 模板 ID</div>
+      <input id="tidInput" placeholder="例如 1003062 (图文) 或 1003063 (视频)，同套自动合并" value="1003062" />
+      <button onclick="loadTemplate(document.getElementById('tidInput').value)">深钻分析</button>
+      <div class="lookup-quick">快捷： <a onclick="loadTemplate('1003062')">1003062 (Top1)</a> · <a onclick="loadTemplate('1003665')">1003665 (红包滑动)</a> · <a onclick="loadTemplate('1000033')">1000033 (摇一摇)</a></div>
+    </div>
+    <div id="analysisHost" class="analysis-layout"></div>
+  </div>
+
+  <!-- ⑦ Generate -->
+  <div class="section" id="generate">
+    <div class="section-h">
+      <h2><span class="num">7</span> 一键优化 · 生成新模板套</h2>
+      <span class="desc">同时生成图文 + 视频两个 ID，进入 A/B 测试</span>
+    </div>
+    <div class="gen-area">
+      <div class="gen-content">
+        <div class="gen-h">
+          <div>
+            <h3>基于上方建议生成 <span style="color:#FFB37C">开屏_大按钮单向白手_竖滑_v2</span></h3>
+            <div class="gen-sub">采纳 P0+P1 共 2 条建议 · 同时生成 <b style="color:#FFB37C">图文 ID(1003999)</b> + <b style="color:#FFB37C">视频 ID(1004000)</b> · 综合预估 CTR <b style="color:#7AE9A8">+2.31pp</b></div>
+          </div>
+          <button class="gen-btn" onclick="showToast('新模板套已进入 A/B 测试队列，预计 24h 后回收数据')">⚡ 生成图文+视频并 A/B</button>
+        </div>
+        <div class="compare">
+          <div class="compare-card">
+            <div class="cc-h"><div class="cc-label">原模板套</div><div class="cc-id">1003062 / 1003063</div></div>
+            <div class="cc-phone-wrap">
+              <div class="phone">
+                <div class="phone-notch"></div>
+                <div class="phone-screen"><div class="splash">
+                  <div class="skip">跳过 5s</div>
+                  <div class="brand-mark"><div class="lm">L</div><div>LemonGo</div></div>
+                  <div class="hero-img">🍋</div>
+                  <div class="title">夏日柠檬季<br/>第二件 0 元</div>
+                  <div class="subtitle">下载 App 立享 88 折</div>
+                  <div class="big-cta">立即领取</div>
+                  <div class="swipe-hint"><div class="hand">☝️</div>上滑了解</div>
+                  <div class="ad-tag">广告 · 优量汇</div>
+                </div></div>
+              </div>
+            </div>
+            <div class="cc-comp-config">
+              <div class="cc-cc-row"><span>互动模式</span><b>摇+扭+滑</b></div>
+              <div class="cc-cc-row"><span>按钮</span><b>大按钮@中下</b></div>
+              <div class="cc-cc-row"><span>曝光时长</span><b>5 秒</b></div>
+              <div class="cc-cc-row"><span>额外互动</span><b>系统弹窗</b></div>
+            </div>
+            <div class="cc-metrics">
+              <div class="cc-m"><div class="k">消耗</div><div class="v">¥103万</div></div>
+              <div class="cc-m"><div class="k">CTR</div><div class="v">16.09%</div></div>
+              <div class="cc-m"><div class="k">套占比</div><div class="v">31.8%</div></div>
+            </div>
+          </div>
+          <div class="arrow-mid">
+            <div class="ar">→</div>
+            <div class="lift">+2.31pp CTR</div>
+            <div class="ar">→</div>
+          </div>
+          <div class="compare-card">
+            <div class="cc-h"><div class="cc-label">AI 优化后</div><div class="cc-id new">1003999 / 1004000</div></div>
+            <div class="cc-phone-wrap">
+              <div class="phone">
+                <div class="phone-notch"></div>
+                <div class="phone-screen"><div class="splash" style="background:linear-gradient(160deg,#0F2F4A 0%,#1F4E73 50%,#FF8A4C 100%)">
+                  <div class="skip">跳过 6s</div>
+                  <div class="brand-mark"><div class="lm">L</div><div>LemonGo</div></div>
+                  <div class="hero-img" style="background:linear-gradient(135deg,#FFE56B,#FFB347);font-size:24px;flex-direction:column">🍋<div style="font-size:11px;font-weight:800;margin-top:4px;color:#1A1B2E;background:#fff;padding:2px 8px;border-radius:4px">¥9.9 起</div></div>
+                  <div class="title">立省 ¥38<br/><span style="font-size:13px;font-weight:600;opacity:.9">第二件 0 元 · 限时 24h</span></div>
+                  <div class="subtitle">新人 88 折 · 秒到账</div>
+                  <div class="big-cta">立即抢购</div>
+                  <div class="swipe-hint"><div class="hand">☝️</div>上滑或扭一扭打开</div>
+                  <div class="ad-tag">广告 · 优量汇</div>
+                </div></div>
+              </div>
+            </div>
+            <div class="cc-comp-config">
+              <div class="cc-cc-row"><span>互动模式</span><b style="color:#FFB37C">摇+扭+滑（强化）</b></div>
+              <div class="cc-cc-row"><span>按钮</span><b>大按钮@中下</b></div>
+              <div class="cc-cc-row"><span>曝光时长</span><b style="color:#FFB37C">6 秒</b></div>
+              <div class="cc-cc-row"><span>额外互动</span><b style="color:#FFB37C">系统弹窗+小窗挂件</b></div>
+            </div>
+            <div class="cc-metrics">
+              <div class="cc-m"><div class="k">预估消耗</div><div class="v up">¥118万</div></div>
+              <div class="cc-m"><div class="k">预估 CTR</div><div class="v up">18.40%</div></div>
+              <div class="cc-m"><div class="k">预估提升</div><div class="v up">+14%</div></div>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top:18px;padding:14px;background:rgba(255,255,255,.06);border-radius:10px;font-size:12.5px;line-height:1.7">
+          <div style="font-weight:600;margin-bottom:6px;font-size:13px">🔧 本次自动应用的优化（按组件维度标注）</div>
+          <div>① <span style="background:#16A34A;padding:1px 6px;border-radius:3px;font-size:10px;font-weight:700">曝光时长</span> 5s → 6s（捡回 8% 曝光，每日多保留 +630 万次）</div>
+          <div>② <span style="background:#F59E0B;padding:1px 6px;border-radius:3px;font-size:10px;font-weight:700">主标题</span> 主视觉加价格爆点 ¥9.9 起 + 主标题改"立省 ¥38"</div>
+          <div>③ <span style="background:#A855F7;padding:1px 6px;border-radius:3px;font-size:10px;font-weight:700">CTA 文案</span> "立即领取 → 立即抢购"（生鲜电商行业"抢"字转化 +11%）</div>
+          <div>④ <span style="background:#FF5C8D;padding:1px 6px;border-radius:3px;font-size:10px;font-weight:700">额外互动</span> 增加「关闭后小窗挂件」承接漏出曝光（+22% CVR 链路）</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="toast" id="toast">✓ 操作成功</div>
+
+<script src="app.js"></script>
+</body>
+</html>

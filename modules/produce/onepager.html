@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>样式生产管理 · 一页纸</title>
+<link rel="stylesheet" href="./styles/tokens.css" />
+<style>
+  body { font-family: var(--ff-base); color: var(--color-text-1); background: var(--color-bg); margin: 0; line-height: 1.6; }
+  .page { max-width: 1080px; margin: 0 auto; padding: 32px 40px 80px; }
+  .topbar {
+    height: 56px; display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 1px solid var(--color-border); padding: 0 40px;
+    background: rgba(255,255,255,0.92); backdrop-filter: blur(8px);
+    position: sticky; top: 0; z-index: 10;
+  }
+  .topbar a { color: var(--color-primary); text-decoration: none; font-size: 14px; }
+  .topbar .crumb { color: var(--color-text-2); font-size: 14px; }
+  .crumb b { color: var(--color-text-1); }
+  h1 { font-size: 32px; font-weight: 700; margin: 24px 0 8px; }
+  .subtitle { color: var(--color-text-3); font-size: 14px; margin-bottom: 24px; }
+  .meta { display: flex; gap: 24px; flex-wrap: wrap; padding: 16px 20px; background: var(--color-card); border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); margin-bottom: 32px; }
+  .meta-item { font-size: 13px; }
+  .meta-k { color: var(--color-text-3); margin-right: 6px; }
+  .meta-v { color: var(--color-text-1); font-weight: 500; }
+
+  .section { margin-bottom: 36px; }
+  .section h2 {
+    font-size: 22px; font-weight: 600; margin-bottom: 16px; padding-left: 12px;
+    border-left: 4px solid var(--color-primary);
+  }
+  .section h2 .tag { font-size: 12px; color: var(--color-text-3); margin-left: 8px; font-weight: 400; }
+
+  .qa-row {
+    display: grid; grid-template-columns: 200px 1fr; gap: 24px;
+    padding: 16px 0; border-bottom: 1px dashed var(--color-border);
+  }
+  .qa-row:last-child { border: none; }
+  .qa-q { color: var(--color-text-3); font-size: 13px; padding-top: 2px; }
+  .qa-q b { display: block; color: var(--color-text-1); font-size: 14px; font-weight: 500; margin-bottom: 4px; }
+  .qa-a { font-size: 14px; color: var(--color-text-2); }
+  .qa-a b { color: var(--color-text-1); }
+  .qa-a .high { background: linear-gradient(180deg,transparent 60%, var(--color-primary-soft) 60%); padding: 0 2px; }
+
+  .pillbox { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0; }
+  .pill {
+    padding: 3px 10px; background: var(--color-primary-soft); color: var(--color-primary);
+    border-radius: 12px; font-size: 12px;
+  }
+
+  table.struct { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 8px; }
+  table.struct th, table.struct td { padding: 10px 12px; border: 1px solid var(--color-border-2); text-align: left; vertical-align: top; }
+  table.struct th { background: var(--color-bg); color: var(--color-text-3); font-weight: 500; }
+
+  .star-card {
+    background: linear-gradient(135deg, #F0F4FF 0%, #FFF6F0 100%);
+    border: 1px solid var(--color-border-2);
+    padding: 20px; border-radius: 12px; margin-top: 12px;
+  }
+  .star-row { display: flex; justify-content: space-between; align-items: baseline; padding: 8px 0; }
+  .star-name { color: var(--color-text-2); font-size: 13px; }
+  .star-val { font-size: 22px; font-weight: 600; color: var(--color-primary); }
+
+  .diff-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; }
+  .diff-card {
+    background: var(--color-card); border: 1px solid var(--color-border-2);
+    padding: 14px; border-radius: 8px;
+  }
+  .diff-card.before { border-left: 3px solid var(--color-text-4); }
+  .diff-card.after { border-left: 3px solid var(--color-primary); }
+  .diff-card h4 { font-size: 12px; color: var(--color-text-3); margin-bottom: 8px; font-weight: 400; }
+  .diff-card ul { list-style: none; padding: 0; margin: 0; font-size: 13px; }
+  .diff-card li { padding: 3px 0; color: var(--color-text-2); }
+
+  .flow {
+    display: flex; align-items: center; gap: 4px; margin: 12px 0;
+    padding: 16px; background: var(--color-card); border-radius: 12px; flex-wrap: wrap;
+    border: 1px solid var(--color-border-2);
+  }
+  .flow-step {
+    background: var(--color-primary-soft); color: var(--color-primary);
+    padding: 6px 12px; border-radius: 8px; font-size: 13px; font-weight: 500;
+  }
+  .flow-step.alt { background: var(--color-purple-soft); color: var(--color-purple); }
+  .flow-arrow { color: var(--color-text-4); }
+
+  .interface-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .iface-card {
+    background: var(--color-card); border: 1px solid var(--color-border-2);
+    padding: 14px 16px; border-radius: 10px;
+  }
+  .iface-card h4 { font-size: 14px; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+  .iface-card .must { font-size: 10px; background: var(--color-danger-soft); color: var(--color-danger); padding: 1px 6px; border-radius: 3px; }
+  .iface-card .opt { font-size: 10px; background: var(--color-bg); color: var(--color-text-3); padding: 1px 6px; border-radius: 3px; }
+  .iface-card p { font-size: 12px; color: var(--color-text-2); margin: 4px 0; }
+
+  .footer { margin-top: 40px; padding: 20px; text-align: center; color: var(--color-text-3); font-size: 12px; border-top: 1px solid var(--color-border); }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="crumb">
+    <a href="./index.html">← 返回 Demo</a>
+    <span style="margin: 0 8px;">|</span>
+    <b>样式生产管理 · 一页纸</b>
+  </div>
+  <div>
+    <a href="./decisions.html">查看决策档案 →</a>
+    <span style="margin: 0 8px; color: var(--color-text-4);">·</span>
+    <a href="./script.html">10min 讲稿 →</a>
+  </div>
+</div>
+
+<div class="page">
+
+  <h1>样式生产管理 · 业务定义一页纸</h1>
+  <div class="subtitle">联盟样式工作台子模块 · 5/29 路演 v0.1 · Owner：产品·小樊</div>
+
+  <div class="meta">
+    <div class="meta-item"><span class="meta-k">模块定位</span><span class="meta-v">联盟样式生产工作壳（iDOMO 引擎之上）</span></div>
+    <div class="meta-item"><span class="meta-k">主流程位置</span><span class="meta-v">起点：模板生产 → 规则配置 → 洞察归因 → 问题排查</span></div>
+    <div class="meta-item"><span class="meta-k">MVP 锚点</span><span class="meta-v">6/30 跑通开屏场景端到端真实用例</span></div>
+    <div class="meta-item"><span class="meta-k">视觉</span><span class="meta-v">完全对齐基座 v0.6/v0.7</span></div>
+  </div>
+
+  <!-- ============ 产品层 ============ -->
+  <section class="section">
+    <h2>一、产品层 <span class="tag">5 题 · 路演必答</span></h2>
+
+    <div class="qa-row">
+      <div class="qa-q"><b>Q1 角色和定义</b>我是谁，要交付什么</div>
+      <div class="qa-a">
+        <b>样式生产管理</b>是从需求接入到上线复盘的<b>端到端模板生产工作壳</b>，承接 iDOMO Plus，但加厚了「AI 协同 / 双审批 / 对齐器 / 自动成绩单」这一层。
+        <br />交付物：一个让 <b class="high">产品 / 设计 / 研发 / 运营</b> 四角色都能上手的 AI 原生模板生产工作台。
+      </div>
+    </div>
+
+    <div class="qa-row">
+      <div class="qa-q"><b>Q2 产品设计</b>骨架 / 北极星 / MVP</div>
+      <div class="qa-a">
+        <b>骨架四件套</b>：
+        <div class="pillbox">
+          <span class="pill">Agent 输入条 + 抽屉</span>
+          <span class="pill">首页 / 我的工作台</span>
+          <span class="pill">创意广场 + 模板池（草稿/正式）</span>
+          <span class="pill">8 步生产流水线</span>
+        </div>
+        <b>北极星指标</b>：<b class="high">上线后 CTR 提升中位数</b>。
+        <br /><b>MVP（6/30）</b>：以「开屏」场景跑通"标准流"端到端：TAPD 链接 → 体检 → 建壳 → Figma D2C → 对齐 → 编辑 → 测试 → 双审批 → 上线 → 成绩单。
+      </div>
+    </div>
+
+    <div class="qa-row">
+      <div class="qa-q"><b>Q3 差异化</b>和 iDOMO/样式工厂最大的不同</div>
+      <div class="qa-a">
+        <div class="diff-grid">
+          <div class="diff-card before">
+            <h4>现状（iDOMO Plus / 样式工厂）</h4>
+            <ul>
+              <li>· 入口：功能堆叠，各角色各找各的</li>
+              <li>· 角色：研发主导，设计/运营被动</li>
+              <li>· 流转：线性提单 → 等待 → 提交 → 上线</li>
+              <li>· 反馈：上线后效果靠人去拉</li>
+            </ul>
+          </div>
+          <div class="diff-card after">
+            <h4>样式生产管理（新）</h4>
+            <ul>
+              <li>· 入口：<b>Agent 输入条 + 首页 / 我的工作台</b></li>
+              <li>· 角色：<b>四角色同台</b> + <b>对齐器</b>消解冲突</li>
+              <li>· 流转：<b>双审批 + 创意广场前置 + 实验闭环</b></li>
+              <li>· 反馈：<b>自动成绩单</b> + 模拟企微推送</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="qa-row">
+      <div class="qa-q"><b>Q4 兼容性</b>怎么兼容历史 / 怎么过渡</div>
+      <div class="qa-a">
+        · <b>iDOMO 引擎不动</b>，作为底层画布保留（决策 D5）。
+        <br />· <b>存量模板"读但不迁"</b>——保留只读视图，可一键跳回 iDOMO 编辑。
+        <br />· <b>新模板默认走新流</b>，老入口同步保留 90 天，灰度迁移。
+        <br />· 规则配置、洞察归因、问题排查模块通过基座路由跳转，本模块不重做。
+      </div>
+    </div>
+
+    <div class="qa-row">
+      <div class="qa-q"><b>Q5 迭代性</b>能力可拓展性 / 后续规划</div>
+      <div class="qa-a">
+        · <b>Skills 即拓展底座</b>：人人可贡献，A/B/C 分级审核（A=平台审 / B=团队审 / C=自助）。
+        <br />· <b>对齐器</b> 从「Figma↔DSL」扩到「截图/视频/竞品」对齐。
+        <br />· <b>成绩单</b> 从「模板级」扩到「元素级」（与洞察归因模块联动归因到主图/标题/按钮）。
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 用户层 ============ -->
+  <section class="section">
+    <h2>二、用户层 <span class="tag">2 题</span></h2>
+
+    <div class="qa-row">
+      <div class="qa-q"><b>Q6 小白用户可用性</b>是否易上手</div>
+      <div class="qa-a">
+        一进首页只看到 <b>Agent 大输入条 + 首页 / 我的工作台双 Tab</b>，零学习成本。Agent 默认两 Tab 切换：
+        <div class="pillbox">
+          <span class="pill">📋 标准流 · 粘 TAPD 链接</span>
+          <span class="pill">🌀 零稿流 · 粘构想/截图/Figma</span>
+        </div>
+        每个状态都有"下一步该点什么"的明确引导。即便是非工具背景的运营、产品，也能在 5 分钟内提交第一个创意。
+      </div>
+    </div>
+
+    <div class="qa-row">
+      <div class="qa-q"><b>Q7 具体 case 解决</b>典型用例如何走完</div>
+      <div class="qa-a">
+        <b>路演剧本（开屏场景）</b>：
+        <div class="flow">
+          <span class="flow-step">① 粘 TAPD 链接</span><span class="flow-arrow">→</span>
+          <span class="flow-step">② 自动体检</span><span class="flow-arrow">→</span>
+          <span class="flow-step">③ 一键建壳</span><span class="flow-arrow">→</span>
+          <span class="flow-step alt">④ Figma D2C</span><span class="flow-arrow">→</span>
+          <span class="flow-step alt">⑤ 对齐器 diff</span><span class="flow-arrow">→</span>
+          <span class="flow-step">⑥ 编辑预览</span><span class="flow-arrow">→</span>
+          <span class="flow-step">⑦ 自动化测试</span><span class="flow-arrow">→</span>
+          <span class="flow-step alt">⑧ 草稿入库审批</span><span class="flow-arrow">→</span>
+          <span class="flow-step alt">⑨ 上线审批</span><span class="flow-arrow">→</span>
+          <span class="flow-step">⑩ 灰度</span><span class="flow-arrow">→</span>
+          <span class="flow-step">⑪ 成绩单 + 企微推送</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 合作层 ============ -->
+  <section class="section">
+    <h2>三、合作层 <span class="tag">2 题</span></h2>
+
+    <div class="qa-row">
+      <div class="qa-q"><b>Q8 上下游</b>谁给我输入 / 谁拿我输出</div>
+      <div class="qa-a">
+        <table class="struct">
+          <thead><tr><th>类型</th><th>合作方</th><th>接口形态</th></tr></thead>
+          <tbody>
+            <tr><td>上游</td><td>TAPD（需求）</td><td>链接导入 + Skill 体检</td></tr>
+            <tr><td>上游</td><td>Figma（设计）</td><td>插件/链接导入 + D2C</td></tr>
+            <tr><td>上游</td><td>竞品截图 / 灵感</td><td>拖拽 + C2D</td></tr>
+            <tr><td>横向</td><td>iDOMO 引擎</td><td>底层画布（保留，不重做）</td></tr>
+            <tr><td>横向</td><td>实验平台</td><td>白名单 + 实验数据回流</td></tr>
+            <tr><td>横向</td><td>企微</td><td>成绩单卡片自动推送（机器人）</td></tr>
+            <tr><td>下游</td><td>规则配置模块</td><td>路由跳转 + 入参 templateId</td></tr>
+            <tr><td>下游</td><td>洞察归因模块</td><td>路由跳转 + ?action=optimize</td></tr>
+            <tr><td>下游</td><td>问题排查模块</td><td>异常徽章联动 + 一键跳转</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="qa-row">
+      <div class="qa-q"><b>Q9 配合模式</b>四角色怎么协作</div>
+      <div class="qa-a">
+        · <b>产品</b>：TAPD 起单 → Agent 体检后一键拉入；本模块独有「待我审批」队列。
+        <br />· <b>设计</b>：Figma 上传进对齐器，参与上线审批，设计 Review 一票否决。
+        <br />· <b>研发</b>：在画布编辑、审计 Skills 安全级别、维护 DSL 能力。
+        <br />· <b>运营</b>：创意广场首要使用人，提案灵感 → 草稿入库审批进入正式流。
+        <br />· <b>测试</b>：自动化测试为主（多机型/多分辨率回归）+ 人工抽检高风险 Skill。
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 分模块小启发 · 生产 ============ -->
+  <section class="section">
+    <h2>四、分模块小启发 · 生产 <span class="tag">5 题 · 主考题</span></h2>
+
+    <div class="qa-row">
+      <div class="qa-q"><b>P1 模板需求如何输入</b></div>
+      <div class="qa-a">
+        三入口合一在 Agent：① <b>TAPD 链接</b>（标准流 Tab）② <b>构想/截图</b>（零稿流 Tab）③ <b>创意广场提案</b>。
+        前两者直接进生产流水线，第三者经"草稿入库审批"后进入正式流。
+      </div>
+    </div>
+
+    <div class="qa-row">
+      <div class="qa-q"><b>P2 模板如何生产</b></div>
+      <div class="qa-a">
+        D2C / C2D / Smart Prompt + Agent 微调，<b>全程画布在 iDOMO 引擎</b>。本平台是壳，做"准备物料 → 对齐 → 编辑 → 预览 → 测试 → 审批 → 上线 → 成绩单"<b>八步流水线</b>。
+        其中第②步嵌入<b>对齐器</b>（Figma vs DSL diff），第⑥步走<b>双审批</b>。
+      </div>
+    </div>
+
+    <div class="qa-row">
+      <div class="qa-q"><b>P3 模板状态如何流转</b></div>
+      <div class="qa-a">
+        <b>6 态明牌</b>，每个状态都有显式徽章：
+        <div class="flow">
+          <span class="flow-step">💡 创意</span><span class="flow-arrow">→</span>
+          <span class="flow-step">📝 草稿（待入库）</span><span class="flow-arrow">→</span>
+          <span class="flow-step">✏️ 正式草稿</span><span class="flow-arrow">→</span>
+          <span class="flow-step">🚦 待上线</span><span class="flow-arrow">→</span>
+          <span class="flow-step alt">✅ 已上线</span><span class="flow-arrow">→</span>
+          <span class="flow-step alt">📦 已下线/归档</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="qa-row">
+      <div class="qa-q"><b>P4 模板效果如何追溯</b></div>
+      <div class="qa-a">
+        每个上线模板自动生成<b>成绩单卡片</b>：CTR / 消耗 / 实验提升 / 异常归因 / 调优建议 / 回滚按钮。
+        同时支持<b>"模拟企微推送"视图</b>（D9 决策），可一键发送到投放群。
+      </div>
+    </div>
+
+    <div class="qa-row">
+      <div class="qa-q"><b>P5 模板如何优化</b></div>
+      <div class="qa-a">
+        成绩单中"调优建议"→ <b>一键克隆为 v2 草稿</b>继承数据；可跳转洞察归因模块（带参数 <code>?templateId=&action=optimize</code>），由洞察归因给出元素级归因建议后回流本模块继续生产。
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 协同接口 ============ -->
+  <section class="section">
+    <h2>五、与基座的协同接口 <span class="tag">5/29 必交</span></h2>
+    <div class="interface-grid">
+      <div class="iface-card">
+        <h4>① AI 路由关键词 <span class="must">必</span></h4>
+        <p><b>15 个关键词</b>：模板 / D2C / C2D / 新建模板 / 导入 TAPD / 截图变模板 / 模板体检 / 设计稿对齐 / DSL 对齐 / 我的模板 / 模板成绩单 / 上线审批 / 入库审批 / 自动化测试 / 回滚模板</p>
+      </div>
+      <div class="iface-card">
+        <h4>② 首页看板卡片 <span class="must">必</span></h4>
+        <p>A · 场景形态分布（开屏/插屏/激励/原生 模板数 + CTR 区间）</p>
+        <p>B · 效率最佳模板 Top5（按 CTR 提升排序）</p>
+      </div>
+      <div class="iface-card">
+        <h4>③ Skills 提报 <span class="must">必</span></h4>
+        <p>TAPD 体检(B) / Figma D2C(B) / 截图 C2D(B) / 设计稿对齐器(B) / 模板自动化测试(A) / 成绩单生成(B) / 配色生成(C) / 物理属性自动配置(B)</p>
+      </div>
+      <div class="iface-card">
+        <h4>④ 数据口径 <span class="opt">建议</span></h4>
+        <p>视角：场景 / 赛道 / 预算 / 时间窗</p>
+        <p>指标：模板数 · CTR · 消耗 · 实验提升</p>
+      </div>
+      <div class="iface-card">
+        <h4>⑤ 入口参数 <span class="opt">建议</span></h4>
+        <p><code>?module=produce&action=create|edit|review|optimize&industry=&scene=&templateId=&tapdId=</code></p>
+      </div>
+      <div class="iface-card">
+        <h4>⑥ 历史承接 <span class="opt">建议</span></h4>
+        <p>承接 iDOMO Plus 全部生产流；iDOMO 引擎做底层画布保留；本模块在其上叠加双入口 Agent / Skills / 对齐器 / 双审批 / 协同与成绩单。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="footer">
+    样式生产管理 · 一页纸 v0.1 · 路演态 · 2026-05-29 · 配套：<a href="./index.html" style="color:var(--color-primary);">Demo</a> / <a href="./decisions.html" style="color:var(--color-primary);">决策档案</a> / <a href="./script.html" style="color:var(--color-primary);">10min 讲稿</a>
+  </div>
+
+</div>
+
+</body>
+</html>

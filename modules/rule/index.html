@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>规则配置 · 联盟样式工作台</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; background: #f5f6f8; color: #1a202c; line-height: 1.6; }
+  .topbar { background: #fff; border-bottom: 1px solid #e2e8f0; padding: 14px 28px; display: flex; align-items: center; gap: 12px; }
+  .topbar .back { font-size: 13px; color: #2b6cb0; text-decoration: none; }
+  .topbar h1 { font-size: 17px; font-weight: 600; }
+  .topbar .tag { font-size: 11px; background: #fef3e6; color: #c05621; padding: 2px 8px; border-radius: 4px; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 26px 28px; display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+  .panel { background: #fff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 24px 24px 26px; position: relative; min-height: 200px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); transition: box-shadow 0.15s; }
+  .panel:hover { box-shadow: 0 4px 14px rgba(0,0,0,0.07); }
+  .panel::before { content: ''; position: absolute; top: 0; left: 24px; right: 24px; height: 3px; background: #2b6cb0; border-radius: 0 0 3px 3px; opacity: 0.85; }
+  .panel h2 { font-size: 16px; font-weight: 600; margin-bottom: 5px; }
+  .panel .sub { font-size: 12px; color: #718096; margin-bottom: 20px; }
+  .from-base { background: #f7fbff; border: 1px solid #bee3f8; border-radius: 10px; padding: 12px 16px; font-size: 13px; color: #2b6cb0; margin-bottom: 18px; display: none; }
+  .from-base strong { color: #1a4971; }
+  .field { margin-bottom: 18px; }
+  .field-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+  .field-label { font-size: 13px; font-weight: 500; }
+  .switch { font-size: 11px; color: #718096; }
+  .switch input { vertical-align: middle; }
+  .seg { display: inline-flex; border: 1px solid #cbd5e0; border-radius: 7px; overflow: hidden; margin-bottom: 12px; }
+  .seg button { font-size: 12px; padding: 7px 18px; background: #fff; border: none; cursor: pointer; color: #4a5568; }
+  .seg button.active { background: #2b6cb0; color: #fff; }
+  .inp { width: 100%; border: 1px solid #cbd5e0; border-radius: 8px; padding: 11px 12px; font-size: 13px; }
+  .inp:focus { outline: none; border-color: #2b6cb0; box-shadow: 0 0 0 2px rgba(43,108,176,0.1); }
+  .logic-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .logic-opt { border: 1px solid #cbd5e0; border-radius: 10px; padding: 14px 14px; cursor: pointer; font-size: 13px; transition: all 0.12s; }
+  .logic-opt:hover { border-color: #90b8e0; }
+  .logic-opt.active { border-color: #2b6cb0; background: #ebf8ff; color: #2b6cb0; font-weight: 500; }
+  .logic-opt small { display: block; font-size: 11px; color: #718096; font-weight: 400; margin-top: 4px; }
+  .logic-opt.active small { color: #4a7cb0; }
+  .hint { font-size: 11px; color: #a0aec0; margin-top: 6px; }
+  .actions { grid-column: 1 / -1; display: flex; gap: 12px; align-items: center; }
+  .btn-primary { background: #2b6cb0; color: #fff; border: none; border-radius: 8px; padding: 11px 24px; font-size: 14px; font-weight: 500; cursor: pointer; }
+  .btn-ghost { background: #fff; border: 1px solid #cbd5e0; border-radius: 8px; padding: 11px 20px; font-size: 14px; cursor: pointer; }
+  .flow-note { font-size: 12px; color: #718096; }
+  .flow-note b { color: #2b6cb0; }
+  /* 预检弹窗 */
+  .mask { position: fixed; inset: 0; background: rgba(0,0,0,0.2); display: none; align-items: center; justify-content: center; z-index: 100; }
+  .modal { background: #fff; border-radius: 14px; width: 540px; max-width: 92vw; padding: 22px 24px; box-shadow: 0 12px 40px rgba(0,0,0,0.22); }
+  .modal h3 { font-size: 16px; margin-bottom: 14px; }
+  .check-block { border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px; margin-bottom: 12px; }
+  .check-block .cb-title { font-size: 13px; font-weight: 500; margin-bottom: 8px; }
+  .check-block .cb-title.warn { color: #c05621; }
+  .check-block .cb-title.ok { color: #25794a; }
+  .check-item { font-size: 12px; color: #4a5568; padding: 4px 0; }
+  .modal-actions { display: flex; gap: 12px; justify-content: flex-end; margin-top: 6px; }
+  .approval { grid-column: 1/-1; background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px 20px; }
+  .approval h2 { font-size: 15px; font-weight: 600; margin-bottom: 12px; }
+  .flow-steps { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .flow-step { font-size: 12px; padding: 6px 12px; border-radius: 16px; background: #f1f5f9; color: #718096; }
+  .flow-step.done { background: #ebf8ff; color: #2b6cb0; }
+  .flow-arrow { color: #cbd5e0; }
+  .meta-note { grid-column: 1/-1; font-size: 12px; color: #94a0ad; border-top: 1px dashed #e2e8f0; padding-top: 12px; }
+</style>
+</head>
+<body>
+<div class="topbar">
+  <a class="back" href="../../index.html">← 返回工作台首页</a>
+  <h1>⚙️ 规则配置</h1>
+  <span class="tag">Demo · owner 昌仔</span>
+</div>
+
+<div class="wrap">
+  <!-- 从基座带入的 prompt 提示 -->
+  <div class="from-base" id="fromBase" style="grid-column:1/-1">
+    🔗 来自工作台：已根据你的 prompt 解析并预填下方表单，请核对修改 ——「<span id="basePrompt"></span>」
+  </div>
+
+  <!-- 流量侧 -->
+  <div class="panel">
+    <h2>流量范围</h2>
+    <div class="sub">该规则作用的流量侧范围</div>
+    <div class="field">
+      <div class="field-head">
+        <span class="field-label">启用流量侧</span>
+        <label class="switch"><input type="checkbox" id="trafficSwitch" checked onchange="syncTemplate()"> 开</label>
+      </div>
+      <div class="seg">
+        <button class="active">包含</button>
+        <button>剔除</button>
+      </div>
+      <input class="inp" id="trafficTag" placeholder="标签id xxx（四位，1-9999）">
+      <div class="hint">媒体id/广告位id 为 13 位；标签id 为四位</div>
+    </div>
+  </div>
+
+  <!-- 预算侧 -->
+  <div class="panel">
+    <h2>预算范围</h2>
+    <div class="sub">该规则作用的预算侧范围</div>
+    <div class="field">
+      <div class="field-head">
+        <span class="field-label">启用预算侧</span>
+        <label class="switch"><input type="checkbox" id="budgetSwitch" onchange="syncTemplate()"> 开</label>
+      </div>
+      <div class="seg">
+        <button class="active">包含</button>
+        <button>剔除</button>
+      </div>
+      <input class="inp" id="budgetTag" placeholder="标签id xxx（四位，1-9999）">
+      <div class="hint">打开预算侧后，模板id 自动与流量侧保持一致</div>
+    </div>
+  </div>
+
+  <!-- 模板范围 -->
+  <div class="panel">
+    <h2>模板范围</h2>
+    <div class="sub">规则涉及的模板（流量/预算两侧一致）</div>
+    <input class="inp" id="templateId" placeholder="模板id（七位，100xxxx）">
+    <div class="hint" id="syncNote"></div>
+  </div>
+
+  <!-- 模板生效逻辑 -->
+  <div class="panel">
+    <h2>模板生效逻辑</h2>
+    <div class="sub">命中范围后，模板如何生效</div>
+    <div class="logic-grid">
+      <div class="logic-opt active" onclick="pickLogic(this,'高优')">高优<small>命中后优先出</small></div>
+      <div class="logic-opt" onclick="pickLogic(this,'圈定')">圈定<small>仅在范围内出</small></div>
+      <div class="logic-opt" onclick="pickLogic(this,'屏蔽30%')">屏蔽（30%）<small>按比例屏蔽</small></div>
+      <div class="logic-opt" onclick="pickLogic(this,'强中只出')">强中只出<small>强制只出该模板</small></div>
+    </div>
+  </div>
+
+  <!-- 操作 -->
+  <div class="actions">
+    <button class="btn-primary" onclick="openPrecheck()">一键新建规则</button>
+    <button class="btn-ghost">存草稿</button>
+    <span class="flow-note">提交后进入：<b>已提交 → 冲突方确认 → 业务审批 → 灰度 → 已上线</b></span>
+  </div>
+
+  <!-- 审批流（提交后显示） -->
+  <div class="approval" id="approval" style="display:none">
+    <h2>规则审批流</h2>
+    <div class="flow-steps">
+      <span class="flow-step done">已提交</span><span class="flow-arrow">→</span>
+      <span class="flow-step done">冲突方确认中</span><span class="flow-arrow">→</span>
+      <span class="flow-step">业务审批确认</span><span class="flow-arrow">→</span>
+      <span class="flow-step">灰度中</span><span class="flow-arrow">→</span>
+      <span class="flow-step">已上线</span>
+    </div>
+  </div>
+
+  <div class="meta-note">
+    设计注释：本页为规则配置真实落地形态的本地复刻——配置页不展示"AI 转结构化"过程，仅呈现 流量范围 × 预算范围 × 模板范围 × 生效逻辑 的结构化表单。基座带来的 prompt 在进入时解析并预填字段。
+  </div>
+</div>
+
+<!-- 预检弹窗 -->
+<div class="mask" id="mask">
+  <div class="modal">
+    <h3>提交前预检</h3>
+    <div class="check-block">
+      <div class="cb-title warn">⚠ 历史规则冲突</div>
+      <div class="check-item">· 模板 1001200 已存在一条「标签 1003 · 圈定」规则，与本次「高优」存在生效优先级界定，建议确认优先级</div>
+      <div class="check-item">· 无黑白名单逻辑冲突</div>
+    </div>
+    <div class="check-block">
+      <div class="cb-title ok">📊 上线后影响面（检索后展示）</div>
+      <div class="check-item">· 预计影响模板召回量：+12%（该标签下日均请求约 320w）</div>
+      <div class="check-item">· 推荐复用：可将模板 id 添加到已有规则 #0312（关联度高）</div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-ghost" onclick="closePrecheck()">取消</button>
+      <button class="btn-primary" onclick="submitRule()">确认提交发布</button>
+    </div>
+  </div>
+</div>
+
+<script>
+let curLogic = '高优';
+function pickLogic(el, name) {
+  document.querySelectorAll('.logic-opt').forEach(o => o.classList.remove('active'));
+  el.classList.add('active');
+  curLogic = name;
+}
+function syncTemplate() {
+  const t = document.getElementById('trafficSwitch').checked;
+  const b = document.getElementById('budgetSwitch').checked;
+  const note = document.getElementById('syncNote');
+  if (t && b) note.textContent = '✓ 流量侧与预算侧已同时启用，模板id 强制保持一致';
+  else note.textContent = '';
+}
+function openPrecheck() { document.getElementById('mask').style.display = 'flex'; }
+function closePrecheck() { document.getElementById('mask').style.display = 'none'; }
+function submitRule() {
+  closePrecheck();
+  document.getElementById('approval').style.display = 'block';
+  document.getElementById('approval').scrollIntoView({ behavior: 'smooth' });
+}
+// 解析基座带入的 prompt，预填表单
+(function initFromBase() {
+  const p = new URLSearchParams(location.search);
+  const prompt = p.get('prompt');
+  if (!prompt) return;
+  document.getElementById('fromBase').style.display = 'block';
+  document.getElementById('basePrompt').textContent = prompt;
+  // 简易解析：模板id（7位）、标签id（4位）、生效逻辑关键词
+  const tpl = prompt.match(/\b(100\d{4})\b/);
+  if (tpl) document.getElementById('templateId').value = tpl[1];
+  const tag = prompt.match(/标签\s*(\d{1,4})/);
+  if (tag) document.getElementById('trafficTag').value = tag[1];
+  const logicMap = { '高优':'高优', '圈定':'圈定', '屏蔽':'屏蔽30%', '强中只出':'强中只出' };
+  for (const k in logicMap) {
+    if (prompt.includes(k)) {
+      document.querySelectorAll('.logic-opt').forEach(o => {
+        o.classList.toggle('active', o.textContent.startsWith(logicMap[k].replace('30%','')));
+      });
+      curLogic = logicMap[k];
+      break;
+    }
+  }
+  if (/预算/.test(prompt)) { document.getElementById('budgetSwitch').checked = true; syncTemplate(); }
+})();
+</script>
+</body>
+</html>

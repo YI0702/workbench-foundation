@@ -1,0 +1,69 @@
+/* ============================================================
+   视觉令牌 · 完全对齐基座 workbench-foundation
+   来源：直接抓取 https://yi0702.github.io/workbench-foundation/styles.css
+   原则：
+     - 仅修改 token 数值，不改业务样式与 HTML 结构
+     - 命名沿用本 demo 既有 var 名，把"值"映射到基座真实值
+     - 业务里硬编码的功能色（红包绿 / 徽章配色等）不动
+   ============================================================ */
+:root {
+  /* === 主色 / 辅色（基座 Tailwind 蓝体系） === */
+  --color-primary:        #2b6cb0;   /* 基座 --primary */
+  --color-primary-hover:  #1e4a8a;   /* 基座 --primary-dark */
+  --color-primary-soft:   #ebf8ff;   /* 基座蓝色软背景 */
+  --color-primary-light:  #4299e1;   /* 基座 --primary-light，焦点环用 */
+
+  --color-purple:         #6b46c1;   /* 基座社区紫（mp-user / 社区技能） */
+  --color-purple-soft:    #faf5ff;   /* 基座紫色软背景 */
+
+  --color-success:        #38a169;   /* 基座 --success */
+  --color-success-soft:   #f0fff4;
+  --color-warning:        #d69e2e;   /* 基座 --warn */
+  --color-warning-soft:   #fffbeb;
+  --color-danger:         #c53030;   /* 基座 --danger */
+  --color-danger-soft:    #fff5f5;
+
+  /* === 中性（基座灰阶 + 米色元注释体系） === */
+  --color-bg:             #f7fafc;   /* 基座 --bg */
+  --color-card:           #ffffff;   /* 基座 --bg-section */
+  --color-card-2:         #f7fafc;   /* 基座次级背景统一也是浅灰 */
+  --color-demo-bg:        #fafaf6;   /* 基座 --meta-bg 米色，给"走查注释"用 */
+  --color-text-1:         #1a202c;   /* 基座 --text */
+  --color-text-2:         #4a5568;   /* 基座 --text-sub */
+  --color-text-3:         #718096;   /* 基座 --text-light */
+  --color-text-4:         #a0aec0;   /* 基座更浅的灰，禁用态用 */
+  --color-border:         #e2e8f0;   /* 基座 --border */
+  --color-border-2:       #cbd5e0;   /* 基座 --border-strong */
+
+  /* === 圆角（基座更克制：卡片 10px，不是 12px） === */
+  --radius-card:          10px;      /* 基座 board-card / scene-card */
+  --radius-md:            8px;       /* 基座 module-section 等中尺寸 */
+  --radius-btn:           6px;       /* 基座 model-selector / skill-tab */
+  --radius-pill:          14px;      /* 基座 hint-tag / filter-chip */
+  --radius-badge:         4px;       /* 基座 env-tag / btn-apply */
+
+  /* === 阴影（基座规范：极轻） === */
+  --shadow-card:          0 1px 3px rgba(0,0,0,0.05);     /* 基座 --shadow-sm */
+  --shadow-card-hover:    0 4px 12px rgba(0,0,0,0.08);    /* 基座 --shadow-md */
+  --shadow-pop:           0 4px 12px rgba(0,0,0,0.08);    /* 基座弹层用同一档 */
+
+  /* === 间距（保持，与基座间距体系一致） === */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 20px;
+  --sp-6: 24px;
+  --sp-8: 32px;
+
+  /* === 字号（向基座靠：基座正文 14px，标题更克制） === */
+  --fs-h1:   22px;  /* 基座 module-header h1 */
+  --fs-h2:   18px;  /* 基座 layer-header h2 */
+  --fs-h3:   15px;  /* 基座 module-section h2 */
+  --fs-body: 14px;  /* 基座正文 */
+  --fs-cap:  12px;  /* 基座辅助文本 */
+
+  /* === 字体栈（与基座完全一致） === */
+  --ff-base: -apple-system, BlinkMacSystemFont, "PingFang SC",
+             "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+}
