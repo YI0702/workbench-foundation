@@ -3,584 +3,836 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>联盟样式一站式工作台 · 基座 Demo</title>
-<link rel="stylesheet" href="styles.css">
+<title>联盟样式一站式工作台</title>
+<style>
+:root {
+  --primary: #1a6ef5;
+  --primary-hover: #1558d6;
+  --text: #1a202c;
+  --text-sub: #4a5568;
+  --text-light: #718096;
+  --border: #e8ecf0;
+  --bg: #f4f6fa;
+  --bg-card: #fff;
+  --success: #22a06b;
+  --warn: #d97706;
+  --danger: #dc2626;
+  --shadow-sm: 0 1px 4px rgba(0,0,0,0.06);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+  --radius: 12px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; font-size: 14px; line-height: 1.6; color: var(--text); background: var(--bg); }
+button { cursor: pointer; border: none; outline: none; font-family: inherit; }
+a { color: inherit; text-decoration: none; }
+ul { list-style: none; }
+
+/* ===== 顶部导航 ===== */
+.topbar {
+  background: #fff;
+  border-bottom: 1px solid var(--border);
+  padding: 0 32px;
+  height: 56px;
+  display: flex; justify-content: space-between; align-items: center;
+  position: sticky; top: 0; z-index: 100;
+  box-shadow: var(--shadow-sm);
+}
+.topbar-left { display: flex; align-items: center; gap: 12px; }
+.logo { font-size: 15px; font-weight: 600; letter-spacing: -0.3px; }
+.env-tag { font-size: 11px; padding: 2px 8px; background: #eef4ff; color: var(--primary); border-radius: 4px; }
+.topbar-nav { display: flex; gap: 4px; }
+.tn-item {
+  font-size: 13px; padding: 6px 14px; border-radius: 6px;
+  color: var(--text-sub); cursor: pointer; transition: all 0.15s;
+}
+.tn-item:hover, .tn-item.active { background: #eef4ff; color: var(--primary); }
+.topbar-right { display: flex; align-items: center; gap: 12px; }
+.avatar {
+  width: 30px; height: 30px; border-radius: 50%;
+  background: var(--primary); color: #fff;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 600;
+}
+
+/* ===== 主体 ===== */
+.main { max-width: 1320px; margin: 0 auto; padding: 28px 32px 60px; }
+
+/* ===== Section 通用 ===== */
+.section { margin-bottom: 40px; }
+.section-head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 18px; }
+.section-title { font-size: 16px; font-weight: 600; }
+.section-sub { font-size: 13px; color: var(--text-light); }
+
+/* ===== 工作流入口 · 模块卡片 (Hikari风格) ===== */
+.module-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+.module-card {
+  background: var(--bg-card);
+  border-radius: var(--radius);
+  padding: 28px 24px 22px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: box-shadow 0.18s, transform 0.18s;
+  display: flex; flex-direction: column; gap: 10px;
+}
+.module-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+.mc-icon {
+  width: 44px; height: 44px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; margin-bottom: 4px;
+}
+.mc-icon-produce { background: #eef4ff; }
+.mc-icon-rule { background: #fff7ed; }
+.mc-icon-insight { background: #f0fdf4; }
+.mc-icon-trouble { background: #fef2f2; }
+.mc-name { font-size: 18px; font-weight: 600; letter-spacing: -0.3px; }
+.mc-en { font-size: 12px; color: var(--text-light); margin-top: -4px; }
+.mc-desc { font-size: 13px; color: var(--text-sub); line-height: 1.7; flex: 1; }
+.mc-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+.mc-tag {
+  font-size: 12px; padding: 3px 10px;
+  border-radius: 20px; background: #f1f5f9;
+  color: var(--text-sub); border: 1px solid var(--border);
+  transition: background 0.12s;
+}
+.mc-tag:hover { background: #eef4ff; color: var(--primary); }
+.mc-tag-produce { color: var(--primary); background: #eef4ff; border-color: #c7d9ff; }
+.mc-tag-rule { color: #c2570e; background: #fff7ed; border-color: #fde68a; }
+.mc-tag-insight { color: var(--success); background: #f0fdf4; border-color: #bbf7d0; }
+.mc-tag-trouble { color: var(--danger); background: #fef2f2; border-color: #fecaca; }
+
+/* ===== 工作视图 ===== */
+.view-filters {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  margin-bottom: 16px;
+}
+.filter-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.filter-row:last-child { margin-bottom: 0; }
+.filter-label { font-size: 12px; color: var(--text-light); width: 68px; flex-shrink: 0; }
+.time-btn, .mode-btn {
+  font-size: 12px; padding: 4px 12px;
+  background: #f1f5f9; border-radius: 6px;
+  color: var(--text-sub); transition: all 0.15s;
+}
+.time-btn:hover, .mode-btn:hover { background: #eef4ff; color: var(--primary); }
+.time-btn.active, .mode-btn.active { background: var(--primary); color: #fff; }
+.filter-detail { margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); }
+.fdim-row { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 8px; }
+.fdim-label { font-size: 12px; color: var(--text-light); width: 44px; padding-top: 4px; flex-shrink: 0; }
+.fdim-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.fc { display: inline-flex; align-items: center; gap: 4px; }
+.fc input { width: 13px; height: 13px; accent-color: var(--primary); }
+.fc span { font-size: 12px; color: var(--text-sub); }
+.filter-actions { display: flex; align-items: center; gap: 8px; margin-top: 10px; }
+.btn-apply {
+  font-size: 12px; padding: 5px 16px;
+  background: var(--primary); color: #fff; border-radius: 6px;
+}
+.btn-reset { font-size: 12px; padding: 5px 14px; background: #f1f5f9; border-radius: 6px; color: var(--text-sub); }
+.filter-summary { font-size: 12px; color: var(--text-light); margin-left: 4px; }
+
+/* 看板网格 */
+.board { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.board-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+.board-card.card-full { grid-column: span 2; }
+.card-hd {
+  padding: 14px 18px 10px;
+  display: flex; justify-content: space-between; align-items: center;
+  border-bottom: 1px solid var(--border);
+}
+.card-hd-title { font-size: 13px; font-weight: 600; }
+.card-link { font-size: 12px; color: var(--primary); }
+.card-body { padding: 14px 18px; }
+
+/* 看板 · 在线模板情况 */
+.stat-row {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px; margin-bottom: 12px;
+}
+.stat-item {}
+.stat-label { font-size: 11px; color: var(--text-light); margin-bottom: 2px; }
+.stat-val { font-size: 22px; font-weight: 600; letter-spacing: -0.5px; }
+.stat-unit { font-size: 12px; color: var(--text-sub); margin-left: 2px; font-weight: 400; }
+.stat-sub { font-size: 11px; color: var(--text-light); margin-top: 2px; }
+.stat-up { color: var(--danger); }
+.stat-down { color: var(--success); }
+.tpl-mini-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.tpl-mini-table th { text-align: left; color: var(--text-light); font-weight: 400; padding: 4px 6px; border-bottom: 1px solid var(--border); }
+.tpl-mini-table td { padding: 6px 6px; border-bottom: 1px solid #f1f5f9; }
+.tpl-mini-table tr:last-child td { border-bottom: none; }
+.st { display: inline-block; font-size: 10px; padding: 1px 6px; border-radius: 8px; }
+.st-on { background: #dcfce7; color: #15803d; }
+.st-exp { background: #fef9c3; color: #854d0e; }
+
+/* 看板 · 在线规则情况 */
+.rule-row { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid #f1f5f9; font-size: 13px; }
+.rule-row:last-child { border-bottom: none; }
+.rule-name { color: var(--text-sub); }
+.rule-val { font-weight: 600; }
+
+/* 看板 · case情况 */
+.case-row { display: flex; align-items: center; gap: 8px; padding: 7px 0; border-bottom: 1px solid #f1f5f9; font-size: 12px; }
+.case-row:last-child { border-bottom: none; }
+.case-badge { display: inline-block; font-size: 10px; padding: 1px 6px; border-radius: 6px; font-weight: 500; flex-shrink: 0; }
+.cb-p0 { background: #fef2f2; color: var(--danger); }
+.cb-p1 { background: #fff7ed; color: var(--warn); }
+.cb-done { background: #f0fdf4; color: var(--success); }
+.case-desc { flex: 1; color: var(--text); }
+.case-prog { color: var(--text-light); flex-shrink: 0; }
+
+/* 看板 · 近期操作 */
+.op-row { display: grid; grid-template-columns: 50px 50px 60px 80px 1fr; gap: 6px; align-items: center; padding: 7px 0; border-bottom: 1px solid #f1f5f9; font-size: 12px; }
+.op-row:last-child { border-bottom: none; }
+.op-time { color: var(--text-light); }
+.op-src { display: inline-block; padding: 1px 7px; border-radius: 8px; font-size: 11px; font-weight: 500; }
+.op-src-tpl { background: #eef4ff; color: var(--primary); }
+.op-src-rule { background: #fff7ed; color: #c2570e; }
+.op-src-case { background: #fef2f2; color: var(--danger); }
+.op-who { color: var(--text-sub); }
+.op-type { color: var(--text-sub); }
+.op-id { color: var(--text-light); font-family: "SF Mono", Menlo, monospace; }
+
+/* ===== 样式资产 ===== */
+.asset-tabs { display: flex; gap: 6px; margin-bottom: 16px; }
+.at-btn {
+  font-size: 13px; padding: 6px 16px;
+  border-radius: 20px; background: var(--bg-card);
+  border: 1px solid var(--border); color: var(--text-sub);
+  cursor: pointer; transition: all 0.15s;
+}
+.at-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+.asset-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.asset-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  transition: box-shadow 0.15s;
+}
+.asset-card:hover { box-shadow: var(--shadow-md); }
+/* 动效预览区 */
+.asset-preview {
+  height: 180px;
+  background: #1a202c;
+  position: relative;
+  overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+}
+.preview-phone {
+  width: 88px; height: 148px;
+  background: #fff; border-radius: 14px;
+  border: 3px solid #4a5568;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+  position: relative;
+}
+/* 广告动效模拟 */
+.ad-sim {
+  width: 100%; height: 100%;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 4px;
+  animation: adPulse 2s ease-in-out infinite;
+}
+@keyframes adPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+.ad-img-sim {
+  width: 80%; height: 55%;
+  border-radius: 4px;
+}
+.ad-btn-sim {
+  font-size: 8px; padding: 3px 10px;
+  border-radius: 10px; color: #fff; font-weight: 600;
+}
+.ad-title-sim { font-size: 7px; color: #1a202c; font-weight: 600; text-align: center; }
+.asset-scene-badge {
+  position: absolute; top: 10px; left: 10px;
+  font-size: 10px; padding: 2px 8px; border-radius: 8px;
+  background: rgba(0,0,0,0.5); color: #fff;
+}
+.asset-type-badge {
+  position: absolute; top: 10px; right: 10px;
+  font-size: 10px; padding: 2px 8px; border-radius: 8px;
+}
+.atb-main { background: #fef9c3; color: #854d0e; }
+.atb-flow { background: #eef4ff; color: var(--primary); }
+.atb-budget { background: #f0fdf4; color: #15803d; }
+
+.asset-info { padding: 14px 16px; }
+.asset-name { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+.asset-meta { font-size: 12px; color: var(--text-light); margin-bottom: 10px; }
+.asset-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.astat { text-align: center; }
+.astat-label { font-size: 10px; color: var(--text-light); margin-bottom: 2px; }
+.astat-val { font-size: 14px; font-weight: 600; }
+.astat-divider { width: 1px; background: var(--border); margin: 2px 0; }
+</style>
 </head>
 <body>
 
-<!-- 顶部导航（用户可见 UI） -->
 <header class="topbar">
   <div class="topbar-left">
-    <span class="logo">🎯 联盟样式一站式工作台</span>
-    <span class="env-tag">基座 Demo · v0.3</span>
+    <span class="logo">联盟样式一站式工作台</span>
+    <span class="env-tag">Demo · v0.4</span>
   </div>
+  <nav class="topbar-nav">
+    <span class="tn-item active" onclick="scrollTo('module-area')">工作流入口</span>
+    <span class="tn-item" onclick="scrollTo('board-area')">工作视图</span>
+    <span class="tn-item" onclick="scrollTo('asset-area')">样式资产</span>
+  </nav>
   <div class="topbar-right">
-    <span class="avatar" title="herminaliu">H</span>
+    <span class="avatar">H</span>
   </div>
 </header>
 
-<!-- 层级快捷导航 -->
-<div class="nav-banner">
-  <div class="nav-banner-inner">
-    <span class="nav-paths">
-      <a class="path-chip" onclick="document.getElementById('aiInput').focus()">① AI 对话</a>
-      <a class="path-chip" href="#scene-area">② 场景卡片</a>
-      <a class="path-chip" href="#board-area">③ 工作视图</a>
-      <a class="path-chip" href="#skills-area">④ Skills</a>
-    </span>
-  </div>
-</div>
-
-<!-- 主体 -->
 <main class="main">
 
-  <!-- ============== 第一层：AI 对话入口 ============== -->
-  <section class="layer layer-ai">
-    <div class="layer-inner">
-      <div class="ai-greet">
-        <h1>你好，今天想做点什么？</h1>
-        <p class="ai-sub">用自然语言描述你的目标，我会带你到对应的工作环节。</p>
-      </div>
+  <!-- ====== 第一层：工作流入口 · 模块化卡片 ====== -->
+  <div class="section" id="module-area">
+    <div class="section-head">
+      <span class="section-title">工作流入口</span>
+      <span class="section-sub">选择模块，直达对应工作流</span>
+    </div>
 
-      <!-- 标准对话框：输入区在上，工具栏在下 -->
-      <div class="chat-box">
-        <!-- 顶部小工具：@提及 / 附件（非 630 范围，置灰，点击展开格式说明） -->
-        <div class="chat-top-tools">
-          <button class="chat-tool-btn is-out630" title="@提及模板/规则/媒体" onclick="toggleToolPop(event,'atPop')">
-            @
-            <span class="scope-badge out630">非630</span>
-          </button>
-          <button class="chat-tool-btn is-out630" title="上传附件" onclick="toggleToolPop(event,'filePop')">
-            📎
-            <span class="scope-badge out630">非630</span>
-          </button>
-          <!-- @ 弹层 -->
-          <div class="tool-pop" id="atPop" style="display:none">
-            <div class="tool-pop-title">@ 提及对象</div>
-            <div class="tool-pop-body">引用具体实体，让对话带上下文：<br>@模板ID · @规则 · @媒体ID · @广告位ID</div>
-            <div class="tool-pop-foot">二期能力 · 非 630 交付范围</div>
-          </div>
-          <!-- 附件弹层 -->
-          <div class="tool-pop" id="filePop" style="display:none">
-            <div class="tool-pop-title">支持上传格式</div>
-            <div class="tool-pop-body">
-              <span class="fmt-chip">doc</span><span class="fmt-chip">xlsx</span><span class="fmt-chip">md</span><span class="fmt-chip">png</span><span class="fmt-chip">jpg</span><span class="fmt-chip">json</span>
-              <div class="tool-pop-hint">如：上传 TAPD 导出 doc、竞品截图 png、回包 json</div>
-            </div>
-            <div class="tool-pop-foot">二期能力 · 非 630 交付范围</div>
-          </div>
-        </div>
-
-        <!-- 输入区 -->
-        <textarea
-          class="chat-input"
-          id="aiInput"
-          placeholder="例如：模板 1001200 改成只在流量范围 A 下出，帮我评估风险 / 媒体 ID 10107877965230 在开屏出不了 1003230，帮我排查"
-          rows="3"
-        ></textarea>
-
-        <!-- 底部工具栏：模型切换 + 技能挂载 + 发送 -->
-        <div class="chat-bottom-bar">
-          <div class="chat-bottom-left">
-            <!-- 模型选择器 -->
-            <div class="model-selector" onclick="toggleModelDropdown(event)">
-              <span class="ms-icon">✨</span>
-              <span class="ms-name" id="currentModelName">混元 HY3</span>
-              <span class="ms-arrow">⌄</span>
-              <div class="model-dropdown" id="modelDropdown">
-                <div class="md-item active" onclick="switchModel('混元 HY3', '✨')">
-                  <span class="md-icon">✨</span><span class="md-name">混元 HY3</span><span class="md-tag">默认</span>
-                </div>
-                <div class="md-item" onclick="switchModel('DeepSeek-V3.2', '🌊')">
-                  <span class="md-icon">🌊</span><span class="md-name">DeepSeek-V3.2</span>
-                </div>
-                <div class="md-item" onclick="switchModel('Claude-Opus-4.8', '🪐')">
-                  <span class="md-icon">🪐</span><span class="md-name">Claude-Opus-4.8</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- 技能：官方（只读折叠）+ 个人挂载（可选）-->
-            <div class="skill-mount-btn" onclick="toggleSkillPanel(event)">
-              <span class="sm-icon">🛠️</span>
-              <span class="sm-text">技能</span>
-              <span class="sm-count" id="skillCount">2</span>
-            </div>
-
-            <!-- 已挂载个人技能预览（仅个人，官方不在工具栏展示） -->
-            <div class="mounted-preview" id="mountedPreview">
-              <span class="mp-tag mp-user" id="userMountedTag" style="display:none">
-                <span id="userMountedName">—</span>
-                <span class="mp-remove" onclick="event.stopPropagation();unmountUserSkill()">✕</span>
-              </span>
-            </div>
-          </div>
-
-          <div class="chat-bottom-right">
-            <button class="chat-send-btn" onclick="handleAISubmit()" title="发送">➤</button>
-          </div>
-        </div>
-
-        <!-- 技能挂载面板（默认隐藏） -->
-        <div class="skill-panel" id="skillPanel" style="display:none">
-          <!-- 官方技能：折叠列表，只读 -->
-          <div class="sp-section">
-            <div class="sp-section-title sp-section-toggle" onclick="toggleOfficialList(event)">
-              <span>🏛️ 官方技能 · <strong id="officialCount">2</strong> 个 · 默认全部挂载 <span class="scope-badge in630">630范围</span></span>
-              <span class="sp-toggle-arrow" id="officialArrow">▸</span>
-            </div>
-            <div class="sp-section-help">每次对话自动调用 · 仅展示，不可手动开关</div>
-            <div class="sp-list sp-list-collapsed" id="officialList">
-              <div class="sp-item sp-locked">
-                <span class="sp-name">模板规则审查</span>
-                <span class="sp-meta">沉淀模块：规则配置</span>
-                <span class="sp-status">✓ 默认挂载</span>
-              </div>
-              <div class="sp-item sp-locked">
-                <span class="sp-name">模板问题排查</span>
-                <span class="sp-meta">沉淀模块：问题排查</span>
-                <span class="sp-status">✓ 默认挂载</span>
-              </div>
-              <div class="sp-readonly-tip">📖 列表仅供查看 · 由各模块持续沉淀</div>
-            </div>
-          </div>
-
-          <!-- 个人/社区技能：可选（非 630，置灰） -->
-          <div class="sp-section is-out630">
-            <div class="sp-section-title">
-              <span>🌱 个人 / 社区技能 · 按需挂载 <span class="scope-badge out630">非630</span></span>
-              <span class="sp-section-help">最多 1 个 · 二期交付</span>
-            </div>
-            <div class="sp-list">
-              <div class="sp-item" onclick="mountUserSkill('动效预览生成器', 'gin')">
-                <span class="sp-name">动效预览生成器</span>
-                <span class="sp-meta">作者：gin · 4.8 分</span>
-                <span class="sp-action">挂载</span>
-              </div>
-              <div class="sp-item" onclick="mountUserSkill('多分辨率适配检查', '坤婧')">
-                <span class="sp-name">多分辨率适配检查</span>
-                <span class="sp-meta">作者：坤婧 · 4.5 分</span>
-                <span class="sp-action">挂载</span>
-              </div>
-              <div class="sp-item" onclick="mountUserSkill('归因报告自动生成', '丹宁')">
-                <span class="sp-name">归因报告自动生成</span>
-                <span class="sp-meta">作者：丹宁 · 4.6 分</span>
-                <span class="sp-action">挂载</span>
-              </div>
-            </div>
-          </div>
+    <div class="module-grid">
+      <!-- 样式生产 -->
+      <div class="module-card" onclick="location.href='demo-生产.html'">
+        <div class="mc-icon mc-icon-produce">🎨</div>
+        <div class="mc-name">样式生产</div>
+        <div class="mc-en">Template Production</div>
+        <div class="mc-desc">覆盖样式生命周期：灵感激发、创意生成、模板上线、灰度测试、效果成绩单，以及存量模板的平台化管理</div>
+        <div class="mc-tags">
+          <span class="mc-tag mc-tag-produce">样式生产流程</span>
+          <span class="mc-tag mc-tag-produce">模板管理</span>
+          <span class="mc-tag mc-tag-produce">上线审批</span>
         </div>
       </div>
 
-      <!-- 最近高频提问（基于真实样式工作场景） -->
-      <div class="ai-hints">
-        <span class="hint-label">最近高频：</span>
-        <span class="hint-tag" onclick="fillHint('模板 1001200 想改成只出在流量范围 A 下，帮我评估规则风险')">规则变更</span>
-        <span class="hint-tag" onclick="fillHint('想屏蔽开屏的系统弹窗模板，有现成的流量标签吗')">流量标签查询</span>
-        <span class="hint-tag" onclick="fillHint('帮我新建一个金融行业的开屏样式模板')">新建样式</span>
-        <span class="hint-tag" onclick="fillHint('看一下金融赛道近 7 天的 CTR 趋势和迭代建议')">效果建议</span>
+      <!-- 规则配置 -->
+      <div class="module-card" onclick="location.href='demo-规则.html'">
+        <div class="mc-icon mc-icon-rule">⚙️</div>
+        <div class="mc-name">规则配置</div>
+        <div class="mc-en">Rule Configuration</div>
+        <div class="mc-desc">自然语言转结构化规则配置，支持流量范围 × 预算范围 × 模板生效逻辑（高优/圈定/屏蔽），内置冲突检测与影响面预估</div>
+        <div class="mc-tags">
+          <span class="mc-tag mc-tag-rule">出量规则</span>
+          <span class="mc-tag mc-tag-rule">冲突预检</span>
+          <span class="mc-tag mc-tag-rule">审批流</span>
+        </div>
       </div>
 
-      <!-- 路由策略（630 范围 · 真实交互体验） -->
-      <div class="routing-explain">
-        <div class="re-head">
-          <span class="re-title">路由策略</span>
-          <span class="scope-badge in630">630范围</span>
-          <span class="re-sub">点下面的示例，体验"单意图直达"与"多意图选择"的真实交互</span>
+      <!-- 洞察迭代 -->
+      <div class="module-card" onclick="location.href='demo-洞察.html'">
+        <div class="mc-icon mc-icon-insight">🔍</div>
+        <div class="mc-name">洞察迭代</div>
+        <div class="mc-en">Insight & Iteration</div>
+        <div class="mc-desc">模板组件级归因分析，识别高效组件组合与赢家配方，生成 AI 迭代建议，反哺样式生产形成闭环</div>
+        <div class="mc-tags">
+          <span class="mc-tag mc-tag-insight">组件归因</span>
+          <span class="mc-tag mc-tag-insight">效果对比</span>
+          <span class="mc-tag mc-tag-insight">迭代建议</span>
         </div>
-        <div class="re-try" onclick="tryRoute('single')">
-          ▶ 试打：「帮我新建一个金融行业的开屏样式模板」<em>　— 单意图</em>
-        </div>
-        <div class="re-try" onclick="tryRoute('multi')" style="margin-left:8px">
-          ▶ 试打：「这个开屏模板为什么效果差，是不是规则屏蔽了」<em>　— 多意图</em>
+      </div>
+
+      <!-- 问题排查 -->
+      <div class="module-card" onclick="location.href='demo-排查.html'">
+        <div class="mc-icon mc-icon-trouble">🛠️</div>
+        <div class="mc-name">问题排查</div>
+        <div class="mc-en">Troubleshooting</div>
+        <div class="mc-desc">Case 录入驱动，多源数据自动拉通（流量 × 预算 × 模板 × 属性），AI 综合归因，处置闭环并沉淀知识库</div>
+        <div class="mc-tags">
+          <span class="mc-tag mc-tag-trouble">召回诊断</span>
+          <span class="mc-tag mc-tag-trouble">渲染异常</span>
+          <span class="mc-tag mc-tag-trouble">知识库</span>
         </div>
       </div>
     </div>
-  </section>
+  </div>
 
-  <!-- ============== 第二层：场景化工作流入口 ============== -->
-  <section class="layer layer-scenes" id="scene-area">
-    <div class="layer-inner">
-      <div class="layer-header">
-        <h2>常见场景 · 工作流入口</h2>
-        <span class="layer-sub">选一个高频任务，带着预设 prompt 直达对应模块工作流</span>
-        <span class="scope-badge in630">630范围</span>
+  <!-- ====== 第二层：工作视图 ====== -->
+  <div class="section" id="board-area">
+    <div class="section-head">
+      <span class="section-title">工作视图</span>
+      <span class="section-sub">按视角聚合关键信息，细节进对应模块查看</span>
+    </div>
+
+    <!-- 筛选器 -->
+    <div class="view-filters">
+      <div class="filter-row">
+        <span class="filter-label">时间周期</span>
+        <button class="time-btn active" onclick="switchBtn(this,'time')">昨天</button>
+        <button class="time-btn" onclick="switchBtn(this,'time')">近 3 天</button>
+        <button class="time-btn" onclick="switchBtn(this,'time')">近 7 天</button>
+        <button class="time-btn" onclick="switchBtn(this,'time')">自定义</button>
       </div>
-
-      <!-- 关系说明：模块 → 多场景卡（一对多） -->
-      <div class="scene-rel-note">
-        <strong>卡片与模块的关系：一对多。</strong>每个核心模块下挂多张高频场景卡；每张卡 = 模块 + 一个预设 prompt + 一个落点。点卡片＝把 prompt 送进该模块工作流。
+      <div class="filter-row">
+        <span class="filter-label">视角范围</span>
+        <button class="mode-btn active" onclick="switchMode(this,'all')">大盘全量</button>
+        <button class="mode-btn" onclick="switchMode(this,'custom')">自定义视角</button>
       </div>
-
-      <!-- 模块1：模板生产（多卡） -->
-      <div class="scene-group">
-        <div class="scene-group-head scene-生产">
-          <span class="sg-icon">🎨</span>
-          <span class="sg-name">模板生产</span>
-          <span class="sg-def">造：灵感激发 → 创意生成 → 模板生产 → 测试灰度 → 成绩单</span>
-        </div>
-        <div class="scene-grid scene-grid-2">
-          <div class="scene-card" onclick="goWithPrompt('produce','chat','帮我新建一个618大促模板，服务电商客户，客户主投下载预算','生产对话窗','prompt 直接进入模板生产的 AI 对话窗，开始创意生成')">
-            <div class="sc-name">新建样式模板</div>
-            <div class="sc-prompt">"帮我新建一个 618 大促模板，服务电商客户，客户主投下载预算"</div>
-            <div class="sc-go">带 prompt 进生产对话 →</div>
-          </div>
-          <div class="scene-card" onclick="goWithPrompt('produce','chat','我上传了一张参考截图，帮我生成一个适配游戏媒体的激励视频模板','生产对话窗','prompt + 截图进入生产对话窗，走 C2D 创意衍生')">
-            <div class="sc-name">AI 创意衍生</div>
-            <div class="sc-prompt">"我上传了一张参考截图，帮我生成一个适配游戏媒体的激励视频模板"</div>
-            <div class="sc-go">带 prompt 进生产对话 →</div>
+      <div class="filter-detail" id="filterDetail" style="display:none">
+        <div class="fdim-row">
+          <span class="fdim-label">赛道</span>
+          <div class="fdim-chips">
+            <label class="fc"><input type="checkbox"><span>金融</span></label>
+            <label class="fc"><input type="checkbox"><span>游戏</span></label>
+            <label class="fc"><input type="checkbox"><span>电商</span></label>
+            <label class="fc"><input type="checkbox"><span>网服</span></label>
+            <label class="fc"><input type="checkbox"><span>工具</span></label>
+            <label class="fc"><input type="checkbox"><span>教育</span></label>
+            <label class="fc"><input type="checkbox"><span>本地生活</span></label>
           </div>
         </div>
-      </div>
-
-      <!-- 模块2：规则配置（多卡） -->
-      <div class="scene-group">
-        <div class="scene-group-head scene-规则">
-          <span class="sg-icon">⚙️</span>
-          <span class="sg-name">规则配置</span>
-          <span class="sg-def">分发：流量范围 × 预算范围 × 模板生效逻辑（高优/圈定/屏蔽/强中只出）· 冲突预检 · 审批</span>
-        </div>
-        <div class="scene-grid scene-grid-2">
-          <div class="scene-card" onclick="goWithPrompt('rule','form','把模板1001200改成只在标签1001流量下高优出','规则配置表单','prompt 解析为结构化诉求，预填到「流量范围/模板范围/生效逻辑」表单，你在表单里核对修改')">
-            <div class="sc-name">配置出量规则</div>
-            <div class="sc-prompt">"把模板 1001200 改成只在标签 1001 流量下高优出"</div>
-            <div class="sc-go">解析后预填规则表单 →</div>
-          </div>
-          <div class="scene-card" onclick="goWithPrompt('rule','form','给模板1003230在游戏预算下做屏蔽30%','规则配置表单','prompt 解析为结构化诉求，预填表单后点「一键新建规则」触发冲突+影响面预检弹窗')">
-            <div class="sc-name">配置屏蔽规则</div>
-            <div class="sc-prompt">"给模板 1003230 在游戏预算下做屏蔽 30%"</div>
-            <div class="sc-go">解析后预填规则表单 →</div>
+        <div class="fdim-row">
+          <span class="fdim-label">场景</span>
+          <div class="fdim-chips">
+            <label class="fc"><input type="checkbox"><span>开屏</span></label>
+            <label class="fc"><input type="checkbox"><span>插屏</span></label>
+            <label class="fc"><input type="checkbox"><span>激励</span></label>
+            <label class="fc"><input type="checkbox"><span>原生</span></label>
           </div>
         </div>
-      </div>
-
-      <!-- 模块3：洞察归因（多卡） -->
-      <div class="scene-group">
-        <div class="scene-group-head scene-洞察">
-          <span class="sg-icon">🔍</span>
-          <span class="sg-name">洞察归因</span>
-          <span class="sg-def">判因：场景看板 + 组件分析 + 模板ID深钻 + 一键优化生成（不承担问题排查）</span>
-        </div>
-        <div class="scene-grid scene-grid-2">
-          <div class="scene-card" onclick="goWithPrompt('insight','board','深钻分析模板1003062的组件配置和归因','洞察看板','prompt 解析出 templateId，直接定位到看板的「模板深钻」并加载该模板数据')">
-            <div class="sc-name">单模板深钻</div>
-            <div class="sc-prompt">"深钻分析模板 1003062 的组件配置和归因"</div>
-            <div class="sc-go">解析后定位看板深钻 →</div>
-          </div>
-          <div class="scene-card" onclick="goWithPrompt('insight','board','看开屏赢家模板的组件共性和提效建议','洞察看板','prompt 解析出 scene=开屏，定位到「赢家共性/提效配方」看板视图')">
-            <div class="sc-name">赢家组件归因</div>
-            <div class="sc-prompt">"看开屏赢家模板的组件共性和提效建议"</div>
-            <div class="sc-go">解析后定位看板视图 →</div>
+        <div class="fdim-row">
+          <span class="fdim-label">预算</span>
+          <div class="fdim-chips">
+            <label class="fc"><input type="checkbox"><span>金融</span></label>
+            <label class="fc"><input type="checkbox"><span>游戏</span></label>
+            <label class="fc"><input type="checkbox"><span>电商</span></label>
+            <label class="fc"><input type="checkbox"><span>网服</span></label>
+            <label class="fc"><input type="checkbox"><span>视频号</span></label>
+            <label class="fc"><input type="checkbox"><span>小程序</span></label>
           </div>
         </div>
-      </div>
-
-      <!-- 模块4：问题排查（多卡） -->
-      <div class="scene-group">
-        <div class="scene-group-head scene-排查">
-          <span class="sg-icon">🛠️</span>
-          <span class="sg-name">问题排查</span>
-          <span class="sg-def">查异常：Case录入 → 多源数据拉通 → AI归因 → 处置闭环 + 知识库沉淀</span>
-        </div>
-        <div class="scene-grid scene-grid-2">
-          <div class="scene-card" onclick="goWithPrompt('trouble','form','媒体10107877965230开屏出不了模板1003230帮我排查','排查录入表单','prompt 解析出媒体ID/模板ID，预填到「Case录入」表单，自动触发多源数据拉取')">
-            <div class="sc-name">召回失败排查</div>
-            <div class="sc-prompt">"媒体 10107877965230 开屏出不了模板 1003230"</div>
-            <div class="sc-go">解析后预填录入表单 →</div>
-          </div>
-          <div class="scene-card" onclick="goWithPrompt('trouble','form','这个开屏模板没有倒计时帮我查原因','排查录入表单','prompt 解析问题类型，预填录入表单并匹配知识库相似 case')">
-            <div class="sc-name">渲染异常诊断</div>
-            <div class="sc-prompt">"这个开屏模板没有倒计时，帮我查原因"</div>
-            <div class="sc-go">解析后预填录入表单 →</div>
-          </div>
+        <div class="filter-actions">
+          <button class="btn-apply">应用</button>
+          <button class="btn-reset">重置</button>
+          <span class="filter-summary" id="filterSummary">未选择 · 默认大盘全量</span>
         </div>
       </div>
     </div>
-  </section>
 
-  <!-- ============== 第三层：我的工作视图 ============== -->
-  <section class="layer layer-board" id="board-area">
-    <div class="layer-inner">
-      <div class="layer-header">
-        <h2>我的工作视图</h2>
-        <span class="layer-sub">按你负责的视角，集中看到一切——细节深入对应模块</span>
-      </div>
+    <!-- 看板 -->
+    <div class="board">
 
-      <!-- 视角筛选器（用户可见 UI · 多选 + 大盘 all） -->
-      <div class="view-filters">
-        <div class="filter-row">
-          <span class="filter-label">📅 时间周期</span>
-          <button class="time-mode active" onclick="switchTime(this,'昨天')">昨天</button>
-          <button class="time-mode" onclick="switchTime(this,'近3天')">近 3 天</button>
-          <button class="time-mode" onclick="switchTime(this,'近7天')">近 7 天</button>
-          <button class="time-mode" onclick="switchTime(this,'自定义')">自定义</button>
-          <span class="time-custom" id="timeCustom" style="display:none">
-            <input type="date" id="timeStart" class="time-date">
-            <span>至</span>
-            <input type="date" id="timeEnd" class="time-date">
-            <span class="time-hint">窗口不超过 1 个月</span>
-          </span>
+      <!-- 在线模板情况 -->
+      <div class="board-card card-full">
+        <div class="card-hd">
+          <span class="card-hd-title">在线模板情况</span>
+          <a class="card-link" href="demo-生产.html">进模板管理 →</a>
         </div>
-        <div class="filter-row">
-          <span class="filter-label">📊 视角范围</span>
-          <button class="filter-mode active" data-mode="all" onclick="switchMode('all')">大盘全量</button>
-          <button class="filter-mode" data-mode="custom" onclick="switchMode('custom')">自定义视角</button>
-        </div>
-
-        <div class="filter-detail" id="filterDetail" style="display:none">
-
-          <div class="filter-row">
-            <span class="filter-label">🏷️ 赛道</span>
-            <span class="filter-help">按集团一级行业 ID · 多选</span>
-            <div class="filter-options">
-              <label class="filter-chip"><input type="checkbox" data-dim="赛道" value="金融"> 金融</label>
-              <label class="filter-chip"><input type="checkbox" data-dim="赛道" value="游戏"> 游戏</label>
-              <label class="filter-chip"><input type="checkbox" data-dim="赛道" value="电商"> 电商</label>
-              <label class="filter-chip"><input type="checkbox" data-dim="赛道" value="网服"> 网服</label>
-              <label class="filter-chip"><input type="checkbox" data-dim="赛道" value="工具"> 工具</label>
-              <label class="filter-chip"><input type="checkbox" data-dim="赛道" value="教育"> 教育</label>
-              <label class="filter-chip"><input type="checkbox" data-dim="赛道" value="本地生活"> 本地生活</label>
+        <div class="card-body">
+          <div class="stat-row">
+            <div class="stat-item">
+              <div class="stat-label">在线模板数</div>
+              <div class="stat-val">47<span class="stat-unit">个</span></div>
+              <div class="stat-sub">较昨日 +2</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-label">总消耗</div>
+              <div class="stat-val">¥ 621<span class="stat-unit">万</span></div>
+              <div class="stat-sub stat-up">↑ 8.3%</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-label">竞价 CPM</div>
+              <div class="stat-val">42.6<span class="stat-unit">元</span></div>
+              <div class="stat-sub stat-up">↑ 1.2</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-label">平均 CTR</div>
+              <div class="stat-val">18.4<span class="stat-unit">%</span></div>
+              <div class="stat-sub stat-up">↑ 0.8pp</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-label">平均 CVR</div>
+              <div class="stat-val">22.1<span class="stat-unit">%</span></div>
+              <div class="stat-sub stat-down">↓ 0.3pp</div>
             </div>
           </div>
-
-          <div class="filter-row">
-            <span class="filter-label">🎬 场景</span>
-            <span class="filter-help">多选</span>
-            <div class="filter-options">
-              <label class="filter-chip"><input type="checkbox" data-dim="场景" value="开屏"> 开屏</label>
-              <label class="filter-chip"><input type="checkbox" data-dim="场景" value="插屏"> 插屏</label>
-              <label class="filter-chip"><input type="checkbox" data-dim="场景" value="激励"> 激励</label>
-              <label class="filter-chip"><input type="checkbox" data-dim="场景" value="原生"> 原生</label>
-            </div>
-          </div>
-
-          <div class="filter-row">
-            <span class="filter-label">💰 预算</span>
-            <span class="filter-help">多选 · 支持两种维度</span>
-            <div class="filter-options">
-              <div class="filter-sub">
-                <span class="sub-label">KPI 一级行业：</span>
-                <label class="filter-chip"><input type="checkbox" data-dim="预算KPI" value="金融"> 金融</label>
-                <label class="filter-chip"><input type="checkbox" data-dim="预算KPI" value="游戏"> 游戏</label>
-                <label class="filter-chip"><input type="checkbox" data-dim="预算KPI" value="电商"> 电商</label>
-                <label class="filter-chip"><input type="checkbox" data-dim="预算KPI" value="网服"> 网服</label>
-              </div>
-              <div class="filter-sub">
-                <span class="sub-label">微信生态预算：</span>
-                <label class="filter-chip"><input type="checkbox" data-dim="预算微信" value="视频号"> 视频号</label>
-                <label class="filter-chip"><input type="checkbox" data-dim="预算微信" value="小程序"> 小程序</label>
-                <label class="filter-chip"><input type="checkbox" data-dim="预算微信" value="公众号"> 公众号</label>
-                <label class="filter-chip"><input type="checkbox" data-dim="预算微信" value="朋友圈"> 朋友圈</label>
-              </div>
-            </div>
-          </div>
-
-          <div class="filter-actions">
-            <button class="btn-apply" onclick="applyFilter()">应用筛选</button>
-            <button class="btn-reset" onclick="resetFilter()">重置</button>
-            <span class="filter-summary" id="filterSummary">未选择 · 默认大盘全量</span>
-          </div>
+          <table class="tpl-mini-table">
+            <thead>
+              <tr><th>模板 ID</th><th>消耗</th><th>竞价 CPM</th><th>CTR</th><th>CVR</th><th>状态</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>1003723</td><td>¥421w</td><td>44.2</td><td>22.5%</td><td>31.4%</td><td><span class="st st-on">在线</span></td></tr>
+              <tr><td>1003062</td><td>¥103w</td><td>38.6</td><td>16.1%</td><td>20.4%</td><td><span class="st st-on">在线</span></td></tr>
+              <tr><td>1001277</td><td>¥38w</td><td>41.0</td><td>8.4%</td><td>18.4%</td><td><span class="st st-exp">实验中</span></td></tr>
+              <tr><td>1003769</td><td>¥59w</td><td>39.8</td><td>11.2%</td><td>19.7%</td><td><span class="st st-on">在线</span></td></tr>
+            </tbody>
+          </table>
         </div>
       </div>
 
-      <!-- 看板内容 -->
-      <div class="board" id="board">
-        <!-- 卡片1：模板全局视图 -->
-        <div class="board-card card-w2">
-          <div class="card-header">
-            <span class="card-title">📋 模板全局视图</span>
-            <a class="card-link" href="modules/produce/index.html">去模板生产看全部 →</a>
-          </div>
-          <div class="card-body">
-            <table class="tpl-table">
-              <thead>
-                <tr><th>模板ID</th><th>消耗</th><th>CTR</th><th>CVR</th><th>状态</th><th>负责人</th></tr>
-              </thead>
-              <tbody>
-                <tr><td>1003723</td><td>¥421w</td><td>62.5%</td><td>31.4%</td><td><span class="st st-on">已上线</span></td><td>小樊</td></tr>
-                <tr><td>1003062</td><td>¥103w</td><td>16.1%</td><td>20.4%</td><td><span class="st st-on">已上线</span></td><td>小樊</td></tr>
-                <tr><td>1001277</td><td>¥38w</td><td>8.4%</td><td>18.4%</td><td><span class="st st-exp">实验中</span></td><td>小樊</td></tr>
-                <tr><td>1003769</td><td>¥9w</td><td>2.7%</td><td>12.1%</td><td><span class="st st-draft">草稿待审</span></td><td>小樊</td></tr>
-              </tbody>
-            </table>
-            <div class="card-foot-meta">仅展示当前视角 Top 模板精华 · 完整列表/筛选进模块</div>
-          </div>
+      <!-- 在线规则情况 -->
+      <div class="board-card">
+        <div class="card-hd">
+          <span class="card-hd-title">在线规则情况</span>
+          <a class="card-link" href="demo-规则.html">进规则配置 →</a>
         </div>
-
-        <!-- 卡片2：近期操作（保持现状） -->
-        <div class="board-card">
-          <div class="card-header">
-            <span class="card-title">🕐 近期操作</span>
-            <a class="card-link" href="#">查看日志 →</a>
-          </div>
-          <div class="card-body">
-            <ul class="op-list" id="op-list">
-              <li><span class="op-time">10:32</span> <span class="op-type op-tpl">模板</span>小樊 上线了「金融-开屏-下载激励 v3」</li>
-              <li><span class="op-time">09:18</span> <span class="op-type op-rule">规则</span>昌仔 调整了「金融行业广告主白名单」配置</li>
-              <li><span class="op-time">昨日</span> <span class="op-type op-tpl">模板</span>小樊 暂停了「网服-插屏-点击激励 v2」</li>
-              <li><span class="op-time">昨日</span> <span class="op-type op-rule">规则</span>昌仔 新增「鸿蒙发奖上限」规则（模板 1001200/1001234）</li>
-              <li><span class="op-time">前日</span> <span class="op-type op-tpl">模板</span>小樊 上线了「游戏-激励-15s 视频 v1」</li>
-            </ul>
-            <div class="card-foot-meta">本质：把平台的模板 / 规则等异动统一晾晒</div>
-          </div>
+        <div class="card-body">
+          <div class="rule-row"><span class="rule-name">在线规则总数</span><span class="rule-val">214 条</span></div>
+          <div class="rule-row"><span class="rule-name">流量范围规则</span><span class="rule-val">87 条</span></div>
+          <div class="rule-row"><span class="rule-name">预算范围规则</span><span class="rule-val">63 条</span></div>
+          <div class="rule-row"><span class="rule-name">屏蔽规则</span><span class="rule-val">41 条</span></div>
+          <div class="rule-row"><span class="rule-name">近 7 天新增</span><span class="rule-val" style="color:var(--warn)">+12 条</span></div>
+          <div class="rule-row"><span class="rule-name">存在冲突待处理</span><span class="rule-val" style="color:var(--danger)">3 条</span></div>
         </div>
-
-        <!-- 卡片3：洞察建议 -->
-        <div class="board-card card-w2">
-          <div class="card-header">
-            <span class="card-title">💡 洞察建议</span>
-            <a class="card-link" href="modules/insight/index.html">去洞察归因看详情 →</a>
-          </div>
-          <div class="card-body">
-            <div class="insight-block">
-              <div class="ib-tag ib-attr">高消耗 · 效果归因</div>
-              <div class="ib-text"><strong>1003062</strong>（¥103w/CTR 16.1%）赢在「大按钮@中下 + 系统弹窗诱饵」，可作为开屏标杆复用</div>
-            </div>
-            <div class="insight-block">
-              <div class="ib-tag ib-opt">低消耗低CTR · AI迭代建议</div>
-              <div class="ib-text"><strong>1003769</strong>（¥9w/CTR 2.7%）建议：曝光时长 5s→6s + 加价格爆点，预估 CTR +2.3pp</div>
-            </div>
-            <div class="card-foot-meta">仅展示 Top 归因/建议 · 全部组件级分析进模块</div>
-          </div>
-        </div>
-
-        <!-- 卡片4：建议关注 -->
-        <div class="board-card">
-          <div class="card-header">
-            <span class="card-title">⚠️ 建议关注</span>
-            <a class="card-link" href="modules/trouble/index.html">去问题排查看进展 →</a>
-          </div>
-          <div class="card-body">
-            <ul class="watch-list">
-              <li><span class="wt-st wt-p0">P0</span> 激励视频在某广告位不出，定位到 P1 规则冲突 · <span class="wt-prog">处理中</span></li>
-              <li><span class="wt-st wt-p1">P1</span> 开屏模板无倒计时 case · <span class="wt-prog">已派姜坤婧</span></li>
-              <li><span class="wt-st wt-done">已闭环</span> 摇一摇不触发(透明View遮挡) · <span class="wt-prog">已沉淀知识库</span></li>
-            </ul>
-            <div class="card-foot-meta">仅展示高优/在处理 case · 全部进问题排查</div>
-          </div>
-        </div>
-
       </div>
+
+      <!-- Case 情况 -->
+      <div class="board-card">
+        <div class="card-hd">
+          <span class="card-hd-title">Case 情况</span>
+          <a class="card-link" href="demo-排查.html">进问题排查 →</a>
+        </div>
+        <div class="card-body">
+          <div class="case-row">
+            <span class="case-badge cb-p0">P0</span>
+            <span class="case-desc">激励视频某广告位不出 · 规则冲突</span>
+            <span class="case-prog" style="color:var(--warn)">处理中</span>
+          </div>
+          <div class="case-row">
+            <span class="case-badge cb-p1">P1</span>
+            <span class="case-desc">开屏模板无倒计时 · 组件缺失</span>
+            <span class="case-prog">已派 坤婧</span>
+          </div>
+          <div class="case-row">
+            <span class="case-badge cb-p1">P1</span>
+            <span class="case-desc">金融开屏 CTR 异常低 · 归因中</span>
+            <span class="case-prog">处理中</span>
+          </div>
+          <div class="case-row">
+            <span class="case-badge cb-done">已闭环</span>
+            <span class="case-desc">摇一摇不触发 · 透明 View 遮挡</span>
+            <span class="case-prog" style="color:var(--success)">已入库</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 近期操作 -->
+      <div class="board-card card-full">
+        <div class="card-hd">
+          <span class="card-hd-title">近期操作</span>
+          <a class="card-link" href="#">查看完整日志 →</a>
+        </div>
+        <div class="card-body">
+          <div class="op-row" style="font-size:11px; color:var(--text-light); padding-bottom:4px;">
+            <span>时间</span><span>模块</span><span>操作人</span><span>操作类型</span><span>关联 ID</span>
+          </div>
+          <div class="op-row">
+            <span class="op-time">10:32</span>
+            <span class="op-src op-src-tpl">样式生产</span>
+            <span class="op-who">小樊</span>
+            <span class="op-type">上线</span>
+            <span class="op-id">模板 1003723</span>
+          </div>
+          <div class="op-row">
+            <span class="op-time">09:18</span>
+            <span class="op-src op-src-rule">规则配置</span>
+            <span class="op-who">昌仔</span>
+            <span class="op-type">修改</span>
+            <span class="op-id">规则 RID-20241</span>
+          </div>
+          <div class="op-row">
+            <span class="op-time">昨 16:40</span>
+            <span class="op-src op-src-case">问题排查</span>
+            <span class="op-who">小姜</span>
+            <span class="op-type">派单</span>
+            <span class="op-id">Case C-0612-03</span>
+          </div>
+          <div class="op-row">
+            <span class="op-time">昨 14:05</span>
+            <span class="op-src op-src-tpl">样式生产</span>
+            <span class="op-who">小樊</span>
+            <span class="op-type">暂停</span>
+            <span class="op-id">模板 1001150</span>
+          </div>
+          <div class="op-row">
+            <span class="op-time">昨 11:22</span>
+            <span class="op-src op-src-rule">规则配置</span>
+            <span class="op-who">昌仔</span>
+            <span class="op-type">新增</span>
+            <span class="op-id">规则 RID-20244</span>
+          </div>
+        </div>
+      </div>
+
     </div>
-  </section>
+  </div>
 
-  <!-- ============== 第四层：Skills 资产广场 ============== -->
-  <section class="layer layer-skills" id="skills-area">
-    <div class="layer-inner">
-      <div class="layer-header">
-        <h2>Skills · 能力晾晒区</h2>
-        <span class="layer-sub">把模块能力封装成可被 Agent 调用、可跨模块复用的标准单位——这里是它们的目录</span>
-      </div>
+  <!-- ====== 第三层：样式资产 ====== -->
+  <div class="section" id="asset-area">
+    <div class="section-head">
+      <span class="section-title">样式资产</span>
+      <span class="section-sub">大盘主力样式 · 流量定制样式 · 预算定制样式</span>
+    </div>
 
-      <!-- 设计思路：为什么 skill 化 -->
-      <div class="skills-howto">
-        <div class="howto-title">为什么要 Skill 化？—— Skill 是"模块能力的封装单位"</div>
-        <div class="howto-grid">
-          <div class="howto-item">
-            <div class="howto-num">1</div>
-            <div class="howto-name">可被 Agent 调用</div>
-            <div class="howto-desc">封装成 Skill，第一层对话才能自动触发它</div>
+    <div class="asset-tabs">
+      <button class="at-btn active" onclick="switchAssetTab(this,'main')">大盘主力</button>
+      <button class="at-btn" onclick="switchAssetTab(this,'flow')">流量定制</button>
+      <button class="at-btn" onclick="switchAssetTab(this,'budget')">预算定制</button>
+    </div>
+
+    <!-- 大盘主力 -->
+    <div class="asset-grid" id="assetMain">
+      <!-- 卡片1 -->
+      <div class="asset-card">
+        <div class="asset-preview">
+          <div class="preview-phone">
+            <div class="ad-sim">
+              <div class="ad-img-sim" style="background:linear-gradient(135deg,#667eea,#764ba2)"></div>
+              <div class="ad-title-sim">限时优惠 立享好礼</div>
+              <div class="ad-btn-sim" style="background:#ff6b35">立即领取</div>
+            </div>
           </div>
-          <div class="howto-item">
-            <div class="howto-num">2</div>
-            <div class="howto-name">可跨模块复用</div>
-            <div class="howto-desc">问题排查能直接调规则配置沉淀的能力</div>
-          </div>
-          <div class="howto-item">
-            <div class="howto-num">3</div>
-            <div class="howto-name">可演进可晋升</div>
-            <div class="howto-desc">个人 Skill 用得好，可晋升为官方能力</div>
+          <div class="asset-scene-badge">开屏</div>
+          <div class="asset-type-badge atb-main">主力</div>
+        </div>
+        <div class="asset-info">
+          <div class="asset-name">开屏-通用-下载激励 v3</div>
+          <div class="asset-meta">模板 ID 1003723 · 小樊</div>
+          <div class="asset-stats">
+            <div class="astat"><div class="astat-label">消耗规模</div><div class="astat-val">¥421w</div></div>
+            <div class="astat"><div class="astat-label">CTR</div><div class="astat-val">22.5%</div></div>
+            <div class="astat"><div class="astat-label">竞价 CPM</div><div class="astat-val">44.2</div></div>
           </div>
         </div>
       </div>
-
-      <!-- 官方 Skills：能力目录形态（弱化卡片，强调可信+出处） -->
-      <div class="skills-section">
-        <div class="ss-head">
-          <span class="ss-title">🏛️ 官方能力目录</span>
-          <span class="ss-note">由各模块沉淀 · 默认挂载、对话中自动调用（无需手动开关）· 晾在此处是为了<strong>可信与可发现</strong></span>
+      <!-- 卡片2 -->
+      <div class="asset-card">
+        <div class="asset-preview">
+          <div class="preview-phone">
+            <div class="ad-sim">
+              <div class="ad-img-sim" style="background:linear-gradient(135deg,#f6d365,#fda085)"></div>
+              <div class="ad-title-sim">点击即享超级福利</div>
+              <div class="ad-btn-sim" style="background:#ee5a24">点击领取</div>
+            </div>
+          </div>
+          <div class="asset-scene-badge">开屏</div>
+          <div class="asset-type-badge atb-main">主力</div>
         </div>
-        <div class="cap-list">
-          <div class="cap-row">
-            <span class="cap-icon">⚖️</span>
-            <div class="cap-main">
-              <div class="cap-name">模板规则审查 <span class="cap-from">← 规则配置</span></div>
-              <div class="cap-desc">基于千寻接口 + 样式工厂能力，读取线上规则 + 知识库，评估规则变更风险</div>
-            </div>
-            <span class="cap-status">自动调用中</span>
-          </div>
-          <div class="cap-row">
-            <span class="cap-icon">🛠️</span>
-            <div class="cap-main">
-              <div class="cap-name">模板问题排查 <span class="cap-from">← 问题排查</span></div>
-              <div class="cap-desc">"流量 × 预算 × 模板 × 属性" case 综合判断 · 召回失败诊断 · 流量标签查询</div>
-            </div>
-            <span class="cap-status">自动调用中</span>
-          </div>
-          <div class="cap-row cap-pending">
-            <span class="cap-icon">＋</span>
-            <div class="cap-main">
-              <div class="cap-name">待样式生产沉淀</div>
-              <div class="cap-desc">如：模板组件覆盖度检查 / 竞媒样式采集</div>
-            </div>
-            <span class="cap-status">未上架</span>
-          </div>
-          <div class="cap-row cap-pending">
-            <span class="cap-icon">＋</span>
-            <div class="cap-main">
-              <div class="cap-name">待洞察归因沉淀</div>
-              <div class="cap-desc">如：归因报告生成 / 效果对比 Diff</div>
-            </div>
-            <span class="cap-status">未上架</span>
+        <div class="asset-info">
+          <div class="asset-name">开屏-通用-点击激励 v2</div>
+          <div class="asset-meta">模板 ID 1003062 · 小樊</div>
+          <div class="asset-stats">
+            <div class="astat"><div class="astat-label">消耗规模</div><div class="astat-val">¥103w</div></div>
+            <div class="astat"><div class="astat-label">CTR</div><div class="astat-val">16.1%</div></div>
+            <div class="astat"><div class="astat-label">竞价 CPM</div><div class="astat-val">38.6</div></div>
           </div>
         </div>
       </div>
-
-      <!-- 个人 / 社区 Skills：保留卡片（强调选用+贡献） -->
-      <div class="skills-section">
-        <div class="ss-head">
-          <span class="ss-title">🌱 个人 / 社区 Skills</span>
-          <span class="ss-note">成员自发贡献 · 按需挂载（最多 1 个）· 强调<strong>选用与贡献</strong>，用得好可晋升官方 <span class="scope-badge out630">非630</span></span>
+      <!-- 卡片3 -->
+      <div class="asset-card">
+        <div class="asset-preview">
+          <div class="preview-phone">
+            <div class="ad-sim">
+              <div class="ad-img-sim" style="background:linear-gradient(135deg,#a8edea,#fed6e3)"></div>
+              <div class="ad-title-sim">视频激励 观看赢大奖</div>
+              <div class="ad-btn-sim" style="background:#2ed573">开始观看</div>
+            </div>
+          </div>
+          <div class="asset-scene-badge">激励</div>
+          <div class="asset-type-badge atb-main">主力</div>
         </div>
-        <div class="skill-grid">
-          <div class="skill-card">
-            <div class="sk-head"><span class="sk-icon">✨</span><span class="sk-name">动效预览生成器</span></div>
-            <div class="sk-desc">根据组件配置自动生成 Lottie 动效预览，无需等 SDK 出包</div>
-            <div class="sk-meta">
-              <span class="sk-tag tag-community">社区</span>
-              <span class="sk-stage">作者：gin · 4.8 分 · 使用 142 次</span>
-            </div>
-          </div>
-          <div class="skill-card">
-            <div class="sk-head"><span class="sk-icon">📱</span><span class="sk-name">多分辨率适配检查</span></div>
-            <div class="sk-desc">在不同屏幕尺寸下渲染模板，检查布局溢出和截断问题</div>
-            <div class="sk-meta">
-              <span class="sk-tag tag-community">社区</span>
-              <span class="sk-stage">作者：坤婧 · 4.5 分 · 使用 87 次</span>
-            </div>
-          </div>
-          <div class="skill-card">
-            <div class="sk-head"><span class="sk-icon">📝</span><span class="sk-name">归因报告自动生成</span></div>
-            <div class="sk-desc">基于洞察归因结果，一键生成结构化复盘报告</div>
-            <div class="sk-meta">
-              <span class="sk-tag tag-community">社区</span>
-              <span class="sk-stage">作者：丹宁 · 4.6 分 · 使用 56 次</span>
-            </div>
-          </div>
-          <div class="skill-card sk-empty">
-            <div class="sk-empty-inner">
-              <div class="sk-empty-icon">＋</div>
-              <div class="sk-empty-text">下一个 Skill 由你贡献</div>
-              <div class="sk-empty-sub">把"重复造轮子"沉淀为团队资产</div>
-            </div>
+        <div class="asset-info">
+          <div class="asset-name">激励视频-通用-15s v1</div>
+          <div class="asset-meta">模板 ID 1001277 · 小樊</div>
+          <div class="asset-stats">
+            <div class="astat"><div class="astat-label">消耗规模</div><div class="astat-val">¥59w</div></div>
+            <div class="astat"><div class="astat-label">CTR</div><div class="astat-val">11.2%</div></div>
+            <div class="astat"><div class="astat-label">竞价 CPM</div><div class="astat-val">39.8</div></div>
           </div>
         </div>
       </div>
     </div>
-  </section>
+
+    <!-- 流量定制（默认隐藏） -->
+    <div class="asset-grid" id="assetFlow" style="display:none">
+      <div class="asset-card">
+        <div class="asset-preview">
+          <div class="preview-phone">
+            <div class="ad-sim">
+              <div class="ad-img-sim" style="background:linear-gradient(135deg,#3d9970,#00b894)"></div>
+              <div class="ad-title-sim">专属游戏媒体定制版</div>
+              <div class="ad-btn-sim" style="background:#6c5ce7">进入游戏</div>
+            </div>
+          </div>
+          <div class="asset-scene-badge">插屏</div>
+          <div class="asset-type-badge atb-flow">流量定制</div>
+        </div>
+        <div class="asset-info">
+          <div class="asset-name">插屏-游戏媒体-定制 v1</div>
+          <div class="asset-meta">模板 ID 1003801 · 小樊 · 媒体 10107877</div>
+          <div class="asset-stats">
+            <div class="astat"><div class="astat-label">消耗规模</div><div class="astat-val">¥28w</div></div>
+            <div class="astat"><div class="astat-label">CTR</div><div class="astat-val">19.3%</div></div>
+            <div class="astat"><div class="astat-label">竞价 CPM</div><div class="astat-val">36.4</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="asset-card">
+        <div class="asset-preview">
+          <div class="preview-phone">
+            <div class="ad-sim">
+              <div class="ad-img-sim" style="background:linear-gradient(135deg,#0984e3,#74b9ff)"></div>
+              <div class="ad-title-sim">新闻媒体专属开屏</div>
+              <div class="ad-btn-sim" style="background:#e17055">了解详情</div>
+            </div>
+          </div>
+          <div class="asset-scene-badge">开屏</div>
+          <div class="asset-type-badge atb-flow">流量定制</div>
+        </div>
+        <div class="asset-info">
+          <div class="asset-name">开屏-新闻媒体-定制 v2</div>
+          <div class="asset-meta">模板 ID 1003744 · 小樊 · 媒体标签 1099</div>
+          <div class="asset-stats">
+            <div class="astat"><div class="astat-label">消耗规模</div><div class="astat-val">¥34w</div></div>
+            <div class="astat"><div class="astat-label">CTR</div><div class="astat-val">14.8%</div></div>
+            <div class="astat"><div class="astat-label">竞价 CPM</div><div class="astat-val">41.1</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="asset-card">
+        <div class="asset-preview">
+          <div class="preview-phone">
+            <div class="ad-sim">
+              <div class="ad-img-sim" style="background:linear-gradient(135deg,#fd79a8,#e84393)"></div>
+              <div class="ad-title-sim">工具类媒体激励</div>
+              <div class="ad-btn-sim" style="background:#2d3436">完成任务</div>
+            </div>
+          </div>
+          <div class="asset-scene-badge">激励</div>
+          <div class="asset-type-badge atb-flow">流量定制</div>
+        </div>
+        <div class="asset-info">
+          <div class="asset-name">激励-工具媒体-定制 v1</div>
+          <div class="asset-meta">模板 ID 1003812 · 小樊 · 媒体标签 1088</div>
+          <div class="asset-stats">
+            <div class="astat"><div class="astat-label">消耗规模</div><div class="astat-val">¥18w</div></div>
+            <div class="astat"><div class="astat-label">CTR</div><div class="astat-val">24.1%</div></div>
+            <div class="astat"><div class="astat-label">竞价 CPM</div><div class="astat-val">33.9</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 预算定制（默认隐藏） -->
+    <div class="asset-grid" id="assetBudget" style="display:none">
+      <div class="asset-card">
+        <div class="asset-preview">
+          <div class="preview-phone">
+            <div class="ad-sim">
+              <div class="ad-img-sim" style="background:linear-gradient(135deg,#fdcb6e,#e17055)"></div>
+              <div class="ad-title-sim">金融专属版 理财优选</div>
+              <div class="ad-btn-sim" style="background:#d63031">立即理财</div>
+            </div>
+          </div>
+          <div class="asset-scene-badge">开屏</div>
+          <div class="asset-type-badge atb-budget">预算定制</div>
+        </div>
+        <div class="asset-info">
+          <div class="asset-name">开屏-金融预算-定制 v3</div>
+          <div class="asset-meta">模板 ID 1003650 · 小樊 · KPI 行业：金融</div>
+          <div class="asset-stats">
+            <div class="astat"><div class="astat-label">消耗规模</div><div class="astat-val">¥76w</div></div>
+            <div class="astat"><div class="astat-label">CTR</div><div class="astat-val">13.6%</div></div>
+            <div class="astat"><div class="astat-label">竞价 CPM</div><div class="astat-val">52.4</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="asset-card">
+        <div class="asset-preview">
+          <div class="preview-phone">
+            <div class="ad-sim">
+              <div class="ad-img-sim" style="background:linear-gradient(135deg,#6c5ce7,#a29bfe)"></div>
+              <div class="ad-title-sim">视频号专属 下单立减20</div>
+              <div class="ad-btn-sim" style="background:#07C160">立即购买</div>
+            </div>
+          </div>
+          <div class="asset-scene-badge">原生</div>
+          <div class="asset-type-badge atb-budget">预算定制</div>
+        </div>
+        <div class="asset-info">
+          <div class="asset-name">原生-视频号生态-定制 v2</div>
+          <div class="asset-meta">模板 ID 1003680 · 小樊 · 微信生态：视频号</div>
+          <div class="asset-stats">
+            <div class="astat"><div class="astat-label">消耗规模</div><div class="astat-val">¥44w</div></div>
+            <div class="astat"><div class="astat-label">CTR</div><div class="astat-val">21.8%</div></div>
+            <div class="astat"><div class="astat-label">竞价 CPM</div><div class="astat-val">46.0</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="asset-card">
+        <div class="asset-preview">
+          <div class="preview-phone">
+            <div class="ad-sim">
+              <div class="ad-img-sim" style="background:linear-gradient(135deg,#55efc4,#00b894)"></div>
+              <div class="ad-title-sim">游戏预算专属激励</div>
+              <div class="ad-btn-sim" style="background:#e84393">领取奖励</div>
+            </div>
+          </div>
+          <div class="asset-scene-badge">激励</div>
+          <div class="asset-type-badge atb-budget">预算定制</div>
+        </div>
+        <div class="asset-info">
+          <div class="asset-name">激励-游戏预算-定制 v1</div>
+          <div class="asset-meta">模板 ID 1003720 · 小樊 · KPI 行业：游戏</div>
+          <div class="asset-stats">
+            <div class="astat"><div class="astat-label">消耗规模</div><div class="astat-val">¥31w</div></div>
+            <div class="astat"><div class="astat-label">CTR</div><div class="astat-val">27.4%</div></div>
+            <div class="astat"><div class="astat-label">竞价 CPM</div><div class="astat-val">35.7</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
 
 </main>
 
-<script src="app.js"></script>
+<script>
+function scrollTo(id) {
+  document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+}
+
+function switchBtn(el, group) {
+  el.parentNode.querySelectorAll('.time-btn, .mode-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function switchMode(el, mode) {
+  el.parentNode.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('filterDetail').style.display = mode === 'custom' ? 'block' : 'none';
+}
+
+function switchAssetTab(el, tab) {
+  document.querySelectorAll('.at-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('assetMain').style.display = tab === 'main' ? 'grid' : 'none';
+  document.getElementById('assetFlow').style.display = tab === 'flow' ? 'grid' : 'none';
+  document.getElementById('assetBudget').style.display = tab === 'budget' ? 'grid' : 'none';
+}
+</script>
 </body>
 </html>
