@@ -280,193 +280,201 @@ input { font-family: inherit; outline: none; }
 .at-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); }
 .at-btn:hover:not(.active) { background: #eef4ff; color: var(--primary); border-color: #c7d9ff; }
 
-.asset-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-
-/* 样式资产卡片 */
-.asset-card {
+/* ===== 形态案例 · 横向卡片（手机左 + 文案右） ===== */
+.case-cards { display: flex; flex-direction: column; gap: 20px; }
+.case-hcard {
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   box-shadow: var(--shadow-xs);
   overflow: hidden;
-  transition: box-shadow 0.18s, transform 0.18s;
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  min-height: 220px;
+  transition: box-shadow 0.18s;
 }
-.asset-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+.case-hcard:hover { box-shadow: var(--shadow-md); }
 
-/* 广告效果预览 */
-.asset-preview {
-  position: relative;
-  height: 200px;
+/* 左侧手机展示区 */
+.case-phone-area {
   display: flex; align-items: center; justify-content: center;
+  padding: 24px 20px;
+  position: relative;
+}
+.case-phone-area-ladder { background: linear-gradient(145deg, #141c2e 0%, #1e2d4a 60%, #0f1a38 100%); }
+.case-phone-area-open   { background: linear-gradient(145deg, #1a1a2e 0%, #2a1f3d 50%, #12192e 100%); }
+.case-phone-area-inter  { background: linear-gradient(145deg, #0f1e2a 0%, #1a2d3c 50%, #0a1827 100%); }
+
+/* 手机外壳 */
+.mock-phone {
+  width: 112px; height: 200px;
+  border-radius: 18px;
+  border: 3px solid rgba(255,255,255,0.18);
   overflow: hidden;
+  position: relative;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1);
+  background: #fff;
+}
+.mock-phone::before {
+  content: '';
+  position: absolute; top: 6px; left: 50%; transform: translateX(-50%);
+  width: 28px; height: 4px; background: rgba(0,0,0,0.2); border-radius: 2px;
+  z-index: 10;
 }
 
-/* === 阶梯激励预览 (游戏风) === */
-.preview-ladder {
-  background: linear-gradient(160deg, #0f1923 0%, #1a2744 50%, #0d1f3c 100%);
-  width: 100%; height: 100%;
-  display: flex; align-items: center; justify-content: center;
-  position: relative;
-}
-.ladder-phone {
-  width: 90px; height: 150px;
-  background: #fff; border-radius: 12px;
-  border: 2px solid #2d3a52;
-  overflow: hidden; position: relative;
-  flex-shrink: 0;
-}
-.ladder-bg {
-  width: 100%; height: 65%;
-  background: linear-gradient(170deg, #1a3a1a 0%, #2d6a2d 40%, #4a8f1a 80%, #6fb820 100%);
+/* === 阶梯激励 手机内容 === */
+.lad-video {
+  width: 100%; height: 52%;
+  background: linear-gradient(170deg, #1a3a1a 0%, #2d6a2d 40%, #4a8f1a 80%);
   position: relative; overflow: hidden;
 }
-.ladder-castle {
-  position: absolute; bottom: 0; right: 4px;
+.lad-video-char {
+  position: absolute; bottom: 6px; left: 10px;
   font-size: 20px; line-height: 1;
+  animation: ladChar 0.9s steps(2) infinite;
 }
-.ladder-char {
-  position: absolute; bottom: 2px; left: 6px;
-  font-size: 16px; line-height: 1;
-  animation: charRun 0.8s steps(2) infinite;
+@keyframes ladChar { 0% { transform: scaleX(1) translateX(0); } 50% { transform: scaleX(-1) translateX(-2px); } }
+.lad-video-castle { position: absolute; bottom: 2px; right: 8px; font-size: 22px; }
+.lad-video-title {
+  position: absolute; top: 8px; left: 0; right: 0;
+  text-align: center; font-size: 7px; font-weight: 700;
+  color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,0.5);
 }
-@keyframes charRun { 0% { transform: scaleX(1); } 50% { transform: scaleX(-1); } }
-.ladder-reward-panel {
-  width: 100%; background: rgba(255,255,255,0.97);
-  padding: 3px 4px; display: flex; flex-direction: column; gap: 2px;
+.lad-panel {
+  background: #fff; padding: 5px 6px; flex: 1;
 }
-.reward-bar { display: flex; gap: 2px; align-items: center; }
-.reward-node {
-  width: 16px; height: 16px; border-radius: 50%; border: 1.5px solid #ddd;
+.lad-panel-ttl { font-size: 5.5px; color: #1a202c; font-weight: 700; margin-bottom: 3px; }
+.lad-nodes { display: flex; align-items: center; gap: 2px; margin-bottom: 3px; }
+.lad-node {
+  width: 18px; height: 18px; border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
-  font-size: 7px; color: #666;
-  background: #f4f6fa;
+  font-size: 5px; border: 1.5px solid #e2e8f0;
+  background: #f4f6fa; color: #718096;
 }
-.reward-node.active { background: #ffd700; border-color: #f59e0b; color: #92400e; }
-.ladder-prog-bar {
-  height: 3px; background: #f0f2f7; border-radius: 2px; overflow: hidden;
+.lad-node.lit { background: linear-gradient(135deg, #ffd700, #f59e0b); border-color: #f59e0b; color: #7c3a00; }
+.lad-node.cur { background: linear-gradient(135deg, #f59e0b, #ef4444); border-color: #ef4444; color: #fff; animation: nodePulse 1s ease-in-out infinite; }
+@keyframes nodePulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(245,158,11,0.4); } 50% { box-shadow: 0 0 0 3px rgba(245,158,11,0); } }
+.lad-line { flex: 1; height: 2px; background: linear-gradient(90deg, #f59e0b, #e2e8f0); border-radius: 1px; }
+.lad-progress { height: 4px; background: #f0f2f7; border-radius: 2px; overflow: hidden; margin-bottom: 3px; }
+.lad-progress-fill {
+  height: 100%; background: linear-gradient(90deg, #f59e0b, #ffd700); border-radius: 2px;
+  animation: ladFill 3s ease-in-out infinite alternate;
 }
-.ladder-prog-fill {
-  height: 100%; background: linear-gradient(90deg, #f59e0b, #ffd700);
-  animation: progFill 2s ease-in-out infinite alternate;
+@keyframes ladFill { from { width: 30%; } to { width: 65%; } }
+.lad-hint { font-size: 5px; color: #718096; margin-bottom: 3px; }
+.lad-cta {
+  font-size: 5.5px; text-align: center; padding: 3px 0;
+  background: linear-gradient(90deg, #1a6ef5, #4f8ef5); color: #fff;
+  border-radius: 5px; font-weight: 600;
+  animation: ctaPulse2 2s ease-in-out infinite;
 }
-@keyframes progFill { from { width: 35%; } to { width: 70%; } }
-.ladder-cta {
-  font-size: 5px; text-align: center; padding: 1px 4px;
-  background: #2563eb; color: #fff; border-radius: 4px; margin-top: 1px;
-}
+@keyframes ctaPulse2 { 0%, 100% { opacity: 1; } 50% { opacity: 0.85; } }
 
-/* === 奖励式开屏预览 === */
-.preview-open {
-  background: linear-gradient(145deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-  width: 100%; height: 100%;
-  display: flex; align-items: center; justify-content: center;
+/* === 奖励式开屏 手机内容 === */
+.open-statusbar {
+  height: 12px; background: #f5f3f0;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 6px; font-size: 5px; color: #4a5568;
 }
-.open-phone {
-  width: 90px; height: 150px;
-  background: #f5f5f5; border-radius: 12px;
-  border: 2px solid #333;
-  overflow: hidden; position: relative;
+.open-topbar {
+  background: rgba(0,0,0,0.04); padding: 4px 6px;
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: 5px;
 }
-.open-product-img {
-  width: 100%; height: 56%;
-  background: linear-gradient(135deg, #c8c8c8 0%, #e8e8e8 50%, #bbb 100%);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 24px;
+.open-reward-hint {
+  font-size: 5.5px; color: #d97706; font-weight: 600; text-align: center;
+  padding: 2px 4px; background: #fffbeb; border-bottom: 1px solid #fde68a;
 }
-.open-product-emoji {
-  animation: productFloat 2s ease-in-out infinite;
+.open-ad-img {
+  width: 100%; flex: 1;
+  background: linear-gradient(145deg, #e8e4df 0%, #d4cec8 50%, #c8c2bb 100%);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  position: relative;
 }
-@keyframes productFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
-.open-title {
-  font-size: 5px; color: #1a202c; font-weight: 700;
-  padding: 4px 4px 2px; line-height: 1.4;
+.open-ad-model { font-size: 32px; animation: modelFloat 2s ease-in-out infinite; }
+@keyframes modelFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+.open-ad-subtitle { font-size: 5px; color: #4a5568; font-weight: 500; }
+.open-coin-badge {
+  position: absolute; bottom: 6px; left: 50%; transform: translateX(-50%);
+  background: rgba(0,0,0,0.55); color: #ffd700; font-size: 5px;
+  padding: 2px 6px; border-radius: 8px; white-space: nowrap;
+  animation: badgePop 2s ease-in-out infinite;
 }
-.open-coin-row {
-  display: flex; align-items: center; gap: 2px;
-  padding: 0 4px; font-size: 5px;
+@keyframes badgePop { 0%, 100% { transform: translateX(-50%) scale(1); } 50% { transform: translateX(-50%) scale(1.05); } }
+.open-bottom {
+  padding: 4px 5px; background: #fff;
 }
-.open-coin { font-size: 9px; animation: coinSpin 1.5s ease-in-out infinite; }
-@keyframes coinSpin { 0%, 100% { transform: rotateY(0deg); } 50% { transform: rotateY(180deg); } }
-.open-cta {
-  margin: 3px 4px; font-size: 5px; text-align: center;
-  background: #1a6ef5; color: #fff; border-radius: 4px; padding: 2px 0;
+.open-product-row { display: flex; align-items: center; gap: 3px; margin-bottom: 3px; }
+.open-product-thumb { width: 18px; height: 18px; border-radius: 3px; background: linear-gradient(135deg, #c8c8c8, #e8e8e8); font-size: 10px; display: flex; align-items: center; justify-content: center; }
+.open-product-info { flex: 1; }
+.open-product-name { font-size: 5px; font-weight: 600; color: #1a202c; }
+.open-product-sub  { font-size: 4px; color: #718096; }
+.open-btn {
+  font-size: 5.5px; text-align: center; padding: 2px 0;
+  background: #1a202c; color: #fff; border-radius: 4px; font-weight: 600;
 }
-.open-skip {
-  position: absolute; top: 4px; right: 4px;
+.open-skip-btn {
+  position: absolute; top: 16px; right: 5px;
   font-size: 5px; background: rgba(0,0,0,0.3); color: #fff;
   padding: 1px 4px; border-radius: 6px;
 }
 
-/* === 奖励式插屏预览 === */
-.preview-inter {
-  background: linear-gradient(145deg, #0d1f2d 0%, #1a2c3d 50%, #0a1929 100%);
-  width: 100%; height: 100%;
+/* === 奖励式插屏 手机内容 === */
+.inter-appbg {
+  width: 100%; height: 48%;
+  background: linear-gradient(135deg, #e8f4fd 0%, #d0e8f8 100%);
   display: flex; align-items: center; justify-content: center;
+  position: relative; overflow: hidden;
 }
-.inter-phone {
-  width: 90px; height: 150px;
-  border-radius: 12px; border: 2px solid #333;
-  overflow: hidden; position: relative;
-  background: #f8f9fa;
-}
-.inter-app-bg {
-  width: 100%; height: 55%;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 22px;
-}
-.inter-overlay {
+.inter-appbg-text { font-size: 8px; color: #aac4e0; font-weight: 700; letter-spacing: 1px; }
+.inter-card {
   position: absolute; bottom: 0; left: 0; right: 0;
-  background: rgba(255,255,255,0.97);
-  padding: 4px;
-  animation: overlaySlide 2s ease-in-out infinite alternate;
+  background: #fff;
+  border-radius: 12px 12px 0 0;
+  padding: 6px 6px 5px;
+  box-shadow: 0 -4px 16px rgba(0,0,0,0.12);
+  animation: interSlide 3s ease-in-out infinite alternate;
 }
-@keyframes overlaySlide { from { height: 48%; } to { height: 54%; } }
-.inter-brand { display: flex; align-items: center; gap: 2px; margin-bottom: 2px; }
-.inter-brand-ico { width: 10px; height: 10px; border-radius: 2px; background: linear-gradient(135deg, #f59e0b, #ef4444); }
-.inter-brand-name { font-size: 5px; font-weight: 700; color: #1a202c; }
-.inter-desc { font-size: 5px; color: #4a5568; margin-bottom: 3px; line-height: 1.4; }
-.inter-task { font-size: 5px; color: #4a5568; margin-bottom: 3px; }
-.inter-cta {
-  font-size: 5px; text-align: center; padding: 2px 4px;
-  background: linear-gradient(90deg, #f59e0b, #d97706); color: #fff; border-radius: 4px;
-  animation: ctaGlow 1.5s ease-in-out infinite alternate;
+@keyframes interSlide { from { transform: translateY(2px); } to { transform: translateY(-1px); } }
+.inter-brand-row { display: flex; align-items: center; gap: 3px; margin-bottom: 3px; }
+.inter-brand-ic { width: 12px; height: 12px; border-radius: 3px; background: linear-gradient(135deg, #f59e0b, #ef4444); display: flex; align-items: center; justify-content: center; font-size: 7px; }
+.inter-brand-n { font-size: 5.5px; font-weight: 700; color: #1a202c; flex: 1; }
+.inter-brand-ad { font-size: 4px; color: #718096; background: #f0f2f7; padding: 1px 3px; border-radius: 3px; }
+.inter-desc2 { font-size: 5px; color: #4a5568; line-height: 1.4; margin-bottom: 3px; }
+.inter-task2 { font-size: 5px; color: var(--primary); font-weight: 600; margin-bottom: 3px; }
+.inter-cta2 {
+  font-size: 5.5px; text-align: center; padding: 3px 0;
+  background: linear-gradient(90deg, #f59e0b, #d97706); color: #fff; border-radius: 5px; font-weight: 600;
+  animation: ctaGlow2 1.8s ease-in-out infinite alternate;
 }
-@keyframes ctaGlow { from { opacity: 0.85; } to { opacity: 1; } }
-.inter-skip {
-  position: absolute; top: 4px; right: 4px;
-  font-size: 5px; background: rgba(0,0,0,0.25); color: #fff;
+@keyframes ctaGlow2 { from { box-shadow: 0 0 0 0 rgba(245,158,11,0); } to { box-shadow: 0 0 6px 2px rgba(245,158,11,0.3); } }
+.inter-skip2 {
+  position: absolute; top: 56px; right: 5px;
+  font-size: 5px; background: rgba(0,0,0,0.3); color: #fff;
   padding: 1px 4px; border-radius: 6px;
 }
 
-/* 资产标签角标 */
-.asset-scene-badge {
-  position: absolute; top: 10px; left: 10px;
-  font-size: 10px; padding: 2px 8px; border-radius: 8px;
-  background: rgba(0,0,0,0.45); color: #fff; font-weight: 500;
+/* 右侧文案区 */
+.case-info {
+  padding: 28px 32px;
+  display: flex; flex-direction: column; justify-content: center; gap: 14px;
+  border-left: 1px solid var(--border);
 }
-.asset-type-badge {
-  position: absolute; top: 10px; right: 10px;
-  font-size: 10px; padding: 2px 8px; border-radius: 8px; font-weight: 500;
+.case-tag {
+  display: inline-block; font-size: 11px; padding: 4px 12px;
+  border-radius: 20px; font-weight: 500; width: fit-content;
 }
-.atb-main   { background: rgba(255,214,0,0.9); color: #6b4c00; }
-.atb-flow   { background: rgba(26,110,245,0.85); color: #fff; }
-.atb-budget { background: rgba(34,160,107,0.85); color: #fff; }
-
-/* 资产信息 */
-.asset-info { padding: 14px 16px; }
-.asset-name { font-size: 14px; font-weight: 600; margin-bottom: 4px; letter-spacing: -0.2px; }
-.asset-meta { font-size: 11px; color: var(--text-light); margin-bottom: 12px; }
-.asset-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
-.astat { padding: 10px 12px; text-align: center; border-right: 1px solid var(--border); }
-.astat:last-child { border-right: none; }
-.astat-label { font-size: 10px; color: var(--text-light); margin-bottom: 3px; }
-.astat-val   { font-size: 15px; font-weight: 700; }
-.astat-up   { color: var(--danger); }
-.astat-down { color: var(--success); }
-.astat-inc  { font-size: 10px; font-weight: 500; padding: 0 4px; border-radius: 4px; }
-.inc-up   { color: var(--danger); background: #fef2f2; }
-.inc-down { color: var(--success); background: #f0fdf4; }
+.ctag-ladder { background: #eef4ff; color: var(--primary); }
+.ctag-open   { background: #fffbeb; color: #92400e; }
+.ctag-inter  { background: #f0fdf4; color: #15803d; }
+.case-name { font-size: 24px; font-weight: 700; letter-spacing: -0.5px; }
+.case-desc { font-size: 14px; color: var(--text-sub); line-height: 1.8; }
+.case-metrics { display: flex; gap: 32px; margin-top: 6px; }
+.cm-item {}
+.cm-label { font-size: 11px; color: var(--text-light); margin-bottom: 4px; }
+.cm-val { font-size: 28px; font-weight: 700; color: var(--primary); letter-spacing: -1px; }
+.cm-val-unit { font-size: 13px; font-weight: 500; margin-left: 1px; }
+.cm-arrow { color: var(--primary); margin-right: 2px; }
 </style>
 </head>
 <body>
@@ -805,139 +813,145 @@ input { font-family: inherit; outline: none; }
     </div>
   </div>
 
-  <!-- ====== 样式资产 ====== -->
+  <!-- ====== 形态案例 ====== -->
   <div class="section" id="asset-area">
     <div class="section-head">
       <span class="section-title">形态案例</span>
-      <span class="section-sub">近期主推激励形态展示</span>
+      <span class="section-sub">近期主推激励形态</span>
     </div>
 
-    <div class="asset-grid">
+    <div class="case-cards">
 
       <!-- 阶梯激励 -->
-      <div class="asset-card">
-        <div class="asset-preview">
-          <div class="preview-ladder">
-            <div class="ladder-phone">
-              <div class="ladder-bg">
-                <div class="ladder-castle">🏰</div>
-                <div class="ladder-char">🦊</div>
+      <div class="case-hcard">
+        <!-- 左：手机动效 -->
+        <div class="case-phone-area case-phone-area-ladder">
+          <div class="mock-phone" style="display:flex; flex-direction:column;">
+            <div class="lad-video">
+              <div class="lad-video-title">完成广告互动得奖励</div>
+              <div class="lad-video-char">🦊</div>
+              <div class="lad-video-castle">🏯</div>
+            </div>
+            <div class="lad-panel">
+              <div class="lad-panel-ttl">🪙 完成互动解锁奖励阶梯</div>
+              <div class="lad-nodes">
+                <div class="lad-node lit">100</div>
+                <div class="lad-line"></div>
+                <div class="lad-node cur">200</div>
+                <div class="lad-line" style="background:#e2e8f0;"></div>
+                <div class="lad-node">300</div>
+                <div class="lad-line" style="background:#e2e8f0;"></div>
+                <div class="lad-node">400</div>
               </div>
-              <div class="ladder-reward-panel">
-                <div style="font-size:5px; color:#666; margin-bottom:2px; font-weight:600;">完成广告互动得奖励</div>
-                <div class="reward-bar">
-                  <div class="reward-node active">100</div>
-                  <div class="reward-node active">200</div>
-                  <div class="reward-node">300</div>
-                  <div class="reward-node">400</div>
-                  <div style="font-size:6px; margin-left:2px;">🪙</div>
-                </div>
-                <div class="ladder-prog-bar"><div class="ladder-prog-fill"></div></div>
-                <div style="font-size:5px; color:#888;">互动得 30 秒后可领奖</div>
-                <div class="ladder-cta">点击下载享第三方应用</div>
-              </div>
+              <div class="lad-progress"><div class="lad-progress-fill"></div></div>
+              <div class="lad-hint">奖励将于 30 秒后发放</div>
+              <div class="lad-cta">点击下载跳转第三方应用</div>
             </div>
           </div>
-          <div class="asset-scene-badge">激励视频</div>
-          <div class="asset-type-badge atb-main">主推</div>
         </div>
-        <div class="asset-info">
-          <div class="asset-name">阶梯激励</div>
-          <div class="asset-meta">观看进度解锁多级奖励 · 增强用户留存时长</div>
-          <div class="asset-stats">
-            <div class="astat">
-              <div class="astat-label">竞价 CPM</div>
-              <div class="astat-val">38.4</div>
+        <!-- 右：文案数据 -->
+        <div class="case-info">
+          <span class="case-tag ctag-ladder">激励视频 · 多广告玩法</span>
+          <div class="case-name">阶梯激励</div>
+          <div class="case-desc">多广告玩法扩展曝光库存，通过明确的进度条提示和分阶段奖励引导用户完成多个奖励任务</div>
+          <div class="case-metrics">
+            <div class="cm-item">
+              <div class="cm-label">竞价 CPM</div>
+              <div class="cm-val"><span class="cm-arrow">↑</span>38.4</div>
             </div>
-            <div class="astat">
-              <div class="astat-label">CTR</div>
-              <div class="astat-val">24.6%</div>
+            <div class="cm-item">
+              <div class="cm-label">CTR</div>
+              <div class="cm-val"><span class="cm-arrow">↑</span>24.6<span class="cm-val-unit">%</span></div>
             </div>
-            <div class="astat">
-              <div class="astat-label">CTR 增幅</div>
-              <div class="astat-val astat-up">+3.2pp <span class="astat-inc inc-up">↑</span></div>
+            <div class="cm-item">
+              <div class="cm-label">CTR 增幅</div>
+              <div class="cm-val">+3.2<span class="cm-val-unit">pp</span></div>
             </div>
           </div>
         </div>
       </div>
 
       <!-- 奖励式开屏 -->
-      <div class="asset-card">
-        <div class="asset-preview">
-          <div class="preview-open">
-            <div class="open-phone">
-              <div class="open-product-img">
-                <span class="open-product-emoji">🤖</span>
-              </div>
-              <div class="open-title">灵隙双恒贴边清洁<br>0死角智能科技</div>
-              <div class="open-coin-row">
-                <span class="open-coin">🪙</span>
-                <span style="font-size:5px; color:#d97706; font-weight:700;">最高 500 金币奖励</span>
-              </div>
-              <div style="font-size:4px; color:#718096; padding:0 4px; margin-top:1px;">上滑查看详情即得奖励</div>
-              <div class="open-cta">立即查看详情</div>
-              <div class="open-skip">跳过 5</div>
+      <div class="case-hcard">
+        <div class="case-phone-area case-phone-area-open">
+          <div class="mock-phone" style="display:flex; flex-direction:column; position:relative;">
+            <div class="open-statusbar">10:00 <span>📶 🔋</span></div>
+            <div class="open-reward-hint">🪙 看 10 秒后得奖励</div>
+            <div class="open-ad-img" style="flex:1;">
+              <div class="open-ad-model">🤖</div>
+              <div class="open-ad-subtitle">灵隙智能扫地机 · 0死角清洁</div>
+              <div class="open-coin-badge">🪙 最高 500 金币奖励</div>
             </div>
+            <div class="open-bottom">
+              <div class="open-product-row">
+                <div class="open-product-thumb">🤖</div>
+                <div class="open-product-info">
+                  <div class="open-product-name">灵隙双恒贴边清洁0死角</div>
+                  <div class="open-product-sub">近期热销 4000+ · 先用后付</div>
+                </div>
+              </div>
+              <div class="open-btn">去购买</div>
+            </div>
+            <div class="open-skip-btn">跳过 5</div>
           </div>
-          <div class="asset-scene-badge">开屏</div>
-          <div class="asset-type-badge atb-main">主推</div>
         </div>
-        <div class="asset-info">
-          <div class="asset-name">奖励式开屏</div>
-          <div class="asset-meta">上滑查看落地页得金币 · 深转收益驱动</div>
-          <div class="asset-stats">
-            <div class="astat">
-              <div class="astat-label">竞价 CPM</div>
-              <div class="astat-val">52.1</div>
+        <div class="case-info">
+          <span class="case-tag ctag-open">开屏 / 插屏 · 奖励式广告</span>
+          <div class="case-name">奖励式开插屏</div>
+          <div class="case-desc">广告外层提示用户完成任务，即可获取对应奖励，具体奖励信息支持开发者自定义配置</div>
+          <div class="case-metrics">
+            <div class="cm-item">
+              <div class="cm-label">竞价 CPM</div>
+              <div class="cm-val"><span class="cm-arrow">↑</span>52.1</div>
             </div>
-            <div class="astat">
-              <div class="astat-label">CTR</div>
-              <div class="astat-val">18.3%</div>
+            <div class="cm-item">
+              <div class="cm-label">CTR</div>
+              <div class="cm-val"><span class="cm-arrow">↑</span>18.3<span class="cm-val-unit">%</span></div>
             </div>
-            <div class="astat">
-              <div class="astat-label">CTR 增幅</div>
-              <div class="astat-val astat-up">+2.7pp <span class="astat-inc inc-up">↑</span></div>
+            <div class="cm-item">
+              <div class="cm-label">CTR 增幅</div>
+              <div class="cm-val">+2.7<span class="cm-val-unit">pp</span></div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- 奖励式插屏 -->
-      <div class="asset-card">
-        <div class="asset-preview">
-          <div class="preview-inter">
-            <div class="inter-phone">
-              <div class="inter-app-bg">📱</div>
-              <div class="inter-overlay">
-                <div class="inter-brand">
-                  <div class="inter-brand-ico"></div>
-                  <span class="inter-brand-name">优购家</span>
-                </div>
-                <div class="inter-desc">王牌明星套组予TA全面爱护<br>NO.1护肤水明星礼盒</div>
-                <div class="inter-task">👆 点击并浏览 10s，享金币奖励</div>
-                <div class="inter-cta">点击浏览领金币奖励 🪙</div>
+      <!-- 奖励式插屏（复用开屏形式，展示插屏内容弹出样式） -->
+      <div class="case-hcard">
+        <div class="case-phone-area case-phone-area-inter">
+          <div class="mock-phone" style="position:relative;">
+            <div class="inter-appbg">
+              <div class="inter-appbg-text">APP</div>
+            </div>
+            <div class="inter-card">
+              <div class="inter-brand-row">
+                <div class="inter-brand-ic">Y</div>
+                <span class="inter-brand-n">优购家</span>
+                <span class="inter-brand-ad">广告</span>
               </div>
-              <div class="inter-skip">跳过 2</div>
+              <div class="inter-desc2">王牌明星套组予TA全面爱护<br>NO.1护肤水明星礼盒</div>
+              <div class="inter-task2">👆 点击并浏览10s，领金币奖励</div>
+              <div class="inter-cta2">点击并浏览，拿金币奖励 🪙</div>
             </div>
+            <div class="inter-skip2">跳过 2</div>
           </div>
-          <div class="asset-scene-badge">插屏</div>
-          <div class="asset-type-badge atb-main">主推</div>
         </div>
-        <div class="asset-info">
-          <div class="asset-name">奖励式插屏</div>
-          <div class="asset-meta">点击浏览落地页达时长得金币 · 短时体验激励</div>
-          <div class="asset-stats">
-            <div class="astat">
-              <div class="astat-label">竞价 CPM</div>
-              <div class="astat-val">44.8</div>
+        <div class="case-info">
+          <span class="case-tag ctag-inter">插屏 · 短时体验激励</span>
+          <div class="case-name">奖励式插屏</div>
+          <div class="case-desc">广告外层提示用户完成任务，即可获取对应奖励，具体奖励信息支持开发者自定义配置</div>
+          <div class="case-metrics">
+            <div class="cm-item">
+              <div class="cm-label">竞价 CPM</div>
+              <div class="cm-val"><span class="cm-arrow">↑</span>44.8</div>
             </div>
-            <div class="astat">
-              <div class="astat-label">CTR</div>
-              <div class="astat-val">21.4%</div>
+            <div class="cm-item">
+              <div class="cm-label">CTR</div>
+              <div class="cm-val"><span class="cm-arrow">↑</span>21.4<span class="cm-val-unit">%</span></div>
             </div>
-            <div class="astat">
-              <div class="astat-label">CTR 增幅</div>
-              <div class="astat-val astat-up">+4.1pp <span class="astat-inc inc-up">↑</span></div>
+            <div class="cm-item">
+              <div class="cm-label">CTR 增幅</div>
+              <div class="cm-val">+4.1<span class="cm-val-unit">pp</span></div>
             </div>
           </div>
         </div>
@@ -949,6 +963,22 @@ input { font-family: inherit; outline: none; }
 </main>
 
 <script>
+function smoothScroll(id) {
+  document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+function switchFbtn(el, group) {
+  el.closest('.filter-row').querySelectorAll('.fbtn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+}
+function switchMode(el) {
+  el.closest('.filter-row').querySelectorAll('.fbtn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('filterDetail').style.display =
+    el.dataset.mode === 'custom' ? 'block' : 'none';
+}
+</script>
+</body>
+</html>
 function smoothScroll(id) {
   document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
