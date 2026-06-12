@@ -12,103 +12,131 @@
   --text-sub: #4a5568;
   --text-light: #718096;
   --border: #e8ecf0;
-  --bg: #f4f6fa;
+  --bg: #f0f2f7;
   --bg-card: #fff;
   --success: #22a06b;
   --warn: #d97706;
   --danger: #dc2626;
-  --shadow-sm: 0 1px 4px rgba(0,0,0,0.06);
-  --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
-  --radius: 12px;
+  --shadow-xs: 0 1px 3px rgba(0,0,0,0.04);
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.06);
+  --shadow-md: 0 6px 20px rgba(0,0,0,0.09);
+  --radius: 14px;
+  --radius-sm: 8px;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; font-size: 14px; line-height: 1.6; color: var(--text); background: var(--bg); }
 button { cursor: pointer; border: none; outline: none; font-family: inherit; }
 a { color: inherit; text-decoration: none; }
 ul { list-style: none; }
+input { font-family: inherit; outline: none; }
 
 /* ===== 顶部导航 ===== */
 .topbar {
-  background: #fff;
-  border-bottom: 1px solid var(--border);
-  padding: 0 32px;
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+  padding: 0 40px;
   height: 56px;
   display: flex; justify-content: space-between; align-items: center;
-  position: sticky; top: 0; z-index: 100;
-  box-shadow: var(--shadow-sm);
+  position: sticky; top: 0; z-index: 200;
 }
-.topbar-left { display: flex; align-items: center; gap: 12px; }
-.logo { font-size: 15px; font-weight: 600; letter-spacing: -0.3px; }
-.env-tag { font-size: 11px; padding: 2px 8px; background: #eef4ff; color: var(--primary); border-radius: 4px; }
-.topbar-nav { display: flex; gap: 4px; }
+.topbar-brand { display: flex; align-items: center; gap: 10px; }
+.brand-logo { font-size: 15px; font-weight: 700; letter-spacing: -0.5px; }
+.brand-dot { width: 6px; height: 6px; background: var(--primary); border-radius: 50%; }
+.brand-tag { font-size: 11px; color: var(--text-light); letter-spacing: 0.3px; }
+.topbar-nav { display: flex; gap: 2px; }
 .tn-item {
-  font-size: 13px; padding: 6px 14px; border-radius: 6px;
+  font-size: 13px; padding: 6px 16px; border-radius: 8px;
   color: var(--text-sub); cursor: pointer; transition: all 0.15s;
 }
-.tn-item:hover, .tn-item.active { background: #eef4ff; color: var(--primary); }
-.topbar-right { display: flex; align-items: center; gap: 12px; }
+.tn-item:hover { background: rgba(26,110,245,0.06); color: var(--primary); }
+.tn-item.active { background: rgba(26,110,245,0.08); color: var(--primary); font-weight: 500; }
+.topbar-right { display: flex; align-items: center; gap: 10px; }
 .avatar {
   width: 30px; height: 30px; border-radius: 50%;
-  background: var(--primary); color: #fff;
-  display: inline-flex; align-items: center; justify-content: center;
-  font-size: 13px; font-weight: 600;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: #fff; display: inline-flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 600;
 }
 
-/* ===== 主体 ===== */
-.main { max-width: 1320px; margin: 0 auto; padding: 28px 32px 60px; }
+/* ===== Hero 区 ===== */
+.hero {
+  background: linear-gradient(145deg, #eef4ff 0%, #f5f0ff 40%, #e8f4fd 100%);
+  padding: 56px 40px 48px;
+  position: relative; overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; top: -120px; right: -80px;
+  width: 480px; height: 480px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(138,104,255,0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero::after {
+  content: '';
+  position: absolute; bottom: -60px; left: 120px;
+  width: 320px; height: 320px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(26,110,245,0.1) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-inner { max-width: 1240px; margin: 0 auto; position: relative; z-index: 1; }
+.hero-title { font-size: 34px; font-weight: 700; letter-spacing: -1px; margin-bottom: 10px; }
+.hero-sub { font-size: 15px; color: var(--text-sub); }
 
-/* ===== Section 通用 ===== */
-.section { margin-bottom: 40px; }
-.section-head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 18px; }
-.section-title { font-size: 16px; font-weight: 600; }
+/* ===== 主体 ===== */
+.main { max-width: 1240px; margin: 0 auto; padding: 32px 40px 72px; }
+.section { margin-bottom: 44px; }
+.section-head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 20px; }
+.section-title { font-size: 17px; font-weight: 600; letter-spacing: -0.3px; }
 .section-sub { font-size: 13px; color: var(--text-light); }
 
-/* ===== 工作流入口 · 模块卡片 (Hikari风格) ===== */
+/* ===== 工作流入口 · 模块卡片 ===== */
 .module-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
+  gap: 14px;
 }
 .module-card {
   background: var(--bg-card);
   border-radius: var(--radius);
-  padding: 28px 24px 22px;
-  box-shadow: var(--shadow-sm);
+  padding: 26px 22px 20px;
+  box-shadow: var(--shadow-xs);
   border: 1px solid var(--border);
   cursor: pointer;
-  transition: box-shadow 0.18s, transform 0.18s;
+  transition: box-shadow 0.2s, transform 0.2s, border-color 0.2s;
   display: flex; flex-direction: column; gap: 10px;
+  text-decoration: none; color: inherit;
 }
 .module-card:hover {
   box-shadow: var(--shadow-md);
-  transform: translateY(-2px);
+  transform: translateY(-3px);
+  border-color: rgba(26,110,245,0.2);
 }
 .mc-icon {
-  width: 44px; height: 44px; border-radius: 10px;
+  width: 46px; height: 46px; border-radius: 12px;
   display: flex; align-items: center; justify-content: center;
   font-size: 22px; margin-bottom: 4px;
 }
 .mc-icon-produce { background: #eef4ff; }
-.mc-icon-rule { background: #fff7ed; }
+.mc-icon-rule    { background: #fff7ed; }
 .mc-icon-insight { background: #f0fdf4; }
 .mc-icon-trouble { background: #fef2f2; }
-.mc-name { font-size: 18px; font-weight: 600; letter-spacing: -0.3px; }
-.mc-en { font-size: 12px; color: var(--text-light); margin-top: -4px; }
+.mc-name { font-size: 19px; font-weight: 700; letter-spacing: -0.5px; }
+.mc-en   { font-size: 12px; color: var(--text-light); margin-top: -4px; }
 .mc-desc { font-size: 13px; color: var(--text-sub); line-height: 1.7; flex: 1; }
 .mc-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
 .mc-tag {
-  font-size: 12px; padding: 3px 10px;
-  border-radius: 20px; background: #f1f5f9;
-  color: var(--text-sub); border: 1px solid var(--border);
+  font-size: 11px; padding: 3px 10px;
+  border-radius: 20px; border: 1px solid transparent;
   transition: background 0.12s;
 }
-.mc-tag:hover { background: #eef4ff; color: var(--primary); }
 .mc-tag-produce { color: var(--primary); background: #eef4ff; border-color: #c7d9ff; }
-.mc-tag-rule { color: #c2570e; background: #fff7ed; border-color: #fde68a; }
-.mc-tag-insight { color: var(--success); background: #f0fdf4; border-color: #bbf7d0; }
+.mc-tag-rule    { color: #c2570e; background: #fff7ed; border-color: #fde68a; }
+.mc-tag-insight { color: #15803d; background: #f0fdf4; border-color: #bbf7d0; }
 .mc-tag-trouble { color: var(--danger); background: #fef2f2; border-color: #fecaca; }
 
-/* ===== 工作视图 ===== */
+/* ===== 工作视图 · 筛选器 ===== */
 .view-filters {
   background: var(--bg-card);
   border: 1px solid var(--border);
@@ -118,278 +146,435 @@ ul { list-style: none; }
 }
 .filter-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
 .filter-row:last-child { margin-bottom: 0; }
-.filter-label { font-size: 12px; color: var(--text-light); width: 68px; flex-shrink: 0; }
-.time-btn, .mode-btn {
-  font-size: 12px; padding: 4px 12px;
-  background: #f1f5f9; border-radius: 6px;
-  color: var(--text-sub); transition: all 0.15s;
+.filter-label { font-size: 12px; color: var(--text-light); width: 62px; flex-shrink: 0; }
+.fbtn {
+  font-size: 12px; padding: 4px 13px;
+  background: #f4f6fa; border-radius: 20px;
+  color: var(--text-sub); border: 1px solid transparent;
+  transition: all 0.15s;
 }
-.time-btn:hover, .mode-btn:hover { background: #eef4ff; color: var(--primary); }
-.time-btn.active, .mode-btn.active { background: var(--primary); color: #fff; }
-.filter-detail { margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); }
+.fbtn:hover { background: #eef4ff; color: var(--primary); }
+.fbtn.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+.filter-detail { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); }
 .fdim-row { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 8px; }
-.fdim-label { font-size: 12px; color: var(--text-light); width: 44px; padding-top: 4px; flex-shrink: 0; }
+.fdim-label { font-size: 12px; color: var(--text-light); width: 40px; padding-top: 3px; flex-shrink: 0; }
 .fdim-chips { display: flex; flex-wrap: wrap; gap: 6px; }
-.fc { display: inline-flex; align-items: center; gap: 4px; }
-.fc input { width: 13px; height: 13px; accent-color: var(--primary); }
+.fc { display: inline-flex; align-items: center; gap: 4px; cursor: pointer; }
+.fc input { width: 13px; height: 13px; accent-color: var(--primary); cursor: pointer; }
 .fc span { font-size: 12px; color: var(--text-sub); }
 .filter-actions { display: flex; align-items: center; gap: 8px; margin-top: 10px; }
 .btn-apply {
   font-size: 12px; padding: 5px 16px;
-  background: var(--primary); color: #fff; border-radius: 6px;
+  background: var(--primary); color: #fff; border-radius: 20px;
 }
-.btn-reset { font-size: 12px; padding: 5px 14px; background: #f1f5f9; border-radius: 6px; color: var(--text-sub); }
+.btn-apply:hover { background: var(--primary-hover); }
+.btn-reset { font-size: 12px; padding: 5px 14px; background: #f4f6fa; border-radius: 20px; color: var(--text-sub); }
 .filter-summary { font-size: 12px; color: var(--text-light); margin-left: 4px; }
 
-/* 看板网格 */
+/* ===== 工作视图 · 看板 ===== */
 .board { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 .board-card {
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-xs);
   overflow: hidden;
+  transition: box-shadow 0.15s;
 }
+.board-card:hover { box-shadow: var(--shadow-sm); }
 .board-card.card-full { grid-column: span 2; }
 .card-hd {
-  padding: 14px 18px 10px;
+  padding: 14px 20px 12px;
   display: flex; justify-content: space-between; align-items: center;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid #f4f6fa;
 }
 .card-hd-title { font-size: 13px; font-weight: 600; }
-.card-link { font-size: 12px; color: var(--primary); }
-.card-body { padding: 14px 18px; }
+.card-link { font-size: 12px; color: var(--primary); transition: opacity 0.12s; }
+.card-link:hover { opacity: 0.7; }
+.card-body { padding: 16px 20px; }
+.card-foot { padding: 10px 20px; border-top: 1px solid #f4f6fa; font-size: 11px; color: var(--text-light); }
 
-/* 看板 · 在线模板情况 */
+/* 模板汇总数字 */
 .stat-row {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 12px; margin-bottom: 12px;
+  display: grid; grid-template-columns: repeat(5, 1fr);
+  gap: 0; margin-bottom: 14px;
+  border: 1px solid var(--border); border-radius: 10px; overflow: hidden;
 }
-.stat-item {}
-.stat-label { font-size: 11px; color: var(--text-light); margin-bottom: 2px; }
-.stat-val { font-size: 22px; font-weight: 600; letter-spacing: -0.5px; }
-.stat-unit { font-size: 12px; color: var(--text-sub); margin-left: 2px; font-weight: 400; }
-.stat-sub { font-size: 11px; color: var(--text-light); margin-top: 2px; }
-.stat-up { color: var(--danger); }
-.stat-down { color: var(--success); }
-.tpl-mini-table { width: 100%; border-collapse: collapse; font-size: 12px; }
-.tpl-mini-table th { text-align: left; color: var(--text-light); font-weight: 400; padding: 4px 6px; border-bottom: 1px solid var(--border); }
-.tpl-mini-table td { padding: 6px 6px; border-bottom: 1px solid #f1f5f9; }
-.tpl-mini-table tr:last-child td { border-bottom: none; }
-.st { display: inline-block; font-size: 10px; padding: 1px 6px; border-radius: 8px; }
-.st-on { background: #dcfce7; color: #15803d; }
-.st-exp { background: #fef9c3; color: #854d0e; }
+.stat-item {
+  padding: 12px 14px;
+  border-right: 1px solid var(--border);
+  background: #fafbfc;
+}
+.stat-item:last-child { border-right: none; }
+.stat-label { font-size: 11px; color: var(--text-light); margin-bottom: 3px; }
+.stat-val { font-size: 20px; font-weight: 700; letter-spacing: -0.5px; }
+.stat-unit { font-size: 11px; color: var(--text-sub); margin-left: 1px; font-weight: 400; }
+.stat-trend { font-size: 11px; margin-top: 2px; }
+.trend-up   { color: var(--danger); }
+.trend-down { color: var(--success); }
+.trend-flat { color: var(--text-light); }
 
-/* 看板 · 在线规则情况 */
-.rule-row { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid #f1f5f9; font-size: 13px; }
-.rule-row:last-child { border-bottom: none; }
-.rule-name { color: var(--text-sub); }
-.rule-val { font-weight: 600; }
+/* 模板明细表 */
+.mini-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.mini-table th { text-align: left; color: var(--text-light); font-weight: 400; padding: 4px 8px 6px; border-bottom: 1px solid var(--border); white-space: nowrap; }
+.mini-table td { padding: 7px 8px; border-bottom: 1px solid #f4f6fa; white-space: nowrap; }
+.mini-table tr:last-child td { border-bottom: none; }
+.mini-table tr:hover td { background: #fafbff; }
+.st { display: inline-block; font-size: 10px; padding: 1px 7px; border-radius: 8px; font-weight: 500; }
+.st-on   { background: #dcfce7; color: #15803d; }
+.st-exp  { background: #fef9c3; color: #854d0e; }
+.st-off  { background: #f4f6fa; color: var(--text-light); }
 
-/* 看板 · case情况 */
-.case-row { display: flex; align-items: center; gap: 8px; padding: 7px 0; border-bottom: 1px solid #f1f5f9; font-size: 12px; }
+/* 规则情况 */
+.rule-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.rule-item {
+  padding: 12px 14px; background: #fafbfc;
+  border: 1px solid var(--border); border-radius: 10px;
+}
+.rule-item-label { font-size: 11px; color: var(--text-light); margin-bottom: 4px; }
+.rule-item-val { font-size: 20px; font-weight: 700; }
+.rule-item-val.warn { color: var(--warn); }
+.rule-item-val.danger { color: var(--danger); }
+.logic-bars { margin-top: 12px; }
+.logic-row { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; font-size: 12px; }
+.logic-name { width: 60px; color: var(--text-sub); flex-shrink: 0; }
+.logic-bar-bg { flex: 1; height: 5px; background: #f0f2f7; border-radius: 3px; overflow: hidden; }
+.logic-bar-fill { height: 100%; border-radius: 3px; }
+.logic-count { width: 36px; text-align: right; color: var(--text-sub); }
+
+/* case */
+.case-row { display: flex; align-items: flex-start; gap: 8px; padding: 8px 0; border-bottom: 1px solid #f4f6fa; font-size: 12px; }
 .case-row:last-child { border-bottom: none; }
-.case-badge { display: inline-block; font-size: 10px; padding: 1px 6px; border-radius: 6px; font-weight: 500; flex-shrink: 0; }
-.cb-p0 { background: #fef2f2; color: var(--danger); }
-.cb-p1 { background: #fff7ed; color: var(--warn); }
+.cbadge { display: inline-block; font-size: 10px; padding: 1px 7px; border-radius: 6px; font-weight: 600; flex-shrink: 0; margin-top: 1px; }
+.cb-p0   { background: #fef2f2; color: var(--danger); }
+.cb-p1   { background: #fff7ed; color: var(--warn); }
 .cb-done { background: #f0fdf4; color: var(--success); }
-.case-desc { flex: 1; color: var(--text); }
-.case-prog { color: var(--text-light); flex-shrink: 0; }
+.case-main { flex: 1; }
+.case-desc { color: var(--text); margin-bottom: 2px; }
+.case-id   { font-size: 11px; color: var(--text-light); }
+.case-prog { font-size: 11px; color: var(--text-light); flex-shrink: 0; padding-top: 3px; }
 
-/* 看板 · 近期操作 */
-.op-row { display: grid; grid-template-columns: 50px 50px 60px 80px 1fr; gap: 6px; align-items: center; padding: 7px 0; border-bottom: 1px solid #f1f5f9; font-size: 12px; }
-.op-row:last-child { border-bottom: none; }
+/* 近期操作 */
+.op-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.op-table th { text-align: left; padding: 4px 10px 8px; color: var(--text-light); font-weight: 400; border-bottom: 1px solid var(--border); white-space: nowrap; }
+.op-table td { padding: 8px 10px; border-bottom: 1px solid #f4f6fa; white-space: nowrap; }
+.op-table tr:last-child td { border-bottom: none; }
+.op-table tr:hover td { background: #fafbff; }
 .op-time { color: var(--text-light); }
-.op-src { display: inline-block; padding: 1px 7px; border-radius: 8px; font-size: 11px; font-weight: 500; }
-.op-src-tpl { background: #eef4ff; color: var(--primary); }
-.op-src-rule { background: #fff7ed; color: #c2570e; }
-.op-src-case { background: #fef2f2; color: var(--danger); }
-.op-who { color: var(--text-sub); }
+.op-src-chip { display: inline-block; font-size: 10px; padding: 2px 8px; border-radius: 8px; font-weight: 500; }
+.src-tpl   { background: #eef4ff; color: var(--primary); }
+.src-rule  { background: #fff7ed; color: #c2570e; }
+.src-case  { background: #fef2f2; color: var(--danger); }
+.op-who  { color: var(--text-sub); }
 .op-type { color: var(--text-sub); }
-.op-id { color: var(--text-light); font-family: "SF Mono", Menlo, monospace; }
+.op-id   { color: var(--text-light); font-family: "SF Mono", Menlo, monospace; font-size: 11px; }
 
 /* ===== 样式资产 ===== */
-.asset-tabs { display: flex; gap: 6px; margin-bottom: 16px; }
+.asset-tabs { display: flex; gap: 6px; margin-bottom: 18px; }
 .at-btn {
-  font-size: 13px; padding: 6px 16px;
+  font-size: 13px; padding: 7px 20px;
   border-radius: 20px; background: var(--bg-card);
   border: 1px solid var(--border); color: var(--text-sub);
   cursor: pointer; transition: all 0.15s;
 }
 .at-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+.at-btn:hover:not(.active) { background: #eef4ff; color: var(--primary); border-color: #c7d9ff; }
 
 .asset-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+
+/* 样式资产卡片 */
 .asset-card {
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-xs);
   overflow: hidden;
-  transition: box-shadow 0.15s;
+  transition: box-shadow 0.18s, transform 0.18s;
 }
-.asset-card:hover { box-shadow: var(--shadow-md); }
-/* 动效预览区 */
+.asset-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+
+/* 广告效果预览 */
 .asset-preview {
-  height: 180px;
-  background: #1a202c;
   position: relative;
-  overflow: hidden;
-  display: flex; align-items: center; justify-content: center;
-}
-.preview-phone {
-  width: 88px; height: 148px;
-  background: #fff; border-radius: 14px;
-  border: 3px solid #4a5568;
+  height: 200px;
   display: flex; align-items: center; justify-content: center;
   overflow: hidden;
-  position: relative;
 }
-/* 广告动效模拟 */
-.ad-sim {
+
+/* === 阶梯激励预览 (游戏风) === */
+.preview-ladder {
+  background: linear-gradient(160deg, #0f1923 0%, #1a2744 50%, #0d1f3c 100%);
   width: 100%; height: 100%;
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  gap: 4px;
-  animation: adPulse 2s ease-in-out infinite;
+  display: flex; align-items: center; justify-content: center;
+  position: relative;
 }
-@keyframes adPulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.7; }
+.ladder-phone {
+  width: 90px; height: 150px;
+  background: #fff; border-radius: 12px;
+  border: 2px solid #2d3a52;
+  overflow: hidden; position: relative;
+  flex-shrink: 0;
 }
-.ad-img-sim {
-  width: 80%; height: 55%;
-  border-radius: 4px;
+.ladder-bg {
+  width: 100%; height: 65%;
+  background: linear-gradient(170deg, #1a3a1a 0%, #2d6a2d 40%, #4a8f1a 80%, #6fb820 100%);
+  position: relative; overflow: hidden;
 }
-.ad-btn-sim {
-  font-size: 8px; padding: 3px 10px;
-  border-radius: 10px; color: #fff; font-weight: 600;
+.ladder-castle {
+  position: absolute; bottom: 0; right: 4px;
+  font-size: 20px; line-height: 1;
 }
-.ad-title-sim { font-size: 7px; color: #1a202c; font-weight: 600; text-align: center; }
+.ladder-char {
+  position: absolute; bottom: 2px; left: 6px;
+  font-size: 16px; line-height: 1;
+  animation: charRun 0.8s steps(2) infinite;
+}
+@keyframes charRun { 0% { transform: scaleX(1); } 50% { transform: scaleX(-1); } }
+.ladder-reward-panel {
+  width: 100%; background: rgba(255,255,255,0.97);
+  padding: 3px 4px; display: flex; flex-direction: column; gap: 2px;
+}
+.reward-bar { display: flex; gap: 2px; align-items: center; }
+.reward-node {
+  width: 16px; height: 16px; border-radius: 50%; border: 1.5px solid #ddd;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 7px; color: #666;
+  background: #f4f6fa;
+}
+.reward-node.active { background: #ffd700; border-color: #f59e0b; color: #92400e; }
+.ladder-prog-bar {
+  height: 3px; background: #f0f2f7; border-radius: 2px; overflow: hidden;
+}
+.ladder-prog-fill {
+  height: 100%; background: linear-gradient(90deg, #f59e0b, #ffd700);
+  animation: progFill 2s ease-in-out infinite alternate;
+}
+@keyframes progFill { from { width: 35%; } to { width: 70%; } }
+.ladder-cta {
+  font-size: 5px; text-align: center; padding: 1px 4px;
+  background: #2563eb; color: #fff; border-radius: 4px; margin-top: 1px;
+}
+
+/* === 奖励式开屏预览 === */
+.preview-open {
+  background: linear-gradient(145deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+}
+.open-phone {
+  width: 90px; height: 150px;
+  background: #f5f5f5; border-radius: 12px;
+  border: 2px solid #333;
+  overflow: hidden; position: relative;
+}
+.open-product-img {
+  width: 100%; height: 56%;
+  background: linear-gradient(135deg, #c8c8c8 0%, #e8e8e8 50%, #bbb 100%);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px;
+}
+.open-product-emoji {
+  animation: productFloat 2s ease-in-out infinite;
+}
+@keyframes productFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+.open-title {
+  font-size: 5px; color: #1a202c; font-weight: 700;
+  padding: 4px 4px 2px; line-height: 1.4;
+}
+.open-coin-row {
+  display: flex; align-items: center; gap: 2px;
+  padding: 0 4px; font-size: 5px;
+}
+.open-coin { font-size: 9px; animation: coinSpin 1.5s ease-in-out infinite; }
+@keyframes coinSpin { 0%, 100% { transform: rotateY(0deg); } 50% { transform: rotateY(180deg); } }
+.open-cta {
+  margin: 3px 4px; font-size: 5px; text-align: center;
+  background: #1a6ef5; color: #fff; border-radius: 4px; padding: 2px 0;
+}
+.open-skip {
+  position: absolute; top: 4px; right: 4px;
+  font-size: 5px; background: rgba(0,0,0,0.3); color: #fff;
+  padding: 1px 4px; border-radius: 6px;
+}
+
+/* === 奖励式插屏预览 === */
+.preview-inter {
+  background: linear-gradient(145deg, #0d1f2d 0%, #1a2c3d 50%, #0a1929 100%);
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+}
+.inter-phone {
+  width: 90px; height: 150px;
+  border-radius: 12px; border: 2px solid #333;
+  overflow: hidden; position: relative;
+  background: #f8f9fa;
+}
+.inter-app-bg {
+  width: 100%; height: 55%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px;
+}
+.inter-overlay {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  background: rgba(255,255,255,0.97);
+  padding: 4px;
+  animation: overlaySlide 2s ease-in-out infinite alternate;
+}
+@keyframes overlaySlide { from { height: 48%; } to { height: 54%; } }
+.inter-brand { display: flex; align-items: center; gap: 2px; margin-bottom: 2px; }
+.inter-brand-ico { width: 10px; height: 10px; border-radius: 2px; background: linear-gradient(135deg, #f59e0b, #ef4444); }
+.inter-brand-name { font-size: 5px; font-weight: 700; color: #1a202c; }
+.inter-desc { font-size: 5px; color: #4a5568; margin-bottom: 3px; line-height: 1.4; }
+.inter-task { font-size: 5px; color: #4a5568; margin-bottom: 3px; }
+.inter-cta {
+  font-size: 5px; text-align: center; padding: 2px 4px;
+  background: linear-gradient(90deg, #f59e0b, #d97706); color: #fff; border-radius: 4px;
+  animation: ctaGlow 1.5s ease-in-out infinite alternate;
+}
+@keyframes ctaGlow { from { opacity: 0.85; } to { opacity: 1; } }
+.inter-skip {
+  position: absolute; top: 4px; right: 4px;
+  font-size: 5px; background: rgba(0,0,0,0.25); color: #fff;
+  padding: 1px 4px; border-radius: 6px;
+}
+
+/* 资产标签角标 */
 .asset-scene-badge {
   position: absolute; top: 10px; left: 10px;
   font-size: 10px; padding: 2px 8px; border-radius: 8px;
-  background: rgba(0,0,0,0.5); color: #fff;
+  background: rgba(0,0,0,0.45); color: #fff; font-weight: 500;
 }
 .asset-type-badge {
   position: absolute; top: 10px; right: 10px;
-  font-size: 10px; padding: 2px 8px; border-radius: 8px;
+  font-size: 10px; padding: 2px 8px; border-radius: 8px; font-weight: 500;
 }
-.atb-main { background: #fef9c3; color: #854d0e; }
-.atb-flow { background: #eef4ff; color: var(--primary); }
-.atb-budget { background: #f0fdf4; color: #15803d; }
+.atb-main   { background: rgba(255,214,0,0.9); color: #6b4c00; }
+.atb-flow   { background: rgba(26,110,245,0.85); color: #fff; }
+.atb-budget { background: rgba(34,160,107,0.85); color: #fff; }
 
+/* 资产信息 */
 .asset-info { padding: 14px 16px; }
-.asset-name { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
-.asset-meta { font-size: 12px; color: var(--text-light); margin-bottom: 10px; }
-.asset-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-.astat { text-align: center; }
-.astat-label { font-size: 10px; color: var(--text-light); margin-bottom: 2px; }
-.astat-val { font-size: 14px; font-weight: 600; }
-.astat-divider { width: 1px; background: var(--border); margin: 2px 0; }
+.asset-name { font-size: 14px; font-weight: 600; margin-bottom: 4px; letter-spacing: -0.2px; }
+.asset-meta { font-size: 11px; color: var(--text-light); margin-bottom: 12px; }
+.asset-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+.astat { padding: 10px 12px; text-align: center; border-right: 1px solid var(--border); }
+.astat:last-child { border-right: none; }
+.astat-label { font-size: 10px; color: var(--text-light); margin-bottom: 3px; }
+.astat-val   { font-size: 15px; font-weight: 700; }
+.astat-up   { color: var(--danger); }
+.astat-down { color: var(--success); }
+.astat-inc  { font-size: 10px; font-weight: 500; padding: 0 4px; border-radius: 4px; }
+.inc-up   { color: var(--danger); background: #fef2f2; }
+.inc-down { color: var(--success); background: #f0fdf4; }
 </style>
 </head>
 <body>
 
+<!-- ====== 顶部导航 ====== -->
 <header class="topbar">
-  <div class="topbar-left">
-    <span class="logo">联盟样式一站式工作台</span>
-    <span class="env-tag">Demo · v0.4</span>
+  <div class="topbar-brand">
+    <span class="brand-logo">联盟样式工作台</span>
+    <span class="brand-dot"></span>
+    <span class="brand-tag">Style Workspace</span>
   </div>
   <nav class="topbar-nav">
-    <span class="tn-item active" onclick="scrollTo('module-area')">工作流入口</span>
-    <span class="tn-item" onclick="scrollTo('board-area')">工作视图</span>
-    <span class="tn-item" onclick="scrollTo('asset-area')">样式资产</span>
+    <span class="tn-item active" onclick="smoothScroll('module-area')">工作流入口</span>
+    <span class="tn-item" onclick="smoothScroll('board-area')">工作视图</span>
+    <span class="tn-item" onclick="smoothScroll('asset-area')">样式资产</span>
   </nav>
   <div class="topbar-right">
     <span class="avatar">H</span>
   </div>
 </header>
 
+<!-- ====== Hero ====== -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-title">联盟样式一站式工作台</div>
+    <div class="hero-sub">样式生产 · 规则配置 · 洞察迭代 · 问题排查，一个入口闭环全流程</div>
+  </div>
+</div>
+
 <main class="main">
 
-  <!-- ====== 第一层：工作流入口 · 模块化卡片 ====== -->
+  <!-- ====== 工作流入口 ====== -->
   <div class="section" id="module-area">
     <div class="section-head">
       <span class="section-title">工作流入口</span>
-      <span class="section-sub">选择模块，直达对应工作流</span>
     </div>
-
     <div class="module-grid">
-      <!-- 样式生产 -->
-      <div class="module-card" onclick="location.href='demo-生产.html'">
+
+      <a class="module-card" href="https://jiangkunjing1-dotcom.github.io/xlxx/" target="_blank">
         <div class="mc-icon mc-icon-produce">🎨</div>
         <div class="mc-name">样式生产</div>
         <div class="mc-en">Template Production</div>
-        <div class="mc-desc">覆盖样式生命周期：灵感激发、创意生成、模板上线、灰度测试、效果成绩单，以及存量模板的平台化管理</div>
+        <div class="mc-desc">覆盖样式全生命周期：灵感激发、创意生成、模板生产，到流量测试、灰度上线与效果成绩单</div>
         <div class="mc-tags">
-          <span class="mc-tag mc-tag-produce">样式生产流程</span>
-          <span class="mc-tag mc-tag-produce">模板管理</span>
-          <span class="mc-tag mc-tag-produce">上线审批</span>
+          <span class="mc-tag mc-tag-produce">模板生产</span>
+          <span class="mc-tag mc-tag-produce">流量线</span>
+          <span class="mc-tag mc-tag-produce">成绩单</span>
         </div>
-      </div>
+      </a>
 
-      <!-- 规则配置 -->
-      <div class="module-card" onclick="location.href='demo-规则.html'">
+      <a class="module-card" href="https://with.woa.com/chats/y0u7j2ej?from=share" target="_blank">
         <div class="mc-icon mc-icon-rule">⚙️</div>
         <div class="mc-name">规则配置</div>
         <div class="mc-en">Rule Configuration</div>
-        <div class="mc-desc">自然语言转结构化规则配置，支持流量范围 × 预算范围 × 模板生效逻辑（高优/圈定/屏蔽），内置冲突检测与影响面预估</div>
+        <div class="mc-desc">自然语言转结构化配置，管理流量/预算/模板生效逻辑（高优/圈定/屏蔽/强中只出），内置冲突监测与影响预估</div>
         <div class="mc-tags">
-          <span class="mc-tag mc-tag-rule">出量规则</span>
-          <span class="mc-tag mc-tag-rule">冲突预检</span>
-          <span class="mc-tag mc-tag-rule">审批流</span>
+          <span class="mc-tag mc-tag-rule">规则创建</span>
+          <span class="mc-tag mc-tag-rule">冲突监测</span>
+          <span class="mc-tag mc-tag-rule">影响预估</span>
         </div>
-      </div>
+      </a>
 
-      <!-- 洞察迭代 -->
-      <div class="module-card" onclick="location.href='demo-洞察.html'">
+      <a class="module-card" href="#" onclick="return false;" style="cursor:default; opacity:0.75;">
         <div class="mc-icon mc-icon-insight">🔍</div>
         <div class="mc-name">洞察迭代</div>
         <div class="mc-en">Insight & Iteration</div>
-        <div class="mc-desc">模板组件级归因分析，识别高效组件组合与赢家配方，生成 AI 迭代建议，反哺样式生产形成闭环</div>
+        <div class="mc-desc">模板组件级归因分析，识别赢家配方与高效组合，生成 AI 迭代建议，闭环反哺样式生产</div>
         <div class="mc-tags">
           <span class="mc-tag mc-tag-insight">组件归因</span>
           <span class="mc-tag mc-tag-insight">效果对比</span>
           <span class="mc-tag mc-tag-insight">迭代建议</span>
         </div>
-      </div>
+      </a>
 
-      <!-- 问题排查 -->
-      <div class="module-card" onclick="location.href='demo-排查.html'">
+      <a class="module-card" href="https://jiangkunjing1-dotcom.github.io/xlxx/" target="_blank">
         <div class="mc-icon mc-icon-trouble">🛠️</div>
         <div class="mc-name">问题排查</div>
         <div class="mc-en">Troubleshooting</div>
-        <div class="mc-desc">Case 录入驱动，多源数据自动拉通（流量 × 预算 × 模板 × 属性），AI 综合归因，处置闭环并沉淀知识库</div>
+        <div class="mc-desc">Case 录入驱动，多源数据自动拉通，AI 辅助归因，高效流转处置，结果沉淀知识库</div>
         <div class="mc-tags">
-          <span class="mc-tag mc-tag-trouble">召回诊断</span>
-          <span class="mc-tag mc-tag-trouble">渲染异常</span>
-          <span class="mc-tag mc-tag-trouble">知识库</span>
+          <span class="mc-tag mc-tag-trouble">case录入</span>
+          <span class="mc-tag mc-tag-trouble">AI辅助归因</span>
+          <span class="mc-tag mc-tag-trouble">高效流转</span>
         </div>
-      </div>
+      </a>
+
     </div>
   </div>
 
-  <!-- ====== 第二层：工作视图 ====== -->
+  <!-- ====== 工作视图 ====== -->
   <div class="section" id="board-area">
     <div class="section-head">
       <span class="section-title">工作视图</span>
-      <span class="section-sub">按视角聚合关键信息，细节进对应模块查看</span>
+      <span class="section-sub">按视角聚合关键信息 · 细节进对应模块</span>
     </div>
 
-    <!-- 筛选器 -->
     <div class="view-filters">
       <div class="filter-row">
         <span class="filter-label">时间周期</span>
-        <button class="time-btn active" onclick="switchBtn(this,'time')">昨天</button>
-        <button class="time-btn" onclick="switchBtn(this,'time')">近 3 天</button>
-        <button class="time-btn" onclick="switchBtn(this,'time')">近 7 天</button>
-        <button class="time-btn" onclick="switchBtn(this,'time')">自定义</button>
+        <button class="fbtn active" onclick="switchFbtn(this,'time')">昨天</button>
+        <button class="fbtn" onclick="switchFbtn(this,'time')">近 3 天</button>
+        <button class="fbtn" onclick="switchFbtn(this,'time')">近 7 天</button>
+        <button class="fbtn" onclick="switchFbtn(this,'time')">自定义</button>
       </div>
       <div class="filter-row">
         <span class="filter-label">视角范围</span>
-        <button class="mode-btn active" onclick="switchMode(this,'all')">大盘全量</button>
-        <button class="mode-btn" onclick="switchMode(this,'custom')">自定义视角</button>
+        <button class="fbtn active" data-mode="all" onclick="switchMode(this)">大盘全量</button>
+        <button class="fbtn" data-mode="custom" onclick="switchMode(this)">自定义视角</button>
       </div>
       <div class="filter-detail" id="filterDetail" style="display:none">
         <div class="fdim-row">
@@ -401,7 +586,6 @@ ul { list-style: none; }
             <label class="fc"><input type="checkbox"><span>网服</span></label>
             <label class="fc"><input type="checkbox"><span>工具</span></label>
             <label class="fc"><input type="checkbox"><span>教育</span></label>
-            <label class="fc"><input type="checkbox"><span>本地生活</span></label>
           </div>
         </div>
         <div class="fdim-row">
@@ -419,7 +603,6 @@ ul { list-style: none; }
             <label class="fc"><input type="checkbox"><span>金融</span></label>
             <label class="fc"><input type="checkbox"><span>游戏</span></label>
             <label class="fc"><input type="checkbox"><span>电商</span></label>
-            <label class="fc"><input type="checkbox"><span>网服</span></label>
             <label class="fc"><input type="checkbox"><span>视频号</span></label>
             <label class="fc"><input type="checkbox"><span>小程序</span></label>
           </div>
@@ -427,49 +610,48 @@ ul { list-style: none; }
         <div class="filter-actions">
           <button class="btn-apply">应用</button>
           <button class="btn-reset">重置</button>
-          <span class="filter-summary" id="filterSummary">未选择 · 默认大盘全量</span>
+          <span class="filter-summary" id="filterSummary">未选择 · 大盘全量</span>
         </div>
       </div>
     </div>
 
-    <!-- 看板 -->
     <div class="board">
 
-      <!-- 在线模板情况 -->
+      <!-- 在线模板情况（全宽） -->
       <div class="board-card card-full">
         <div class="card-hd">
           <span class="card-hd-title">在线模板情况</span>
-          <a class="card-link" href="demo-生产.html">进模板管理 →</a>
+          <a class="card-link" href="https://jiangkunjing1-dotcom.github.io/xlxx/" target="_blank">进模板管理 →</a>
         </div>
         <div class="card-body">
           <div class="stat-row">
             <div class="stat-item">
               <div class="stat-label">在线模板数</div>
               <div class="stat-val">47<span class="stat-unit">个</span></div>
-              <div class="stat-sub">较昨日 +2</div>
+              <div class="stat-trend trend-up">↑ 较昨日 +2</div>
             </div>
             <div class="stat-item">
               <div class="stat-label">总消耗</div>
               <div class="stat-val">¥ 621<span class="stat-unit">万</span></div>
-              <div class="stat-sub stat-up">↑ 8.3%</div>
+              <div class="stat-trend trend-up">↑ 8.3%</div>
             </div>
             <div class="stat-item">
               <div class="stat-label">竞价 CPM</div>
               <div class="stat-val">42.6<span class="stat-unit">元</span></div>
-              <div class="stat-sub stat-up">↑ 1.2</div>
+              <div class="stat-trend trend-up">↑ 1.2</div>
             </div>
             <div class="stat-item">
               <div class="stat-label">平均 CTR</div>
               <div class="stat-val">18.4<span class="stat-unit">%</span></div>
-              <div class="stat-sub stat-up">↑ 0.8pp</div>
+              <div class="stat-trend trend-up">↑ 0.8pp</div>
             </div>
             <div class="stat-item">
               <div class="stat-label">平均 CVR</div>
               <div class="stat-val">22.1<span class="stat-unit">%</span></div>
-              <div class="stat-sub stat-down">↓ 0.3pp</div>
+              <div class="stat-trend trend-down">↓ 0.3pp</div>
             </div>
           </div>
-          <table class="tpl-mini-table">
+          <table class="mini-table">
             <thead>
               <tr><th>模板 ID</th><th>消耗</th><th>竞价 CPM</th><th>CTR</th><th>CVR</th><th>状态</th></tr>
             </thead>
@@ -487,15 +669,42 @@ ul { list-style: none; }
       <div class="board-card">
         <div class="card-hd">
           <span class="card-hd-title">在线规则情况</span>
-          <a class="card-link" href="demo-规则.html">进规则配置 →</a>
+          <a class="card-link" href="https://with.woa.com/chats/y0u7j2ej?from=share" target="_blank">进规则配置 →</a>
         </div>
         <div class="card-body">
-          <div class="rule-row"><span class="rule-name">在线规则总数</span><span class="rule-val">214 条</span></div>
-          <div class="rule-row"><span class="rule-name">流量范围规则</span><span class="rule-val">87 条</span></div>
-          <div class="rule-row"><span class="rule-name">预算范围规则</span><span class="rule-val">63 条</span></div>
-          <div class="rule-row"><span class="rule-name">屏蔽规则</span><span class="rule-val">41 条</span></div>
-          <div class="rule-row"><span class="rule-name">近 7 天新增</span><span class="rule-val" style="color:var(--warn)">+12 条</span></div>
-          <div class="rule-row"><span class="rule-name">存在冲突待处理</span><span class="rule-val" style="color:var(--danger)">3 条</span></div>
+          <div class="rule-grid" style="margin-bottom:14px;">
+            <div class="rule-item">
+              <div class="rule-item-label">在线规则总数</div>
+              <div class="rule-item-val">214</div>
+            </div>
+            <div class="rule-item">
+              <div class="rule-item-label">冲突待处理</div>
+              <div class="rule-item-val danger">3</div>
+            </div>
+          </div>
+          <div style="font-size:12px; color:var(--text-sub); margin-bottom:8px; font-weight:500;">模板生效逻辑分布</div>
+          <div class="logic-bars">
+            <div class="logic-row">
+              <span class="logic-name">高优</span>
+              <div class="logic-bar-bg"><div class="logic-bar-fill" style="width:42%; background:#1a6ef5;"></div></div>
+              <span class="logic-count">89</span>
+            </div>
+            <div class="logic-row">
+              <span class="logic-name">圈定</span>
+              <div class="logic-bar-bg"><div class="logic-bar-fill" style="width:28%; background:#22a06b;"></div></div>
+              <span class="logic-count">60</span>
+            </div>
+            <div class="logic-row">
+              <span class="logic-name">屏蔽</span>
+              <div class="logic-bar-bg"><div class="logic-bar-fill" style="width:20%; background:#f59e0b;"></div></div>
+              <span class="logic-count">42</span>
+            </div>
+            <div class="logic-row">
+              <span class="logic-name">强中只出</span>
+              <div class="logic-bar-bg"><div class="logic-bar-fill" style="width:11%; background:#a855f7;"></div></div>
+              <span class="logic-count">23</span>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -503,335 +712,255 @@ ul { list-style: none; }
       <div class="board-card">
         <div class="card-hd">
           <span class="card-hd-title">Case 情况</span>
-          <a class="card-link" href="demo-排查.html">进问题排查 →</a>
+          <a class="card-link" href="https://jiangkunjing1-dotcom.github.io/xlxx/" target="_blank">进问题排查 →</a>
         </div>
         <div class="card-body">
           <div class="case-row">
-            <span class="case-badge cb-p0">P0</span>
-            <span class="case-desc">激励视频某广告位不出 · 规则冲突</span>
+            <span class="cbadge cb-p0">P0</span>
+            <div class="case-main">
+              <div class="case-desc">激励视频某广告位不出 · 定位规则冲突</div>
+              <div class="case-id">Case C-0612-01</div>
+            </div>
             <span class="case-prog" style="color:var(--warn)">处理中</span>
           </div>
           <div class="case-row">
-            <span class="case-badge cb-p1">P1</span>
-            <span class="case-desc">开屏模板无倒计时 · 组件缺失</span>
-            <span class="case-prog">已派 坤婧</span>
-          </div>
-          <div class="case-row">
-            <span class="case-badge cb-p1">P1</span>
-            <span class="case-desc">金融开屏 CTR 异常低 · 归因中</span>
+            <span class="cbadge cb-p1">P1</span>
+            <div class="case-main">
+              <div class="case-desc">开屏模板无倒计时组件</div>
+              <div class="case-id">Case C-0612-02 · 已派坤婧</div>
+            </div>
             <span class="case-prog">处理中</span>
           </div>
           <div class="case-row">
-            <span class="case-badge cb-done">已闭环</span>
-            <span class="case-desc">摇一摇不触发 · 透明 View 遮挡</span>
+            <span class="cbadge cb-p1">P1</span>
+            <div class="case-main">
+              <div class="case-desc">金融开屏 CTR 低于基线 · 归因中</div>
+              <div class="case-id">Case C-0611-05</div>
+            </div>
+            <span class="case-prog">归因中</span>
+          </div>
+          <div class="case-row">
+            <span class="cbadge cb-done">已闭环</span>
+            <div class="case-main">
+              <div class="case-desc">摇一摇不触发 · 透明 View 遮挡</div>
+              <div class="case-id">Case C-0610-03 · 已入库</div>
+            </div>
             <span class="case-prog" style="color:var(--success)">已入库</span>
           </div>
         </div>
       </div>
 
-      <!-- 近期操作 -->
+      <!-- 近期操作（全宽） -->
       <div class="board-card card-full">
         <div class="card-hd">
           <span class="card-hd-title">近期操作</span>
           <a class="card-link" href="#">查看完整日志 →</a>
         </div>
         <div class="card-body">
-          <div class="op-row" style="font-size:11px; color:var(--text-light); padding-bottom:4px;">
-            <span>时间</span><span>模块</span><span>操作人</span><span>操作类型</span><span>关联 ID</span>
-          </div>
-          <div class="op-row">
-            <span class="op-time">10:32</span>
-            <span class="op-src op-src-tpl">样式生产</span>
-            <span class="op-who">小樊</span>
-            <span class="op-type">上线</span>
-            <span class="op-id">模板 1003723</span>
-          </div>
-          <div class="op-row">
-            <span class="op-time">09:18</span>
-            <span class="op-src op-src-rule">规则配置</span>
-            <span class="op-who">昌仔</span>
-            <span class="op-type">修改</span>
-            <span class="op-id">规则 RID-20241</span>
-          </div>
-          <div class="op-row">
-            <span class="op-time">昨 16:40</span>
-            <span class="op-src op-src-case">问题排查</span>
-            <span class="op-who">小姜</span>
-            <span class="op-type">派单</span>
-            <span class="op-id">Case C-0612-03</span>
-          </div>
-          <div class="op-row">
-            <span class="op-time">昨 14:05</span>
-            <span class="op-src op-src-tpl">样式生产</span>
-            <span class="op-who">小樊</span>
-            <span class="op-type">暂停</span>
-            <span class="op-id">模板 1001150</span>
-          </div>
-          <div class="op-row">
-            <span class="op-time">昨 11:22</span>
-            <span class="op-src op-src-rule">规则配置</span>
-            <span class="op-who">昌仔</span>
-            <span class="op-type">新增</span>
-            <span class="op-id">规则 RID-20244</span>
-          </div>
+          <table class="op-table">
+            <thead>
+              <tr><th>时间</th><th>模块</th><th>操作人</th><th>操作类型</th><th>关联 ID</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="op-time">今 10:32</td>
+                <td><span class="op-src-chip src-tpl">样式生产</span></td>
+                <td class="op-who">小樊</td>
+                <td class="op-type">上线</td>
+                <td class="op-id">模板 1003723</td>
+              </tr>
+              <tr>
+                <td class="op-time">今 09:18</td>
+                <td><span class="op-src-chip src-rule">规则配置</span></td>
+                <td class="op-who">昌仔</td>
+                <td class="op-type">修改</td>
+                <td class="op-id">规则 RID-20241</td>
+              </tr>
+              <tr>
+                <td class="op-time">昨 16:40</td>
+                <td><span class="op-src-chip src-case">问题排查</span></td>
+                <td class="op-who">小姜</td>
+                <td class="op-type">派单</td>
+                <td class="op-id">Case C-0612-03</td>
+              </tr>
+              <tr>
+                <td class="op-time">昨 14:05</td>
+                <td><span class="op-src-chip src-tpl">样式生产</span></td>
+                <td class="op-who">小樊</td>
+                <td class="op-type">暂停</td>
+                <td class="op-id">模板 1001150</td>
+              </tr>
+              <tr>
+                <td class="op-time">昨 11:22</td>
+                <td><span class="op-src-chip src-rule">规则配置</span></td>
+                <td class="op-who">昌仔</td>
+                <td class="op-type">新增</td>
+                <td class="op-id">规则 RID-20244</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
 
     </div>
   </div>
 
-  <!-- ====== 第三层：样式资产 ====== -->
+  <!-- ====== 样式资产 ====== -->
   <div class="section" id="asset-area">
     <div class="section-head">
-      <span class="section-title">样式资产</span>
-      <span class="section-sub">大盘主力样式 · 流量定制样式 · 预算定制样式</span>
+      <span class="section-title">形态案例</span>
+      <span class="section-sub">近期主推激励形态展示</span>
     </div>
 
-    <div class="asset-tabs">
-      <button class="at-btn active" onclick="switchAssetTab(this,'main')">大盘主力</button>
-      <button class="at-btn" onclick="switchAssetTab(this,'flow')">流量定制</button>
-      <button class="at-btn" onclick="switchAssetTab(this,'budget')">预算定制</button>
-    </div>
+    <div class="asset-grid">
 
-    <!-- 大盘主力 -->
-    <div class="asset-grid" id="assetMain">
-      <!-- 卡片1 -->
+      <!-- 阶梯激励 -->
       <div class="asset-card">
         <div class="asset-preview">
-          <div class="preview-phone">
-            <div class="ad-sim">
-              <div class="ad-img-sim" style="background:linear-gradient(135deg,#667eea,#764ba2)"></div>
-              <div class="ad-title-sim">限时优惠 立享好礼</div>
-              <div class="ad-btn-sim" style="background:#ff6b35">立即领取</div>
+          <div class="preview-ladder">
+            <div class="ladder-phone">
+              <div class="ladder-bg">
+                <div class="ladder-castle">🏰</div>
+                <div class="ladder-char">🦊</div>
+              </div>
+              <div class="ladder-reward-panel">
+                <div style="font-size:5px; color:#666; margin-bottom:2px; font-weight:600;">完成广告互动得奖励</div>
+                <div class="reward-bar">
+                  <div class="reward-node active">100</div>
+                  <div class="reward-node active">200</div>
+                  <div class="reward-node">300</div>
+                  <div class="reward-node">400</div>
+                  <div style="font-size:6px; margin-left:2px;">🪙</div>
+                </div>
+                <div class="ladder-prog-bar"><div class="ladder-prog-fill"></div></div>
+                <div style="font-size:5px; color:#888;">互动得 30 秒后可领奖</div>
+                <div class="ladder-cta">点击下载享第三方应用</div>
+              </div>
+            </div>
+          </div>
+          <div class="asset-scene-badge">激励视频</div>
+          <div class="asset-type-badge atb-main">主推</div>
+        </div>
+        <div class="asset-info">
+          <div class="asset-name">阶梯激励</div>
+          <div class="asset-meta">观看进度解锁多级奖励 · 增强用户留存时长</div>
+          <div class="asset-stats">
+            <div class="astat">
+              <div class="astat-label">竞价 CPM</div>
+              <div class="astat-val">38.4</div>
+            </div>
+            <div class="astat">
+              <div class="astat-label">CTR</div>
+              <div class="astat-val">24.6%</div>
+            </div>
+            <div class="astat">
+              <div class="astat-label">CTR 增幅</div>
+              <div class="astat-val astat-up">+3.2pp <span class="astat-inc inc-up">↑</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 奖励式开屏 -->
+      <div class="asset-card">
+        <div class="asset-preview">
+          <div class="preview-open">
+            <div class="open-phone">
+              <div class="open-product-img">
+                <span class="open-product-emoji">🤖</span>
+              </div>
+              <div class="open-title">灵隙双恒贴边清洁<br>0死角智能科技</div>
+              <div class="open-coin-row">
+                <span class="open-coin">🪙</span>
+                <span style="font-size:5px; color:#d97706; font-weight:700;">最高 500 金币奖励</span>
+              </div>
+              <div style="font-size:4px; color:#718096; padding:0 4px; margin-top:1px;">上滑查看详情即得奖励</div>
+              <div class="open-cta">立即查看详情</div>
+              <div class="open-skip">跳过 5</div>
             </div>
           </div>
           <div class="asset-scene-badge">开屏</div>
-          <div class="asset-type-badge atb-main">主力</div>
+          <div class="asset-type-badge atb-main">主推</div>
         </div>
         <div class="asset-info">
-          <div class="asset-name">开屏-通用-下载激励 v3</div>
-          <div class="asset-meta">模板 ID 1003723 · 小樊</div>
+          <div class="asset-name">奖励式开屏</div>
+          <div class="asset-meta">上滑查看落地页得金币 · 深转收益驱动</div>
           <div class="asset-stats">
-            <div class="astat"><div class="astat-label">消耗规模</div><div class="astat-val">¥421w</div></div>
-            <div class="astat"><div class="astat-label">CTR</div><div class="astat-val">22.5%</div></div>
-            <div class="astat"><div class="astat-label">竞价 CPM</div><div class="astat-val">44.2</div></div>
-          </div>
-        </div>
-      </div>
-      <!-- 卡片2 -->
-      <div class="asset-card">
-        <div class="asset-preview">
-          <div class="preview-phone">
-            <div class="ad-sim">
-              <div class="ad-img-sim" style="background:linear-gradient(135deg,#f6d365,#fda085)"></div>
-              <div class="ad-title-sim">点击即享超级福利</div>
-              <div class="ad-btn-sim" style="background:#ee5a24">点击领取</div>
+            <div class="astat">
+              <div class="astat-label">竞价 CPM</div>
+              <div class="astat-val">52.1</div>
+            </div>
+            <div class="astat">
+              <div class="astat-label">CTR</div>
+              <div class="astat-val">18.3%</div>
+            </div>
+            <div class="astat">
+              <div class="astat-label">CTR 增幅</div>
+              <div class="astat-val astat-up">+2.7pp <span class="astat-inc inc-up">↑</span></div>
             </div>
           </div>
-          <div class="asset-scene-badge">开屏</div>
-          <div class="asset-type-badge atb-main">主力</div>
-        </div>
-        <div class="asset-info">
-          <div class="asset-name">开屏-通用-点击激励 v2</div>
-          <div class="asset-meta">模板 ID 1003062 · 小樊</div>
-          <div class="asset-stats">
-            <div class="astat"><div class="astat-label">消耗规模</div><div class="astat-val">¥103w</div></div>
-            <div class="astat"><div class="astat-label">CTR</div><div class="astat-val">16.1%</div></div>
-            <div class="astat"><div class="astat-label">竞价 CPM</div><div class="astat-val">38.6</div></div>
-          </div>
         </div>
       </div>
-      <!-- 卡片3 -->
-      <div class="asset-card">
-        <div class="asset-preview">
-          <div class="preview-phone">
-            <div class="ad-sim">
-              <div class="ad-img-sim" style="background:linear-gradient(135deg,#a8edea,#fed6e3)"></div>
-              <div class="ad-title-sim">视频激励 观看赢大奖</div>
-              <div class="ad-btn-sim" style="background:#2ed573">开始观看</div>
-            </div>
-          </div>
-          <div class="asset-scene-badge">激励</div>
-          <div class="asset-type-badge atb-main">主力</div>
-        </div>
-        <div class="asset-info">
-          <div class="asset-name">激励视频-通用-15s v1</div>
-          <div class="asset-meta">模板 ID 1001277 · 小樊</div>
-          <div class="asset-stats">
-            <div class="astat"><div class="astat-label">消耗规模</div><div class="astat-val">¥59w</div></div>
-            <div class="astat"><div class="astat-label">CTR</div><div class="astat-val">11.2%</div></div>
-            <div class="astat"><div class="astat-label">竞价 CPM</div><div class="astat-val">39.8</div></div>
-          </div>
-        </div>
-      </div>
-    </div>
 
-    <!-- 流量定制（默认隐藏） -->
-    <div class="asset-grid" id="assetFlow" style="display:none">
+      <!-- 奖励式插屏 -->
       <div class="asset-card">
         <div class="asset-preview">
-          <div class="preview-phone">
-            <div class="ad-sim">
-              <div class="ad-img-sim" style="background:linear-gradient(135deg,#3d9970,#00b894)"></div>
-              <div class="ad-title-sim">专属游戏媒体定制版</div>
-              <div class="ad-btn-sim" style="background:#6c5ce7">进入游戏</div>
+          <div class="preview-inter">
+            <div class="inter-phone">
+              <div class="inter-app-bg">📱</div>
+              <div class="inter-overlay">
+                <div class="inter-brand">
+                  <div class="inter-brand-ico"></div>
+                  <span class="inter-brand-name">优购家</span>
+                </div>
+                <div class="inter-desc">王牌明星套组予TA全面爱护<br>NO.1护肤水明星礼盒</div>
+                <div class="inter-task">👆 点击并浏览 10s，享金币奖励</div>
+                <div class="inter-cta">点击浏览领金币奖励 🪙</div>
+              </div>
+              <div class="inter-skip">跳过 2</div>
             </div>
           </div>
           <div class="asset-scene-badge">插屏</div>
-          <div class="asset-type-badge atb-flow">流量定制</div>
+          <div class="asset-type-badge atb-main">主推</div>
         </div>
         <div class="asset-info">
-          <div class="asset-name">插屏-游戏媒体-定制 v1</div>
-          <div class="asset-meta">模板 ID 1003801 · 小樊 · 媒体 10107877</div>
+          <div class="asset-name">奖励式插屏</div>
+          <div class="asset-meta">点击浏览落地页达时长得金币 · 短时体验激励</div>
           <div class="asset-stats">
-            <div class="astat"><div class="astat-label">消耗规模</div><div class="astat-val">¥28w</div></div>
-            <div class="astat"><div class="astat-label">CTR</div><div class="astat-val">19.3%</div></div>
-            <div class="astat"><div class="astat-label">竞价 CPM</div><div class="astat-val">36.4</div></div>
-          </div>
-        </div>
-      </div>
-      <div class="asset-card">
-        <div class="asset-preview">
-          <div class="preview-phone">
-            <div class="ad-sim">
-              <div class="ad-img-sim" style="background:linear-gradient(135deg,#0984e3,#74b9ff)"></div>
-              <div class="ad-title-sim">新闻媒体专属开屏</div>
-              <div class="ad-btn-sim" style="background:#e17055">了解详情</div>
+            <div class="astat">
+              <div class="astat-label">竞价 CPM</div>
+              <div class="astat-val">44.8</div>
+            </div>
+            <div class="astat">
+              <div class="astat-label">CTR</div>
+              <div class="astat-val">21.4%</div>
+            </div>
+            <div class="astat">
+              <div class="astat-label">CTR 增幅</div>
+              <div class="astat-val astat-up">+4.1pp <span class="astat-inc inc-up">↑</span></div>
             </div>
           </div>
-          <div class="asset-scene-badge">开屏</div>
-          <div class="asset-type-badge atb-flow">流量定制</div>
-        </div>
-        <div class="asset-info">
-          <div class="asset-name">开屏-新闻媒体-定制 v2</div>
-          <div class="asset-meta">模板 ID 1003744 · 小樊 · 媒体标签 1099</div>
-          <div class="asset-stats">
-            <div class="astat"><div class="astat-label">消耗规模</div><div class="astat-val">¥34w</div></div>
-            <div class="astat"><div class="astat-label">CTR</div><div class="astat-val">14.8%</div></div>
-            <div class="astat"><div class="astat-label">竞价 CPM</div><div class="astat-val">41.1</div></div>
-          </div>
         </div>
       </div>
-      <div class="asset-card">
-        <div class="asset-preview">
-          <div class="preview-phone">
-            <div class="ad-sim">
-              <div class="ad-img-sim" style="background:linear-gradient(135deg,#fd79a8,#e84393)"></div>
-              <div class="ad-title-sim">工具类媒体激励</div>
-              <div class="ad-btn-sim" style="background:#2d3436">完成任务</div>
-            </div>
-          </div>
-          <div class="asset-scene-badge">激励</div>
-          <div class="asset-type-badge atb-flow">流量定制</div>
-        </div>
-        <div class="asset-info">
-          <div class="asset-name">激励-工具媒体-定制 v1</div>
-          <div class="asset-meta">模板 ID 1003812 · 小樊 · 媒体标签 1088</div>
-          <div class="asset-stats">
-            <div class="astat"><div class="astat-label">消耗规模</div><div class="astat-val">¥18w</div></div>
-            <div class="astat"><div class="astat-label">CTR</div><div class="astat-val">24.1%</div></div>
-            <div class="astat"><div class="astat-label">竞价 CPM</div><div class="astat-val">33.9</div></div>
-          </div>
-        </div>
-      </div>
-    </div>
 
-    <!-- 预算定制（默认隐藏） -->
-    <div class="asset-grid" id="assetBudget" style="display:none">
-      <div class="asset-card">
-        <div class="asset-preview">
-          <div class="preview-phone">
-            <div class="ad-sim">
-              <div class="ad-img-sim" style="background:linear-gradient(135deg,#fdcb6e,#e17055)"></div>
-              <div class="ad-title-sim">金融专属版 理财优选</div>
-              <div class="ad-btn-sim" style="background:#d63031">立即理财</div>
-            </div>
-          </div>
-          <div class="asset-scene-badge">开屏</div>
-          <div class="asset-type-badge atb-budget">预算定制</div>
-        </div>
-        <div class="asset-info">
-          <div class="asset-name">开屏-金融预算-定制 v3</div>
-          <div class="asset-meta">模板 ID 1003650 · 小樊 · KPI 行业：金融</div>
-          <div class="asset-stats">
-            <div class="astat"><div class="astat-label">消耗规模</div><div class="astat-val">¥76w</div></div>
-            <div class="astat"><div class="astat-label">CTR</div><div class="astat-val">13.6%</div></div>
-            <div class="astat"><div class="astat-label">竞价 CPM</div><div class="astat-val">52.4</div></div>
-          </div>
-        </div>
-      </div>
-      <div class="asset-card">
-        <div class="asset-preview">
-          <div class="preview-phone">
-            <div class="ad-sim">
-              <div class="ad-img-sim" style="background:linear-gradient(135deg,#6c5ce7,#a29bfe)"></div>
-              <div class="ad-title-sim">视频号专属 下单立减20</div>
-              <div class="ad-btn-sim" style="background:#07C160">立即购买</div>
-            </div>
-          </div>
-          <div class="asset-scene-badge">原生</div>
-          <div class="asset-type-badge atb-budget">预算定制</div>
-        </div>
-        <div class="asset-info">
-          <div class="asset-name">原生-视频号生态-定制 v2</div>
-          <div class="asset-meta">模板 ID 1003680 · 小樊 · 微信生态：视频号</div>
-          <div class="asset-stats">
-            <div class="astat"><div class="astat-label">消耗规模</div><div class="astat-val">¥44w</div></div>
-            <div class="astat"><div class="astat-label">CTR</div><div class="astat-val">21.8%</div></div>
-            <div class="astat"><div class="astat-label">竞价 CPM</div><div class="astat-val">46.0</div></div>
-          </div>
-        </div>
-      </div>
-      <div class="asset-card">
-        <div class="asset-preview">
-          <div class="preview-phone">
-            <div class="ad-sim">
-              <div class="ad-img-sim" style="background:linear-gradient(135deg,#55efc4,#00b894)"></div>
-              <div class="ad-title-sim">游戏预算专属激励</div>
-              <div class="ad-btn-sim" style="background:#e84393">领取奖励</div>
-            </div>
-          </div>
-          <div class="asset-scene-badge">激励</div>
-          <div class="asset-type-badge atb-budget">预算定制</div>
-        </div>
-        <div class="asset-info">
-          <div class="asset-name">激励-游戏预算-定制 v1</div>
-          <div class="asset-meta">模板 ID 1003720 · 小樊 · KPI 行业：游戏</div>
-          <div class="asset-stats">
-            <div class="astat"><div class="astat-label">消耗规模</div><div class="astat-val">¥31w</div></div>
-            <div class="astat"><div class="astat-label">CTR</div><div class="astat-val">27.4%</div></div>
-            <div class="astat"><div class="astat-label">竞价 CPM</div><div class="astat-val">35.7</div></div>
-          </div>
-        </div>
-      </div>
     </div>
-
   </div>
 
 </main>
 
 <script>
-function scrollTo(id) {
-  document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+function smoothScroll(id) {
+  document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
-
-function switchBtn(el, group) {
-  el.parentNode.querySelectorAll('.time-btn, .mode-btn').forEach(b => b.classList.remove('active'));
+function switchFbtn(el, group) {
+  el.closest('.filter-row').querySelectorAll('.fbtn').forEach(b => b.classList.remove('active'));
   el.classList.add('active');
 }
-
-function switchMode(el, mode) {
-  el.parentNode.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+function switchMode(el) {
+  el.closest('.filter-row').querySelectorAll('.fbtn').forEach(b => b.classList.remove('active'));
   el.classList.add('active');
-  document.getElementById('filterDetail').style.display = mode === 'custom' ? 'block' : 'none';
-}
-
-function switchAssetTab(el, tab) {
-  document.querySelectorAll('.at-btn').forEach(b => b.classList.remove('active'));
-  el.classList.add('active');
-  document.getElementById('assetMain').style.display = tab === 'main' ? 'grid' : 'none';
-  document.getElementById('assetFlow').style.display = tab === 'flow' ? 'grid' : 'none';
-  document.getElementById('assetBudget').style.display = tab === 'budget' ? 'grid' : 'none';
+  document.getElementById('filterDetail').style.display =
+    el.dataset.mode === 'custom' ? 'block' : 'none';
 }
 </script>
 </body>
