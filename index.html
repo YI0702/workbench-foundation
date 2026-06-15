@@ -157,19 +157,37 @@ input { font-family: inherit; outline: none; }
 .fbtn.active { background: var(--primary); color: #fff; border-color: var(--primary); }
 .filter-detail { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); }
 .fdim-row { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 8px; }
-.fdim-label { font-size: 12px; color: var(--text-light); width: 40px; padding-top: 3px; flex-shrink: 0; }
+.fdim-label { font-size: 12px; color: var(--text-light); width: 80px; padding-top: 3px; flex-shrink: 0; }
 .fdim-chips { display: flex; flex-wrap: wrap; gap: 6px; }
 .fc { display: inline-flex; align-items: center; gap: 4px; cursor: pointer; }
 .fc input { width: 13px; height: 13px; accent-color: var(--primary); cursor: pointer; }
 .fc span { font-size: 12px; color: var(--text-sub); }
-.filter-actions { display: flex; align-items: center; gap: 8px; margin-top: 10px; }
+.filter-actions {
+  display: none; /* 默认隐藏，非默认口径时显示 */
+  align-items: center; gap: 8px; margin-top: 10px;
+  padding-top: 10px; border-top: 1px solid var(--border);
+}
+.filter-actions.show { display: flex; }
 .btn-apply {
   font-size: 12px; padding: 5px 16px;
   background: var(--primary); color: #fff; border-radius: 20px;
 }
 .btn-apply:hover { background: var(--primary-hover); }
 .btn-reset { font-size: 12px; padding: 5px 14px; background: #f4f6fa; border-radius: 20px; color: var(--text-sub); }
+.btn-reset:hover { background: #e8ecf0; }
 .filter-summary { font-size: 12px; color: var(--text-light); margin-left: 4px; }
+
+/* 自定义时间选择器 */
+.custom-time-picker {
+  display: none; align-items: center; gap: 8px; margin-top: 8px;
+}
+.custom-time-picker.show { display: flex; }
+.custom-time-picker input[type="date"] {
+  font-size: 12px; padding: 4px 10px;
+  border: 1px solid var(--border); border-radius: 8px;
+  color: var(--text-sub); background: #fafbfc;
+}
+.custom-time-picker span { font-size: 12px; color: var(--text-light); }
 
 /* ===== 工作视图 · 看板 ===== */
 .board { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
@@ -246,9 +264,6 @@ input { font-family: inherit; outline: none; }
 .case-row { display: flex; align-items: flex-start; gap: 8px; padding: 8px 0; border-bottom: 1px solid #f4f6fa; font-size: 12px; }
 .case-row:last-child { border-bottom: none; }
 .cbadge { display: inline-block; font-size: 10px; padding: 1px 7px; border-radius: 6px; font-weight: 600; flex-shrink: 0; margin-top: 1px; }
-.cs-analyzing { background: #eff6ff; color: #1a6ef5; font-size: 11px; padding: 2px 8px; border-radius: 8px; font-weight: 500; flex-shrink: 0; }
-.cs-solving   { background: #fff7ed; color: var(--warn);    font-size: 11px; padding: 2px 8px; border-radius: 8px; font-weight: 500; flex-shrink: 0; }
-.cs-closed    { background: #f0fdf4; color: var(--success); font-size: 11px; padding: 2px 8px; border-radius: 8px; font-weight: 500; flex-shrink: 0; }
 .cb-p0   { background: #fef2f2; color: var(--danger); }
 .cb-p1   { background: #fff7ed; color: var(--warn); }
 .cb-done { background: #f0fdf4; color: var(--success); }
@@ -256,6 +271,9 @@ input { font-family: inherit; outline: none; }
 .case-desc { color: var(--text); margin-bottom: 2px; }
 .case-id   { font-size: 11px; color: var(--text-light); }
 .case-prog { font-size: 11px; color: var(--text-light); flex-shrink: 0; padding-top: 3px; }
+.cs-analyzing { font-size: 11px; padding: 2px 9px; border-radius: 20px; font-weight: 500; flex-shrink: 0; background: #eff6ff; color: #1a6ef5; }
+.cs-solving   { font-size: 11px; padding: 2px 9px; border-radius: 20px; font-weight: 500; flex-shrink: 0; background: #fff7ed; color: var(--warn); }
+.cs-closed    { font-size: 11px; padding: 2px 9px; border-radius: 20px; font-weight: 500; flex-shrink: 0; background: #f0fdf4; color: var(--success); }
 
 /* 近期操作 */
 .op-table { width: 100%; border-collapse: collapse; font-size: 12px; }
@@ -471,13 +489,82 @@ input { font-family: inherit; outline: none; }
 .ctag-open   { background: #fffbeb; color: #92400e; }
 .ctag-inter  { background: #f0fdf4; color: #15803d; }
 .case-name { font-size: 24px; font-weight: 700; letter-spacing: -0.5px; }
-.case-desc { font-size: 14px; color: var(--text-sub); line-height: 1.8; }
+.case-desc2 { font-size: 14px; color: var(--text-sub); line-height: 1.8; }
 .case-metrics { display: flex; gap: 32px; margin-top: 6px; }
 .cm-item {}
 .cm-label { font-size: 11px; color: var(--text-light); margin-bottom: 4px; }
 .cm-val { font-size: 28px; font-weight: 700; color: var(--primary); letter-spacing: -1px; }
 .cm-val-unit { font-size: 13px; font-weight: 500; margin-left: 1px; }
 .cm-arrow { color: var(--primary); margin-right: 2px; }
+
+/* ===== 日志界面 ===== */
+.log-overlay {
+  display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.45); z-index: 500;
+  justify-content: center; align-items: center;
+}
+.log-overlay.show { display: flex; }
+.log-panel {
+  background: #fff; border-radius: 16px;
+  width: 900px; max-width: 90vw; max-height: 85vh;
+  display: flex; flex-direction: column;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+  overflow: hidden;
+}
+.log-header {
+  padding: 20px 24px 16px;
+  border-bottom: 1px solid var(--border);
+  display: flex; justify-content: space-between; align-items: center;
+}
+.log-header h2 { font-size: 16px; font-weight: 700; }
+.log-close { width: 30px; height: 30px; border-radius: 50%; background: #f4f6fa; display: flex; align-items: center; justify-content: center; font-size: 16px; cursor: pointer; }
+.log-close:hover { background: #e8ecf0; }
+.log-filters {
+  padding: 14px 24px; background: #fafbfc; border-bottom: 1px solid var(--border);
+  display: flex; flex-wrap: wrap; gap: 12px; align-items: center;
+}
+.log-filter-group { display: flex; align-items: center; gap: 6px; }
+.log-filter-label { font-size: 12px; color: var(--text-light); }
+.log-filter-select {
+  font-size: 12px; padding: 4px 10px; border: 1px solid var(--border);
+  border-radius: 8px; background: #fff; color: var(--text-sub); outline: none;
+}
+.log-filter-input {
+  font-size: 12px; padding: 4px 10px; border: 1px solid var(--border);
+  border-radius: 8px; background: #fff; color: var(--text-sub); width: 160px;
+}
+.log-filter-date {
+  font-size: 12px; padding: 4px 8px; border: 1px solid var(--border);
+  border-radius: 8px; background: #fff; color: var(--text-sub);
+}
+.log-filter-actions { display: flex; gap: 8px; margin-left: auto; }
+.log-btn-query {
+  font-size: 12px; padding: 5px 16px;
+  background: var(--primary); color: #fff; border-radius: 20px;
+}
+.log-btn-query:hover { background: var(--primary-hover); }
+.log-btn-reset2 { font-size: 12px; padding: 5px 14px; background: #f4f6fa; border-radius: 20px; color: var(--text-sub); }
+.log-btn-reset2:hover { background: #e8ecf0; }
+.log-body { flex: 1; overflow-y: auto; padding: 16px 24px; }
+.log-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.log-table th { text-align: left; padding: 8px 10px; color: var(--text-light); font-weight: 500; border-bottom: 1px solid var(--border); white-space: nowrap; background: #fafbfc; position: sticky; top: 0; }
+.log-table td { padding: 10px 10px; border-bottom: 1px solid #f4f6fa; white-space: nowrap; }
+.log-table tr:hover td { background: #fafbff; }
+.log-pagination {
+  padding: 12px 24px; border-top: 1px solid var(--border);
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 12px; color: var(--text-sub);
+}
+.log-page-btns { display: flex; gap: 4px; }
+.log-page-btn {
+  width: 28px; height: 28px; border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; background: #f4f6fa; color: var(--text-sub);
+  cursor: pointer; transition: all 0.12s;
+}
+.log-page-btn:hover { background: #eef4ff; color: var(--primary); }
+.log-page-btn.active { background: var(--primary); color: #fff; }
+.log-page-btn.disabled { opacity: 0.4; cursor: not-allowed; }
 </style>
 </head>
 <body>
@@ -487,12 +574,11 @@ input { font-family: inherit; outline: none; }
   <div class="topbar-brand">
     <span class="brand-logo">联盟样式工作台</span>
     <span class="brand-dot"></span>
-    <span class="brand-tag">Style Workspace</span>
   </div>
   <nav class="topbar-nav">
-    <span class="tn-item active" onclick="smoothScroll('module-area')">工作流入口</span>
-    <span class="tn-item" onclick="smoothScroll('board-area')">工作视图</span>
-    <span class="tn-item" onclick="smoothScroll('asset-area')">样式资产</span>
+    <span class="tn-item active" data-scroll="module-area">工作流入口</span>
+    <span class="tn-item" data-scroll="board-area">工作视图</span>
+    <span class="tn-item" data-scroll="asset-area">样式资产</span>
   </nav>
   <div class="topbar-right">
     <span class="avatar">H</span>
@@ -571,58 +657,67 @@ input { font-family: inherit; outline: none; }
   <div class="section" id="board-area">
     <div class="section-head">
       <span class="section-title">工作视图</span>
-      <span class="section-sub">按视角聚合关键信息 · 细节进对应模块</span>
     </div>
 
     <div class="view-filters">
-      <div class="filter-row">
+      <div class="filter-row" id="timeRow">
         <span class="filter-label">时间周期</span>
-        <button class="fbtn active" onclick="switchFbtn(this,'time')">昨天</button>
-        <button class="fbtn" onclick="switchFbtn(this,'time')">近 3 天</button>
-        <button class="fbtn" onclick="switchFbtn(this,'time')">近 7 天</button>
-        <button class="fbtn" onclick="switchFbtn(this,'time')">自定义</button>
+        <button class="fbtn active" data-time="yesterday">昨天</button>
+        <button class="fbtn" data-time="3d">近 3 天</button>
+        <button class="fbtn" data-time="7d">近 7 天</button>
+        <button class="fbtn" data-time="custom">自定义</button>
       </div>
-      <div class="filter-row">
+      <div class="custom-time-picker" id="customTimePicker">
+        <span>从</span>
+        <input type="date" id="dateFrom">
+        <span>至</span>
+        <input type="date" id="dateTo">
+      </div>
+      <div class="filter-row" id="modeRow">
         <span class="filter-label">视角范围</span>
-        <button class="fbtn active" data-mode="all" onclick="switchMode(this)">大盘全量</button>
-        <button class="fbtn" data-mode="custom" onclick="switchMode(this)">自定义视角</button>
+        <button class="fbtn active" data-mode="all">大盘全量</button>
+        <button class="fbtn" data-mode="custom">自定义视角</button>
       </div>
       <div class="filter-detail" id="filterDetail" style="display:none">
         <div class="fdim-row">
-          <span class="fdim-label">赛道</span>
+          <span class="fdim-label">集团一级行业</span>
           <div class="fdim-chips">
-            <label class="fc"><input type="checkbox"><span>金融</span></label>
             <label class="fc"><input type="checkbox"><span>游戏</span></label>
-            <label class="fc"><input type="checkbox"><span>电商</span></label>
-            <label class="fc"><input type="checkbox"><span>网服</span></label>
-            <label class="fc"><input type="checkbox"><span>工具</span></label>
-            <label class="fc"><input type="checkbox"><span>教育</span></label>
+            <label class="fc"><input type="checkbox"><span>工具服务</span></label>
+            <label class="fc"><input type="checkbox"><span>咨询社区</span></label>
+            <label class="fc"><input type="checkbox"><span>音视频阅读</span></label>
+            <label class="fc"><input type="checkbox"><span>IAA</span></label>
+            <label class="fc"><input type="checkbox"><span>手机厂商</span></label>
           </div>
         </div>
         <div class="fdim-row">
-          <span class="fdim-label">场景</span>
+          <span class="fdim-label">广告位场景</span>
           <div class="fdim-chips">
             <label class="fc"><input type="checkbox"><span>开屏</span></label>
-            <label class="fc"><input type="checkbox"><span>插屏</span></label>
             <label class="fc"><input type="checkbox"><span>激励</span></label>
-            <label class="fc"><input type="checkbox"><span>原生</span></label>
+            <label class="fc"><input type="checkbox"><span>横幅</span></label>
+            <label class="fc"><input type="checkbox"><span>信息流</span></label>
+            <label class="fc"><input type="checkbox"><span>插入</span></label>
           </div>
         </div>
         <div class="fdim-row">
           <span class="fdim-label">预算</span>
           <div class="fdim-chips">
-            <label class="fc"><input type="checkbox"><span>金融</span></label>
-            <label class="fc"><input type="checkbox"><span>游戏</span></label>
-            <label class="fc"><input type="checkbox"><span>电商</span></label>
-            <label class="fc"><input type="checkbox"><span>视频号</span></label>
-            <label class="fc"><input type="checkbox"><span>小程序</span></label>
+            <label class="fc"><input type="checkbox"><span>小游戏</span></label>
+            <label class="fc"><input type="checkbox"><span>短剧</span></label>
+            <label class="fc"><input type="checkbox"><span>小说</span></label>
+            <label class="fc"><input type="checkbox"><span>漫剧</span></label>
+            <label class="fc"><input type="checkbox"><span>小店</span></label>
+            <label class="fc"><input type="checkbox"><span>企微</span></label>
+            <label class="fc"><input type="checkbox"><span>生态其他</span></label>
+            <label class="fc"><input type="checkbox"><span>非生态预算</span></label>
           </div>
         </div>
-        <div class="filter-actions">
-          <button class="btn-apply">应用</button>
-          <button class="btn-reset">重置</button>
-          <span class="filter-summary" id="filterSummary">未选择 · 大盘全量</span>
-        </div>
+      </div>
+      <div class="filter-actions" id="filterActions">
+        <button class="btn-apply" id="btnApply">应用</button>
+        <button class="btn-reset" id="btnReset">重置</button>
+        <span class="filter-summary" id="filterSummary">昨天 · 大盘全量</span>
       </div>
     </div>
 
@@ -632,34 +727,34 @@ input { font-family: inherit; outline: none; }
       <div class="board-card card-full">
         <div class="card-hd">
           <span class="card-hd-title">在线模板情况</span>
-          <a class="card-link" href="https://jiangkunjing1-dotcom.github.io/xlxx/" target="_blank">进模板管理 →</a>
+          <a class="card-link" href="https://pilotcc3-sketch.github.io/xiyan_work/clean/" target="_blank">进模板管理 →</a>
         </div>
         <div class="card-body">
           <div class="stat-row">
             <div class="stat-item">
               <div class="stat-label">在线模板数</div>
               <div class="stat-val">47<span class="stat-unit">个</span></div>
-              <div class="stat-trend trend-up">↑ 较昨日 +2</div>
+              <div class="stat-trend trend-up">环比 +2</div>
             </div>
             <div class="stat-item">
               <div class="stat-label">总消耗</div>
               <div class="stat-val">¥ 621<span class="stat-unit">万</span></div>
-              <div class="stat-trend trend-up">↑ 8.3%</div>
+              <div class="stat-trend trend-up">环比 +8.3%</div>
             </div>
             <div class="stat-item">
               <div class="stat-label">竞价 CPM</div>
               <div class="stat-val">42.6<span class="stat-unit">元</span></div>
-              <div class="stat-trend trend-up">↑ 1.2</div>
+              <div class="stat-trend trend-up">环比 +1.2</div>
             </div>
             <div class="stat-item">
               <div class="stat-label">平均 CTR</div>
               <div class="stat-val">18.4<span class="stat-unit">%</span></div>
-              <div class="stat-trend trend-up">↑ 0.8pp</div>
+              <div class="stat-trend trend-up">环比 +0.8pp</div>
             </div>
             <div class="stat-item">
               <div class="stat-label">平均 CVR</div>
               <div class="stat-val">22.1<span class="stat-unit">%</span></div>
-              <div class="stat-trend trend-down">↓ 0.3pp</div>
+              <div class="stat-trend trend-down">环比 -0.3pp</div>
             </div>
           </div>
           <table class="mini-table">
@@ -667,10 +762,10 @@ input { font-family: inherit; outline: none; }
               <tr><th>模板 ID</th><th>消耗</th><th>竞价 CPM</th><th>CTR</th><th>CVR</th><th>状态</th></tr>
             </thead>
             <tbody>
-              <tr><td>1003723</td><td>¥421w</td><td>44.2</td><td>22.5%</td><td>31.4%</td><td><span class="st st-on">在线</span></td></tr>
-              <tr><td>1003062</td><td>¥103w</td><td>38.6</td><td>16.1%</td><td>20.4%</td><td><span class="st st-on">在线</span></td></tr>
-              <tr><td>1001277</td><td>¥38w</td><td>41.0</td><td>8.4%</td><td>18.4%</td><td><span class="st st-exp">实验中</span></td></tr>
-              <tr><td>1003769</td><td>¥59w</td><td>39.8</td><td>11.2%</td><td>19.7%</td><td><span class="st st-on">在线</span></td></tr>
+              <tr><td>1003723</td><td>¥421w</td><td>44.2</td><td>22.5%</td><td>31.4%</td><td><span class="st st-on">已发布-全量</span></td></tr>
+              <tr><td>1003062</td><td>¥103w</td><td>38.6</td><td>16.1%</td><td>20.4%</td><td><span class="st st-on">已发布-全量</span></td></tr>
+              <tr><td>1001277</td><td>¥38w</td><td>41.0</td><td>8.4%</td><td>18.4%</td><td><span class="st st-exp">已发布-实验中</span></td></tr>
+              <tr><td>1003769</td><td>¥59w</td><td>39.8</td><td>11.2%</td><td>19.7%</td><td><span class="st st-off">已发布-未生效</span></td></tr>
             </tbody>
           </table>
         </div>
@@ -719,13 +814,23 @@ input { font-family: inherit; outline: none; }
         </div>
       </div>
 
-      <!-- Case 情况 -->
+      <!-- 问题排查情况 -->
       <div class="board-card">
         <div class="card-hd">
-          <span class="card-hd-title">Case 情况</span>
+          <span class="card-hd-title">问题排查情况</span>
           <a class="card-link" href="https://jiangkunjing1-dotcom.github.io/xlxx/" target="_blank">进问题排查 →</a>
         </div>
         <div class="card-body">
+          <div class="rule-grid" style="margin-bottom:14px;">
+            <div class="rule-item">
+              <div class="rule-item-label">归因中 / 解决中</div>
+              <div class="rule-item-val warn">5</div>
+            </div>
+            <div class="rule-item">
+              <div class="rule-item-label">已闭环</div>
+              <div class="rule-item-val" style="color:var(--success)">12</div>
+            </div>
+          </div>
           <div class="case-row">
             <span class="cbadge cb-p0">P0</span>
             <div class="case-main">
@@ -765,7 +870,7 @@ input { font-family: inherit; outline: none; }
       <div class="board-card card-full">
         <div class="card-hd">
           <span class="card-hd-title">近期操作</span>
-          <a class="card-link" href="#">查看完整日志 →</a>
+          <a class="card-link" href="#" id="openLogLink">查看完整日志 →</a>
         </div>
         <div class="card-body">
           <table class="op-table">
@@ -774,35 +879,35 @@ input { font-family: inherit; outline: none; }
             </thead>
             <tbody>
               <tr>
-                <td class="op-time">今 10:32</td>
+                <td class="op-time">2026-06-14 10:32</td>
                 <td><span class="op-src-chip src-tpl">样式生产</span></td>
                 <td class="op-who">小樊</td>
                 <td class="op-type">上线</td>
                 <td class="op-id">模板 1003723</td>
               </tr>
               <tr>
-                <td class="op-time">今 09:18</td>
+                <td class="op-time">2026-06-14 09:18</td>
                 <td><span class="op-src-chip src-rule">规则配置</span></td>
                 <td class="op-who">昌仔</td>
                 <td class="op-type">修改</td>
                 <td class="op-id">规则 RID-20241</td>
               </tr>
               <tr>
-                <td class="op-time">昨 16:40</td>
+                <td class="op-time">2026-06-13 16:40</td>
                 <td><span class="op-src-chip src-case">问题排查</span></td>
                 <td class="op-who">小姜</td>
                 <td class="op-type">派单</td>
                 <td class="op-id">Case C-0612-03</td>
               </tr>
               <tr>
-                <td class="op-time">昨 14:05</td>
+                <td class="op-time">2026-06-13 14:05</td>
                 <td><span class="op-src-chip src-tpl">样式生产</span></td>
                 <td class="op-who">小樊</td>
                 <td class="op-type">暂停</td>
                 <td class="op-id">模板 1001150</td>
               </tr>
               <tr>
-                <td class="op-time">昨 11:22</td>
+                <td class="op-time">2026-06-13 11:22</td>
                 <td><span class="op-src-chip src-rule">规则配置</span></td>
                 <td class="op-who">昌仔</td>
                 <td class="op-type">新增</td>
@@ -820,14 +925,12 @@ input { font-family: inherit; outline: none; }
   <div class="section" id="asset-area">
     <div class="section-head">
       <span class="section-title">形态案例</span>
-      <span class="section-sub">近期主推激励形态</span>
     </div>
 
     <div class="case-cards">
 
       <!-- 阶梯激励 -->
       <div class="case-hcard">
-        <!-- 左：手机动效 -->
         <div class="case-phone-area case-phone-area-ladder">
           <div class="mock-phone" style="display:flex; flex-direction:column;">
             <div class="lad-video">
@@ -852,11 +955,10 @@ input { font-family: inherit; outline: none; }
             </div>
           </div>
         </div>
-        <!-- 右：文案数据 -->
         <div class="case-info">
           <span class="case-tag ctag-ladder">激励视频 · 多广告玩法</span>
           <div class="case-name">阶梯激励</div>
-          <div class="case-desc">多广告玩法扩展曝光库存，通过明确的进度条提示和分阶段奖励引导用户完成多个奖励任务</div>
+          <div class="case-desc2">多广告玩法扩展曝光库存，通过明确的进度条提示和分阶段奖励引导用户完成多个奖励任务</div>
           <div class="case-metrics">
             <div class="cm-item">
               <div class="cm-label">竞价 CPM</div>
@@ -901,7 +1003,7 @@ input { font-family: inherit; outline: none; }
         <div class="case-info">
           <span class="case-tag ctag-open">开屏 / 插屏 · 奖励式广告</span>
           <div class="case-name">奖励式开插屏</div>
-          <div class="case-desc">广告外层提示用户完成任务，即可获取对应奖励，具体奖励信息支持开发者自定义配置</div>
+          <div class="case-desc2">广告外层提示用户完成任务，即可获取对应奖励，具体奖励信息支持开发者自定义配置</div>
           <div class="case-metrics">
             <div class="cm-item">
               <div class="cm-label">竞价 CPM</div>
@@ -919,7 +1021,7 @@ input { font-family: inherit; outline: none; }
         </div>
       </div>
 
-      <!-- 奖励式插屏（复用开屏形式，展示插屏内容弹出样式） -->
+      <!-- 奖励式插屏 -->
       <div class="case-hcard">
         <div class="case-phone-area case-phone-area-inter">
           <div class="mock-phone" style="position:relative;">
@@ -942,7 +1044,7 @@ input { font-family: inherit; outline: none; }
         <div class="case-info">
           <span class="case-tag ctag-inter">插屏 · 短时体验激励</span>
           <div class="case-name">奖励式插屏</div>
-          <div class="case-desc">广告外层提示用户完成任务，即可获取对应奖励，具体奖励信息支持开发者自定义配置</div>
+          <div class="case-desc2">广告外层提示用户完成任务，即可获取对应奖励，具体奖励信息支持开发者自定义配置</div>
           <div class="case-metrics">
             <div class="cm-item">
               <div class="cm-label">竞价 CPM</div>
@@ -965,36 +1067,311 @@ input { font-family: inherit; outline: none; }
 
 </main>
 
+<!-- ====== 完整日志面板（弹窗） ====== -->
+<div class="log-overlay" id="logOverlay">
+  <div class="log-panel">
+    <div class="log-header">
+      <h2>操作日志</h2>
+      <div class="log-close" id="logCloseBtn">✕</div>
+    </div>
+    <div class="log-filters">
+      <div class="log-filter-group">
+        <span class="log-filter-label">操作类型</span>
+        <select class="log-filter-select" id="logFilterType">
+          <option value="">全部</option>
+          <option value="创建">创建</option>
+          <option value="编辑">编辑</option>
+          <option value="状态变更">状态变更</option>
+        </select>
+      </div>
+      <div class="log-filter-group">
+        <span class="log-filter-label">操作人</span>
+        <input class="log-filter-input" type="text" id="logFilterWho" placeholder="输入操作人" style="width:100px;">
+      </div>
+      <div class="log-filter-group">
+        <span class="log-filter-label">操作 ID</span>
+        <input class="log-filter-input" type="text" id="logFilterId" placeholder="模板ID/规则ID/CaseID">
+      </div>
+      <div class="log-filter-group">
+        <span class="log-filter-label">操作时间</span>
+        <input class="log-filter-date" type="date" id="logDateFrom">
+        <span style="font-size:12px; color:var(--text-light);">至</span>
+        <input class="log-filter-date" type="date" id="logDateTo">
+      </div>
+      <div class="log-filter-actions">
+        <button class="log-btn-query" id="logBtnQuery">查询</button>
+        <button class="log-btn-reset2" id="logBtnReset">重置</button>
+      </div>
+    </div>
+    <div class="log-body">
+      <table class="log-table">
+        <thead>
+          <tr><th>时间</th><th>模块</th><th>操作人</th><th>操作类型</th><th>关联 ID</th><th>备注</th></tr>
+        </thead>
+        <tbody id="logTableBody">
+        </tbody>
+      </table>
+    </div>
+    <div class="log-pagination" id="logPagination">
+      <span id="logPageInfo">共 0 条，第 1/1 页</span>
+      <div class="log-page-btns" id="logPageBtns"></div>
+    </div>
+  </div>
+</div>
+
 <script>
-function smoothScroll(id) {
-  document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
-function switchFbtn(el, group) {
-  el.closest('.filter-row').querySelectorAll('.fbtn').forEach(b => b.classList.remove('active'));
-  el.classList.add('active');
-}
-function switchMode(el) {
-  el.closest('.filter-row').querySelectorAll('.fbtn').forEach(b => b.classList.remove('active'));
-  el.classList.add('active');
-  document.getElementById('filterDetail').style.display =
-    el.dataset.mode === 'custom' ? 'block' : 'none';
-}
-</script>
-</body>
-</html>
-function smoothScroll(id) {
-  document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
-function switchFbtn(el, group) {
-  el.closest('.filter-row').querySelectorAll('.fbtn').forEach(b => b.classList.remove('active'));
-  el.classList.add('active');
-}
-function switchMode(el) {
-  el.closest('.filter-row').querySelectorAll('.fbtn').forEach(b => b.classList.remove('active'));
-  el.classList.add('active');
-  document.getElementById('filterDetail').style.display =
-    el.dataset.mode === 'custom' ? 'block' : 'none';
-}
+(function() {
+  // ===== 状态 =====
+  var isDefaultTime = true;
+  var isDefaultMode = true;
+
+  // ===== 导航滚动 =====
+  document.querySelectorAll('.tn-item[data-scroll]').forEach(function(item) {
+    item.addEventListener('click', function() {
+      var target = document.getElementById(this.dataset.scroll);
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+
+  // ===== 时间筛选 =====
+  document.querySelectorAll('#timeRow .fbtn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('#timeRow .fbtn').forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      var mode = btn.dataset.time;
+      var picker = document.getElementById('customTimePicker');
+      if (mode === 'custom') {
+        picker.classList.add('show');
+      } else {
+        picker.classList.remove('show');
+      }
+      isDefaultTime = (mode === 'yesterday');
+      toggleFilterActions();
+    });
+  });
+
+  // ===== 视角模式 =====
+  document.querySelectorAll('#modeRow .fbtn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('#modeRow .fbtn').forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      var detail = document.getElementById('filterDetail');
+      if (btn.dataset.mode === 'custom') {
+        detail.style.display = 'block';
+        isDefaultMode = false;
+      } else {
+        detail.style.display = 'none';
+        isDefaultMode = true;
+      }
+      toggleFilterActions();
+    });
+  });
+
+  // ===== 复选框变更 =====
+  document.querySelectorAll('#filterDetail input[type="checkbox"]').forEach(function(cb) {
+    cb.addEventListener('change', function() { updateFilterSummary(); });
+  });
+
+  // ===== 应用 / 重置 =====
+  document.getElementById('btnApply').addEventListener('click', function() {
+    alert('筛选条件已应用');
+  });
+  document.getElementById('btnReset').addEventListener('click', function() {
+    var yesterdayBtn = document.querySelector('#timeRow .fbtn[data-time="yesterday"]');
+    document.querySelectorAll('#timeRow .fbtn').forEach(function(b) { b.classList.remove('active'); });
+    yesterdayBtn.classList.add('active');
+    document.getElementById('customTimePicker').classList.remove('show');
+    var allBtn = document.querySelector('#modeRow .fbtn[data-mode="all"]');
+    document.querySelectorAll('#modeRow .fbtn').forEach(function(b) { b.classList.remove('active'); });
+    allBtn.classList.add('active');
+    document.getElementById('filterDetail').style.display = 'none';
+    document.querySelectorAll('#filterDetail input[type="checkbox"]').forEach(function(cb) { cb.checked = false; });
+    isDefaultTime = true;
+    isDefaultMode = true;
+    toggleFilterActions();
+  });
+
+  function toggleFilterActions() {
+    var actions = document.getElementById('filterActions');
+    if (!isDefaultTime || !isDefaultMode) {
+      actions.classList.add('show');
+    } else {
+      actions.classList.remove('show');
+    }
+    updateFilterSummary();
+  }
+
+  function updateFilterSummary() {
+    var summary = document.getElementById('filterSummary');
+    var parts = [];
+    var activeTime = document.querySelector('#timeRow .fbtn.active');
+    if (activeTime) parts.push(activeTime.textContent.trim());
+    var activeMode = document.querySelector('#modeRow .fbtn.active');
+    if (activeMode && activeMode.dataset.mode === 'all') {
+      parts.push('大盘全量');
+    } else {
+      var checked = document.querySelectorAll('#filterDetail input:checked');
+      if (checked.length > 0) {
+        var labels = [];
+        checked.forEach(function(cb) { labels.push(cb.nextElementSibling.textContent); });
+        parts.push(labels.join('、'));
+      } else {
+        parts.push('未选择');
+      }
+    }
+    summary.textContent = parts.join(' · ');
+  }
+
+  // ===== 日志面板 =====
+  var logData = [
+    { time: '2026-06-14 10:32', module: '样式生产', who: '小樊', type: '状态变更', id: '模板 1003723', note: '模板上线' },
+    { time: '2026-06-14 09:18', module: '规则配置', who: '昌仔', type: '编辑', id: '规则 RID-20241', note: '调整游戏行业高优权重' },
+    { time: '2026-06-13 16:40', module: '问题排查', who: '小姜', type: '创建', id: 'Case C-0612-03', note: '开屏白屏问题录入' },
+    { time: '2026-06-13 14:05', module: '样式生产', who: '小樊', type: '状态变更', id: '模板 1001150', note: '模板暂停' },
+    { time: '2026-06-13 11:22', module: '规则配置', who: '昌仔', type: '创建', id: '规则 RID-20244', note: '新增短剧预算屏蔽规则' },
+    { time: '2026-06-12 17:55', module: '样式生产', who: '坤婧', type: '状态变更', id: '模板 1003769', note: '横幅新模板灰度上线' },
+    { time: '2026-06-12 15:30', module: '问题排查', who: '小姜', type: '状态变更', id: 'Case C-0610-03', note: '问题已归档' },
+    { time: '2026-06-12 10:12', module: '规则配置', who: '昌仔', type: '编辑', id: '规则 RID-20238', note: '圈定条件补充厂商渠道' },
+    { time: '2026-06-11 16:08', module: '样式生产', who: '小樊', type: '创建', id: '模板 1003780', note: '信息流卡片模板提审' },
+    { time: '2026-06-11 14:22', module: '问题排查', who: '坤婧', type: '创建', id: 'Case C-0611-05', note: '金融开屏 CTR 低于基线' },
+    { time: '2026-06-11 09:45', module: '规则配置', who: '昌仔', type: '创建', id: '规则 RID-20245', note: 'IAA 行业插入场景新规则' },
+    { time: '2026-06-10 17:30', module: '样式生产', who: '小樊', type: '状态变更', id: '模板 1001088', note: '合规审核未通过暂停' },
+    { time: '2026-06-10 15:20', module: '规则配置', who: '坤婧', type: '编辑', id: '规则 RID-20230', note: '修改开屏圈定条件' },
+    { time: '2026-06-10 11:05', module: '样式生产', who: '小樊', type: '创建', id: '模板 1003785', note: '激励视频新创意提审' },
+    { time: '2026-06-09 17:42', module: '问题排查', who: '小姜', type: '状态变更', id: 'Case C-0609-02', note: '问题已归档' },
+    { time: '2026-06-09 14:30', module: '规则配置', who: '昌仔', type: '创建', id: '规则 RID-20246', note: '手机厂商渠道屏蔽规则' },
+    { time: '2026-06-09 10:15', module: '样式生产', who: '坤婧', type: '编辑', id: '模板 1003062', note: '横幅尺寸适配调整' },
+    { time: '2026-06-08 16:55', module: '问题排查', who: '小姜', type: '创建', id: 'Case C-0608-01', note: '插入广告展示异常' },
+    { time: '2026-06-08 14:20', module: '样式生产', who: '小樊', type: '状态变更', id: '模板 1003750', note: '模板下线' },
+    { time: '2026-06-08 09:30', module: '规则配置', who: '昌仔', type: '编辑', id: '规则 RID-20235', note: '调整预算分配比例' },
+  ];
+
+  var PAGE_SIZE = 8;
+  var currentPage = 1;
+  var filteredData = logData;
+
+  function openLogPanel() {
+    document.getElementById('logOverlay').classList.add('show');
+    currentPage = 1;
+    filteredData = logData;
+    renderPage();
+  }
+
+  function closeLogPanel() {
+    document.getElementById('logOverlay').classList.remove('show');
+  }
+
+  function renderPage() {
+    var totalPages = Math.max(1, Math.ceil(filteredData.length / PAGE_SIZE));
+    if (currentPage > totalPages) currentPage = totalPages;
+    var start = (currentPage - 1) * PAGE_SIZE;
+    var pageData = filteredData.slice(start, start + PAGE_SIZE);
+    renderLogTable(pageData);
+    renderPagination(totalPages);
+  }
+
+  function renderLogTable(data) {
+    var tbody = document.getElementById('logTableBody');
+    var chipClass = { '样式生产': 'src-tpl', '规则配置': 'src-rule', '问题排查': 'src-case' };
+    if (data.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:#718096; padding:32px 0;">暂无匹配的操作记录</td></tr>';
+      return;
+    }
+    tbody.innerHTML = data.map(function(row) {
+      return '<tr>' +
+        '<td class="op-time">' + row.time + '</td>' +
+        '<td><span class="op-src-chip ' + (chipClass[row.module] || '') + '">' + row.module + '</span></td>' +
+        '<td class="op-who">' + row.who + '</td>' +
+        '<td class="op-type">' + row.type + '</td>' +
+        '<td class="op-id">' + row.id + '</td>' +
+        '<td style="font-size:11px; color:#4a5568;">' + row.note + '</td>' +
+        '</tr>';
+    }).join('');
+  }
+
+  function renderPagination(totalPages) {
+    var info = document.getElementById('logPageInfo');
+    info.textContent = '共 ' + filteredData.length + ' 条，第 ' + currentPage + '/' + totalPages + ' 页';
+    var btnsContainer = document.getElementById('logPageBtns');
+    var html = '';
+    html += '<div class="log-page-btn' + (currentPage <= 1 ? ' disabled' : '') + '" data-page="prev">‹</div>';
+    for (var i = 1; i <= totalPages; i++) {
+      html += '<div class="log-page-btn' + (i === currentPage ? ' active' : '') + '" data-page="' + i + '">' + i + '</div>';
+    }
+    html += '<div class="log-page-btn' + (currentPage >= totalPages ? ' disabled' : '') + '" data-page="next">›</div>';
+    btnsContainer.innerHTML = html;
+  }
+
+  function filterLogs() {
+    var typeVal = document.getElementById('logFilterType').value;
+    var whoVal = document.getElementById('logFilterWho').value.trim().toLowerCase();
+    var idVal = document.getElementById('logFilterId').value.trim().toLowerCase();
+    var dateFrom = document.getElementById('logDateFrom').value;
+    var dateTo = document.getElementById('logDateTo').value;
+
+    filteredData = logData.filter(function(row) {
+      if (typeVal && row.type !== typeVal) return false;
+      if (whoVal && row.who.toLowerCase().indexOf(whoVal) === -1) return false;
+      if (idVal && row.id.toLowerCase().indexOf(idVal) === -1) return false;
+      if (dateFrom) {
+        var rowDate = row.time.split(' ')[0];
+        if (rowDate < dateFrom) return false;
+      }
+      if (dateTo) {
+        var rowDate2 = row.time.split(' ')[0];
+        if (rowDate2 > dateTo) return false;
+      }
+      return true;
+    });
+    currentPage = 1;
+    renderPage();
+  }
+
+  function resetLogFilters() {
+    document.getElementById('logFilterType').value = '';
+    document.getElementById('logFilterWho').value = '';
+    document.getElementById('logFilterId').value = '';
+    document.getElementById('logDateFrom').value = '';
+    document.getElementById('logDateTo').value = '';
+    filteredData = logData;
+    currentPage = 1;
+    renderPage();
+  }
+
+  // 绑定日志相关事件
+  document.getElementById('openLogLink').addEventListener('click', function(e) {
+    e.preventDefault();
+    openLogPanel();
+  });
+
+  document.getElementById('logCloseBtn').addEventListener('click', function() {
+    closeLogPanel();
+  });
+
+  document.getElementById('logOverlay').addEventListener('click', function(e) {
+    if (e.target === this) closeLogPanel();
+  });
+
+  document.getElementById('logBtnQuery').addEventListener('click', filterLogs);
+  document.getElementById('logBtnReset').addEventListener('click', resetLogFilters);
+
+  // 分页点击
+  document.getElementById('logPageBtns').addEventListener('click', function(e) {
+    var btn = e.target.closest('.log-page-btn');
+    if (!btn || btn.classList.contains('disabled')) return;
+    var page = btn.dataset.page;
+    var totalPages = Math.max(1, Math.ceil(filteredData.length / PAGE_SIZE));
+    if (page === 'prev') {
+      if (currentPage > 1) currentPage--;
+    } else if (page === 'next') {
+      if (currentPage < totalPages) currentPage++;
+    } else {
+      currentPage = parseInt(page);
+    }
+    renderPage();
+  });
+
+})();
 </script>
 </body>
 </html>
