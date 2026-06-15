@@ -246,6 +246,9 @@ input { font-family: inherit; outline: none; }
 .case-row { display: flex; align-items: flex-start; gap: 8px; padding: 8px 0; border-bottom: 1px solid #f4f6fa; font-size: 12px; }
 .case-row:last-child { border-bottom: none; }
 .cbadge { display: inline-block; font-size: 10px; padding: 1px 7px; border-radius: 6px; font-weight: 600; flex-shrink: 0; margin-top: 1px; }
+.cs-analyzing { background: #eff6ff; color: #1a6ef5; font-size: 11px; padding: 2px 8px; border-radius: 8px; font-weight: 500; flex-shrink: 0; }
+.cs-solving   { background: #fff7ed; color: var(--warn);    font-size: 11px; padding: 2px 8px; border-radius: 8px; font-weight: 500; flex-shrink: 0; }
+.cs-closed    { background: #f0fdf4; color: var(--success); font-size: 11px; padding: 2px 8px; border-radius: 8px; font-weight: 500; flex-shrink: 0; }
 .cb-p0   { background: #fef2f2; color: var(--danger); }
 .cb-p1   { background: #fff7ed; color: var(--warn); }
 .cb-done { background: #f0fdf4; color: var(--success); }
@@ -729,7 +732,7 @@ input { font-family: inherit; outline: none; }
               <div class="case-desc">激励视频某广告位不出 · 定位规则冲突</div>
               <div class="case-id">Case C-0612-01</div>
             </div>
-            <span class="case-prog" style="color:var(--warn)">处理中</span>
+            <span class="cs-solving">解决中</span>
           </div>
           <div class="case-row">
             <span class="cbadge cb-p1">P1</span>
@@ -737,15 +740,15 @@ input { font-family: inherit; outline: none; }
               <div class="case-desc">开屏模板无倒计时组件</div>
               <div class="case-id">Case C-0612-02 · 已派坤婧</div>
             </div>
-            <span class="case-prog">处理中</span>
+            <span class="cs-analyzing">归因中</span>
           </div>
           <div class="case-row">
             <span class="cbadge cb-p1">P1</span>
             <div class="case-main">
-              <div class="case-desc">金融开屏 CTR 低于基线 · 归因中</div>
+              <div class="case-desc">金融开屏 CTR 低于基线 · 数据分析中</div>
               <div class="case-id">Case C-0611-05</div>
             </div>
-            <span class="case-prog">归因中</span>
+            <span class="cs-analyzing">归因中</span>
           </div>
           <div class="case-row">
             <span class="cbadge cb-done">已闭环</span>
@@ -753,7 +756,7 @@ input { font-family: inherit; outline: none; }
               <div class="case-desc">摇一摇不触发 · 透明 View 遮挡</div>
               <div class="case-id">Case C-0610-03 · 已入库</div>
             </div>
-            <span class="case-prog" style="color:var(--success)">已入库</span>
+            <span class="cs-closed">已闭环</span>
           </div>
         </div>
       </div>
